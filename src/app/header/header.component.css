@@ -1,0 +1,8 @@
+.navbar{
+    height: 20%;
+}
+.help-is-error {
+    font-size: small;
+    font-style: italic;
+    color: crimson;
+}

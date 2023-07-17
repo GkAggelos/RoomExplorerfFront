@@ -1,0 +1,141 @@
+<!-- Header -->
+<nav class="navbar navbar-expand-lg p-3 mb-2 fs-5 bg-danger">
+    <div class="container-fluid" id="main-container">
+      <a class="navbar-brand fs-2 text-white" href="">Room Explorer</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 fs-5 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link text-white" aria-current="page" href="/host">Host</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/admin">Admin</a>
+          </li>
+        </ul>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <ul class="navbar-nav mr-auto mb-2 fs-5 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-white" role="button" (click)="onOpenModal('log_in')">Log in</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav mr-auto mb-2 fs-5 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-white" role="button" (click)="onOpenModal('sign_in')">Sign in</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<!-- Sign in new user Modal -->
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #signInForm="ngForm" (ngSubmit)="onSignInUser(signInForm)">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" ngModel name="username" class="form-control" id="username" placeholder="Username" #userNameInput="ngModel" required>
+            </div>
+            <div class="help-is-error" *ngIf="userNameInput.invalid && userNameInput.touched">
+              Username is required.
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Password" #passwordInput="ngModel" required>
+            </div>
+            <div class="help-is-error" *ngIf="passwordInput.invalid && passwordInput.touched">
+              Password is required.
+            </div>
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" ngModel name="firstName" class="form-control" id="firstName" placeholder="FirstName" #firstNameInput="ngModel" required>
+            </div>
+            <div class="help-is-error" *ngIf="firstNameInput.invalid && firstNameInput.touched">
+              First Name is required.
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="lastName" ngModel name="lastName" class="form-control" id="lastName" placeholder="LastName" #lastNameInput="ngModel" required>
+            </div>
+            <div class="help-is-error" *ngIf="lastNameInput.invalid && lastNameInput.touched">
+              Last Name is required.
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" #emailInput="ngModel" required email>
+            </div>
+            <div class="help-is-error" *ngIf="emailInput.invalid && emailInput.touched">
+              Email is required and needs to be an email.
+            </div>
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Phone" #phoneNumberInput="ngModel" required>
+            </div>
+            <div class="help-is-error" *ngIf="phoneNumberInput.invalid && phoneNumberInput.touched">
+              Phone Number is required.
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" name="host" type="checkbox" value="host" id="host" [(ngModel)] = "isHostChecked">
+              <label class="form-check-label" for="host">
+                Host
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" name="renter" type="checkbox" value="renter" id="renter" [(ngModel)] = "isRenterChecked" checked>
+              <label class="form-check-label" for="renter">
+                Renter
+              </label>
+            </div>
+            <div class="help-is-error" *ngIf="NoneChecked()">
+              You have to choose to be a Host, Renter or both.
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="signIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button [disabled]="signInForm.invalid || NoneChecked()" type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+          </form>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Log in user Modal -->
+<div class="modal fade" id="logInModal" tabindex="-1" role="dialog" aria-labelledby="logInModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="logInModalLabel">Log In</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #logInForm="ngForm">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" ngModel name="username" class="form-control" id="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="logIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button [disabled]="logInForm.invalid" type="submit" class="btn btn-primary">Log In</button>
+            </div>
+          </form>
+       </div>
+    </div>
+  </div>
+</div>
