@@ -8,9 +8,11 @@ import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { FormsModule } from '@angular/forms';
-import { HostService } from './host.service';
+import { HostService } from './service/host.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchResultComponent } from './search-result/search-result.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AllreadExistsValidatorDirective } from './validation/allread-exists-validator.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { SearchResultComponent } from './search-result/search-result.component';
     FooterComponent,
     HomeComponent,
     AdminComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    ProfileComponent,
+    AllreadExistsValidatorDirective
   ],
   imports: [
     BrowserModule,

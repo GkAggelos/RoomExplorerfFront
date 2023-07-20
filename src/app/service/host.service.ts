@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Host } from './model/host';
+import { Host } from '../model/host';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,10 @@ export class HostService {
 
   public getHosts(): Observable<Host[]> {
     return this.http.get<Host[]>(`${this.hostUrl}/all`);
+  }
+
+  public getHostByUsername(username: string): Observable<Host> {
+    return this.http.get<Host>(`${this.hostUrl}/find/username/${username}`);
   }
 
   public addHost(host: Host): Observable<Host> {

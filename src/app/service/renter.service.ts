@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Renter } from './model/renter';
+import { Renter } from '../model/renter';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,10 @@ export class RenterService {
 
   public getRenters(): Observable<Renter[]> {
     return this.http.get<Renter[]>(`${this.renterUrl}/all`);
+  }
+
+  public getRenterByUsername(username: string): Observable<Renter> {
+    return this.http.get<Renter>(`${this.renterUrl}/find/username/${username}`);
   }
 
   public addRenter(renter: Renter): Observable<Renter> {

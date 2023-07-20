@@ -45,17 +45,31 @@
           <form #signInForm="ngForm" (ngSubmit)="onSignInUser(signInForm)">
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" ngModel name="username" class="form-control" id="username" placeholder="Username" #userNameInput="ngModel" required>
+              <input type="text" ngModel name="username" class="form-control" id="sign_in_username" placeholder="Username" #userNameInput="ngModel" required 
+              appAllreadExistsValidator [records]="usernameRecords">
             </div>
-            <div class="help-is-error" *ngIf="userNameInput.invalid && userNameInput.touched">
+            <div class="help-is-error" *ngIf="userNameInput.invalid && userNameInput.touched && !userNameInput.errors?.['allreadyExists']">
               Username is required.
+            </div>
+            <div class="help-is-error" *ngIf="userNameInput.touched && userNameInput.invalid && userNameInput.errors?.['allreadyExists']">
+              This username exists try an other one.
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Password" #passwordInput="ngModel" required>
+              <input type="password" ngModel name="password" class="form-control" id="sign_in_password" placeholder="Password" #passwordInput="ngModel" required>
             </div>
             <div class="help-is-error" *ngIf="passwordInput.invalid && passwordInput.touched">
               Password is required.
+            </div>
+            <div class="form-group">
+              <label for="password">Confirm Password</label>
+              <input type="password" ngModel name="conf_password" class="form-control" id="conf_password" #conf_passwordInput="ngModel" placeholder="Password" required>
+            </div>
+            <div class="help-is-error" *ngIf="conf_passwordInput.invalid && conf_passwordInput.touched">
+              Have to confirm your password.
+            </div>
+            <div class="help-is-error" *ngIf="passwordNotMatch(signInForm.value.password, signInForm.value.conf_password)">
+              Password does not match.
             </div>
             <div class="form-group">
               <label for="firstName">First Name</label>
@@ -73,10 +87,14 @@
             </div>
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" #emailInput="ngModel" required email>
+              <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" #emailInput="ngModel" required email
+              appAllreadExistsValidator [records]="emailRecords">
             </div>
-            <div class="help-is-error" *ngIf="emailInput.invalid && emailInput.touched">
+            <div class="help-is-error" *ngIf="emailInput.invalid && emailInput.touched && !emailInput.errors?.['allreadyExists']">
               Email is required and needs to be an email.
+            </div>
+            <div class="help-is-error" *ngIf="emailInput.touched && emailInput.invalid && emailInput.errors?.['allreadyExists']">
+              This email exists try an other one.
             </div>
             <div class="form-group">
               <label for="phoneNumber">Phone Number</label>
@@ -102,7 +120,8 @@
             </div>
             <div class="modal-footer">
               <button type="button" id="signIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button [disabled]="signInForm.invalid || NoneChecked()" type="submit" class="btn btn-primary">Sign In</button>
+              <button [disabled]="signInForm.invalid || NoneChecked() || passwordNotMatch(signInForm.value.password, signInForm.value.conf_password)"
+              type="submit" class="btn btn-primary">Sign In</button>
             </div>
           </form>
        </div>
@@ -124,11 +143,11 @@
           <form #logInForm="ngForm">
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" ngModel name="username" class="form-control" id="username" placeholder="Username" required>
+              <input type="text" ngModel name="username" class="form-control" id="log_in_username" placeholder="Username" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Password" required>
+              <input type="password" ngModel name="password" class="form-control" id="log_in_password" placeholder="Password" required>
             </div>
             <div class="modal-footer">
               <button type="button" id="logIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>

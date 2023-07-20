@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Renter } from '../model/renter';
 import { Host } from '../model/host';
-import { HostService } from '../host.service';
+import { HostService } from '../service/host.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RenterService } from '../renter.service';
+import { RenterService } from '../service/renter.service';
 
 @Component({
   selector: 'app-admin',

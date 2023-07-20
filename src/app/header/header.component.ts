@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { HostService } from '../host.service';
-import { RenterService } from '../renter.service';
+import { FormControl, NgForm } from '@angular/forms';
+import { HostService } from '../service/host.service';
+import { RenterService } from '../service/renter.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Renter } from '../model/renter';
 import { Host } from '../model/host';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -15,8 +16,33 @@ export class HeaderComponent implements OnInit{
 
   public isRenterChecked : boolean;
   public isHostChecked : boolean;
+  public emailRecords : String[];
+  public usernameRecords : String[];
 
-  constructor(private hostService: HostService, private renterService: RenterService) {this.isRenterChecked = true; this.isHostChecked = false;}
+  constructor(private hostService: HostService, private renterService: RenterService) {
+    this.isRenterChecked = true; 
+    this.isHostChecked = false;
+    this.emailRecords = [];
+    this.usernameRecords = [];
+    this.hostService.getHosts().subscribe(
+      (response: Host[]) => {
+        console.log(response);
+        for (let index = 0; index < response.length; index++) {
+          this.emailRecords.push(response[index].email);
+          this.usernameRecords.push(response[index].username);
+        }
+      }
+    );
+    this.renterService.getRenters().subscribe(
+      (response: Renter[]) => {
+        console.log(response);
+        for (let index = 0; index < response.length; index++) {
+          this.emailRecords.push(response[index].email);
+          this.usernameRecords.push(response[index].username);
+        }
+      }
+    );
+  }
 
   ngOnInit(): void {}
 
@@ -42,6 +68,15 @@ export class HeaderComponent implements OnInit{
         }
       );
     }
+  }
+
+  public passwordNotMatch(password: string, conf_password: string): boolean {
+    
+    if (conf_password?.length == 0 || password?.length == 0) return false;
+
+    if (conf_password === password) return false
+
+    return true;
   }
 
   public NoneChecked() : boolean {
