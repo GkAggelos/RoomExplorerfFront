@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { ProfileComponent } from './profile/profile.component';
+import { HostComponent } from './host/host.component';
 
 const routes: Routes = [
   {
@@ -24,7 +25,12 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent
-  }
+  },
+
+  {
+    path: 'host',
+    component: HostComponent
+  },
 ];
 
 @NgModule({

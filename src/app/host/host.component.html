@@ -1,0 +1,172 @@
+<div class="container card-0 justify-content-center "> 
+    <div class="card-body px-sm-4 px-0"> 
+        <div class="row justify-content-center mb-5"> 
+            <div class="col-md-10 col"> 
+                <h3 class="font-weight-bold ml-md-0 mx-auto text-sm-left"> Add Residence </h3> 
+            </div> 
+        </div> 
+        <div class="row justify-content-center round"> 
+            <div class="col-lg-10 col-md-12 "> 
+                <div class="card shadow-lg card-1"> 
+                    <div class="card-body inner-card"> 
+                        <div class="row justify-content-center"> 
+                            <div class="col-lg-5 col-md-6 col-sm-12"> 
+                                <div class="form-group">
+                                    <label for="location">Location</label>
+                                    <input type="text" name="location" class="form-control" id="location" placeholder="Type location" required> 
+                                </div> 
+                                <div class="form-group"> 
+                                    <label for="Area">Area</label> 
+                                    <input type="text" class="form-control" id="area" placeholder="Type area number"> 
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="pricing">Price</label> 
+                                    <input type="text" class="form-control" id="pricing" placeholder="Type price"> 
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="wifi" type="checkbox" value="wifi" id="wifi">
+                                    <label class="form-check-label" for="wifi">
+                                        Wifi
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="heating" type="checkbox" value="heating" id="heating">
+                                    <label class="form-check-label" for="heating">
+                                        Heating
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="air_condition" type="checkbox" value="air_condition" id="air_condition">
+                                    <label class="form-check-label" for="air_condition">
+                                        Air Condition
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="cuisine" type="checkbox" value="cuisine" id="cuisine">
+                                    <label class="form-check-label" for="cuisine">
+                                        Cuisine
+                                    </label>
+                                </div>
+                            </div> 
+                            <div class="col-lg-5 col-md-6 col-sm-12"> 
+                                <div class="form-group"> 
+                                    <label for="roomType">Room Type</label> 
+                                    <select class="form-control"> 
+                                        <option>Private room</option> 
+                                        <option>Shared room</option> 
+                                        <option>Whole building</option> 
+                                    </select> 
+                                </div> 
+                                <div class="form-group"> 
+                                    <label for="floor">Floor</label> 
+                                    <input type="text" class="form-control" id="floor" placeholder="Type floor number"> 
+                                </div> 
+                                <div class="form-group">
+                                    <label for="peopleCapacity">People Capacity</label> 
+                                    <input type="text" class="form-control" id="peopleCapacity" placeholder="Type people capacity"> 
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="tv" type="checkbox" value="tv" id="tv">
+                                    <label class="form-check-label" for="tv">
+                                        Tv
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="parking" type="checkbox" value="parking" id="parking">
+                                    <label class="form-check-label" for="parking">
+                                        Parking
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="elevator" type="checkbox" value="elevator" id="elevator">
+                                    <label class="form-check-label" for="elevator">
+                                        Elevator
+                                    </label>
+                                </div>
+                            </div> 
+                        </div> 
+                        <div class="row justify-content-center"> 
+                            <div class="col-md-12 col-lg-10 col-12"> 
+                                <div class="form-group files">
+                                    <label class="my-auto">Upload Photo</label> 
+                                    <input id="file" type="file" class="form-control" />
+                                </div> 
+                            </div> 
+                        </div> 
+                        <div class="row justify-content-center"> 
+                            <div class="col-md-12 col-lg-10 col-12"> 
+                                <div class="form-group"> 
+                                    <label for="exampleFormControlTextarea2">Comments</label> 
+                                    <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="5"></textarea>
+                                </div> 
+                                <div class="mb-2 mt-4"> 
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-primary btn-block">
+                                            <small class="font-weight-bold">Add Residence</small>
+                                        </button> 
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-3 mb-lg-5">
+            <div class="overflow-hidden card table-nowrap table-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recidences</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="small text-uppercase bg-body text-muted">
+                            <tr>
+                                <th>Location</th>
+                                <th>Floor</th>
+                                <th>Room Type</th>
+                                <th>Pricing</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let residence of residences" >
+                            <tr class="align-middle">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{residence?.location}} {{residence?.area}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{residence?.floor}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{residence?.roomType}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{residence?.pricing}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

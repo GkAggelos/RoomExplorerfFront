@@ -15,8 +15,8 @@ export class RenterService {
     return this.http.get<Renter[]>(`${this.renterUrl}/all`);
   }
 
-  public getRenterByUsername(username: string): Observable<Renter> {
-    return this.http.get<Renter>(`${this.renterUrl}/find/username/${username}`);
+  public getRenterById(id: number): Observable<Renter> {
+    return this.http.get<Renter>(`${this.renterUrl}/find/${id}`);
   }
 
   public addRenter(renter: Renter): Observable<Renter> {

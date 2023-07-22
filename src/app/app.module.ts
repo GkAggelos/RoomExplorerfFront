@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AllreadExistsValidatorDirective } from './validation/allread-exists-validator.directive';
-
+import { HostComponent } from './host/host.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +23,8 @@ import { AllreadExistsValidatorDirective } from './validation/allread-exists-val
     AdminComponent,
     SearchResultComponent,
     ProfileComponent,
-    AllreadExistsValidatorDirective
+    AllreadExistsValidatorDirective,
+    HostComponent,
   ],
   imports: [
     BrowserModule,

@@ -15,11 +15,15 @@ export class HostService {
     return this.http.get<Host[]>(`${this.hostUrl}/all`);
   }
 
-  public getHostByUsername(username: string): Observable<Host> {
-    return this.http.get<Host>(`${this.hostUrl}/find/username/${username}`);
+  public getHostById(id: number): Observable<Host> {
+    return this.http.get<Host>(`${this.hostUrl}/find/${id}`);
   }
 
   public addHost(host: Host): Observable<Host> {
     return this.http.post<Host>(`${this.hostUrl}/add`, host);
+  }
+
+  public updateHost(host: Host): Observable<Host> {
+    return this.http.put<Host>(`${this.hostUrl}/update`, host);
   }
 }

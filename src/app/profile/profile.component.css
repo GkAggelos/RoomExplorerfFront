@@ -3,6 +3,7 @@
 
 body {
   background: #f5f5f5;
+  display: inline-block;
 }
 
 a {
@@ -52,4 +53,15 @@ color: white;
 
 a {
 color: white;
+}
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
+.help-is-error {
+  font-size: small;
+  font-style: italic;
+  color: crimson;
 }

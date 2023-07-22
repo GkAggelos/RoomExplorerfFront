@@ -1,8 +1,55 @@
-<div class="container" id="main-container">
+<div class="container" id="main-container" *ngIf="ishost && isForAdmin">
+   <div class="card  align-self-center">
+       <div class="card-body row">
+          <div class="col-6">
+             <a><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+           </div>
+          <div class="col-6 card-title align-self-center mb-0">
+             <h4>{{host.username}}</h4>
+           </div>
+       </div>
+       <ul class="list-group list-group-flush">
+           <li class="list-group-item">First Name : <b> {{host.firstName}} </b></li>
+           <li class="list-group-item">Last Name : <b>{{host.lastName}}</b></li>
+           <li class="list-group-item">Password : <b>{{host.password}}</b></li>
+           <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <b>{{host.email}}</b></li>
+           <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : <b>{{host.phoneNumber}}</b></li>
+           <li class="list-group-item" *ngIf="host.approved === false">Approved : <b class="red">{{host.approved}}</b></li>
+           <li class="list-group-item" *ngIf="host.approved">Approved : <b class="green">{{host.approved}}</b></li>
+       </ul>
+   </div>
+   <button type="button" class="btn btn-success" *ngIf="host.approved === false" (click)="onApproveHost()">Approve this host</button><br><br>
+   <button type="button" class="btn btn-primary">Get residences</button><br><br>
+   <button type="button" class="btn btn-primary">Get critics</button>
+</div>
+
+<div class="container" id="main-container" *ngIf="isrenter && isForAdmin">
+   <div class="card  align-self-center">
+       <div class="card-body row">
+          <div class="col-6">
+             <a><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+           </div>
+          <div class="col-6 card-title align-self-center mb-0">
+             <h4>{{renter.username}}</h4>
+           </div>
+       </div>
+       <ul class="list-group list-group-flush">
+           <li class="list-group-item">First Name : <b> {{renter.firstName}} </b></li>
+           <li class="list-group-item">Last Name : <b>{{renter.lastName}}</b></li>
+           <li class="list-group-item">Password : <b>{{renter.password}}</b></li>
+           <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <b>{{renter.email}}</b></li>
+           <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : <b>{{renter.phoneNumber}}</b></li>
+       </ul>
+   </div>
+   <button type="button" class="btn btn-primary">Get reservations</button><br><br>
+   <button type="button" class="btn btn-primary">Get critics</button>
+</div>
+
+<div class="container" id="main-container" *ngIf="!isForAdmin">
     <div class="card  align-self-center">
         <div class="card-body row">
            <div class="col-6">
-              <a href=""><img src="" alt="" class="img-fluid rounded-circle w-60"></a>
+              <a href=""><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
             </div>
            <div class="col-6 card-title align-self-center mb-0">
               <h5>Username</h5>
@@ -14,7 +61,7 @@
             <li class="list-group-item">Password</li>
            <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email</li>
             <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone :</li>
-            <li class="list-group-item">Approved</li>
+            <li class="list-group-item" *ngIf="ishost">Approved</li>
         </ul>
         <div class="card-body">
            <div class="float-right btn-group btn-group-sm">
@@ -36,32 +83,71 @@
              </button>
           </div>
           <div class="modal-body">
-             <form #editForm="ngForm">
-                <div class="form-group">
-                    <label for="name">Username</label>
-                    <input type="text"  name="username" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Name">
-                 </div>
-                <div class="form-group">
-                    <label for="phone">First Name</label>
-                    <input type="text"  name="firstName" class="form-control" id="firstName" placeholder="First Name">
-                 </div>
-                 <div class="form-group">
-                    <label for="phone">Last Name</label>
-                    <input type="text"  name="lastName" class="form-control" id="lastName" placeholder="Last Name">
-                 </div>
-                <input type="hidden"  name="id" class="form-control" id="id" placeholder="Email">
-                <input type="hidden"  name="password" class="form-control" id="password" placeholder="Email">
-                <div class="form-group">
-                   <label for="email">Email Address</label>
-                   <input type="email" name="email" class="form-control" id="email" placeholder="Email">
-                </div>
-                <div class="form-group">
-                   <label for="phone">Phone</label>
-                   <input type="text"  name="phone" class="form-control" id="phone" name="phone" placeholder="Phone">
-                </div>
-                <div class="modal-footer">
-                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
-                   <button  data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+            <form #signInForm="ngForm"  >
+               <div class="form-group">
+                 <label for="username">Username</label>
+                 <input type="text" ngModel name="username" class="form-control" id="sign_in_username" placeholder="Username" #userNameInput="ngModel" required 
+                 appAllreadExistsValidator [records]="usernameRecords">
+               </div>
+               <div class="help-is-error" *ngIf="userNameInput.invalid && userNameInput.touched && !userNameInput.errors?.['allreadyExists']">
+                 Username is required.
+               </div>
+               <div class="help-is-error" *ngIf="userNameInput.touched && userNameInput.invalid && userNameInput.errors?.['allreadyExists']">
+                 This username exists try an other one.
+               </div>
+               <div class="form-group">
+                 <label for="password">Password</label>
+                 <input type="password" ngModel name="password" class="form-control" id="sign_in_password" placeholder="Password" #passwordInput="ngModel" required>
+               </div>
+               <div class="help-is-error" *ngIf="passwordInput.invalid && passwordInput.touched">
+                 Password is required.
+               </div>
+               <div class="form-group">
+                 <label for="password">Confirm Password</label>
+                 <input type="password" ngModel name="conf_password" class="form-control" id="conf_password" #conf_passwordInput="ngModel" placeholder="Password" required>
+               </div>
+               <div class="help-is-error" *ngIf="conf_passwordInput.invalid && conf_passwordInput.touched">
+                 Have to confirm your password.
+               </div>
+               <div class="help-is-error" *ngIf="passwordNotMatch(signInForm.value.password, signInForm.value.conf_password)">
+                 Password does not match.
+               </div>
+               <div class="form-group">
+                 <label for="firstName">First Name</label>
+                 <input type="text" ngModel name="firstName" class="form-control" id="firstName" placeholder="FirstName" #firstNameInput="ngModel" required>
+               </div>
+               <div class="help-is-error" *ngIf="firstNameInput.invalid && firstNameInput.touched">
+                 First Name is required.
+               </div>
+               <div class="form-group">
+                 <label for="lastName">Last Name</label>
+                 <input type="lastName" ngModel name="lastName" class="form-control" id="lastName" placeholder="LastName" #lastNameInput="ngModel" required>
+               </div>
+               <div class="help-is-error" *ngIf="lastNameInput.invalid && lastNameInput.touched">
+                 Last Name is required.
+               </div>
+               <div class="form-group">
+                 <label for="email">Email Address</label>
+                 <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" #emailInput="ngModel" required email
+                 appAllreadExistsValidator [records]="emailRecords">
+               </div>
+               <div class="help-is-error" *ngIf="emailInput.invalid && emailInput.touched && !emailInput.errors?.['allreadyExists']">
+                 Email is required and needs to be an email.
+               </div>
+               <div class="help-is-error" *ngIf="emailInput.touched && emailInput.invalid && emailInput.errors?.['allreadyExists']">
+                 This email exists try an other one.
+               </div>
+               <div class="form-group">
+                 <label for="phoneNumber">Phone Number</label>
+                 <input type="text" ngModel name="phoneNumber" class="form-control" id="phone" placeholder="Phone" #phoneNumberInput="ngModel" required>
+               </div>
+               <div class="help-is-error" *ngIf="phoneNumberInput.invalid && phoneNumberInput.touched">
+                 Phone Number is required.
+               </div>
+               <div class="modal-footer">
+                  <button type="button" id="signIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button [disabled]="signInForm.invalid || passwordNotMatch(signInForm.value.password, signInForm.value.conf_password)"
+                  type="submit" class="btn btn-primary">Save changes</button>
                 </div>
              </form>
           </div>
