@@ -4,114 +4,137 @@
             <div class="col-md-10 col"> 
                 <h3 class="font-weight-bold ml-md-0 mx-auto text-sm-left"> Add Residence </h3> 
             </div> 
-        </div> 
-        <div class="row justify-content-center round"> 
-            <div class="col-lg-10 col-md-12 "> 
-                <div class="card shadow-lg card-1"> 
-                    <div class="card-body inner-card"> 
-                        <div class="row justify-content-center"> 
-                            <div class="col-lg-5 col-md-6 col-sm-12"> 
-                                <div class="form-group">
-                                    <label for="location">Location</label>
-                                    <input type="text" name="location" class="form-control" id="location" placeholder="Type location" required> 
+        </div>
+        <form #addForm="ngForm" (ngSubmit)="onAddResidence(addForm)">
+            <div class="row justify-content-center round"> 
+                <div class="col-lg-10 col-md-12 "> 
+                    <div class="card shadow-lg card-1"> 
+                        <div class="card-body inner-card"> 
+                            <div class="row justify-content-center"> 
+                                <div class="col-lg-5 col-md-6 col-sm-12"> 
+                                    <div class="form-group">
+                                        <label for="location">Location</label>
+                                        <input type="text" ngModel name="location" class="form-control" id="location" placeholder="Type location" #locationInput="ngModel" required> 
+                                    </div> 
+                                    <div class="help-is-error" *ngIf="locationInput.invalid && locationInput.touched">
+                                        Location is required.
+                                    </div>
+                                    <div class="form-group"> 
+                                        <label for="Area">Area</label> 
+                                        <input type="number" ngModel name="area" class="form-control" id="area" placeholder="Type area number" #areaInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="areaInput.invalid && areaInput.touched">
+                                        Area is required.
+                                    </div>
+                                    <div class="form-group"> 
+                                        <label for="pricing">Price</label> 
+                                        <input type="text" ngModel name="pricing" class="form-control" id="pricing" placeholder="Type price" #priceInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="priceInput.invalid && priceInput.touched">
+                                        Price is required.
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="wifi" type="checkbox" value="wifi" id="wifi">
+                                        <label class="form-check-label" for="wifi">
+                                            Wifi
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="heating" type="checkbox" value="heating" id="heating">
+                                        <label class="form-check-label" for="heating">
+                                            Heating
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="air_condition" type="checkbox" value="air_condition" id="air_condition">
+                                        <label class="form-check-label" for="air_condition">
+                                            Air Condition
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="cuisine" type="checkbox" value="cuisine" id="cuisine">
+                                        <label class="form-check-label" for="cuisine">
+                                            Cuisine
+                                        </label>
+                                    </div>
                                 </div> 
-                                <div class="form-group"> 
-                                    <label for="Area">Area</label> 
-                                    <input type="text" class="form-control" id="area" placeholder="Type area number"> 
-                                </div>
-                                <div class="form-group"> 
-                                    <label for="pricing">Price</label> 
-                                    <input type="text" class="form-control" id="pricing" placeholder="Type price"> 
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" name="wifi" type="checkbox" value="wifi" id="wifi">
-                                    <label class="form-check-label" for="wifi">
-                                        Wifi
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" name="heating" type="checkbox" value="heating" id="heating">
-                                    <label class="form-check-label" for="heating">
-                                        Heating
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" name="air_condition" type="checkbox" value="air_condition" id="air_condition">
-                                    <label class="form-check-label" for="air_condition">
-                                        Air Condition
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" name="cuisine" type="checkbox" value="cuisine" id="cuisine">
-                                    <label class="form-check-label" for="cuisine">
-                                        Cuisine
-                                    </label>
-                                </div>
+                                <div class="col-lg-5 col-md-6 col-sm-12"> 
+                                    <div class="form-group"> 
+                                        <label for="roomType">Room Type</label> 
+                                        <select ngModel name="roomType" class="form-control" #roomTypeInput="ngModel" required> 
+                                            <option>Private room</option> 
+                                            <option>Shared room</option> 
+                                            <option>Whole building</option> 
+                                        </select> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="roomTypeInput.invalid && roomTypeInput.touched">
+                                        Room Type is required.
+                                    </div> 
+                                    <div class="form-group"> 
+                                        <label for="floor">Floor</label> 
+                                        <input ngModel name="floor" type="number" class="form-control" id="floor" placeholder="Type floor number" #floorInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="floorInput.invalid && floorInput.touched">
+                                        Floor is required.
+                                    </div> 
+                                    <div class="form-group">
+                                        <label for="peopleCapacity">People Capacity</label> 
+                                        <input ngModel name="peopleCapacity" type="number" class="form-control" id="peopleCapacity" placeholder="Type people capacity" #capacityInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="capacityInput.invalid && capacityInput.touched">
+                                        People capacity is required.
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="tv" type="checkbox" value="tv" id="tv">
+                                        <label class="form-check-label" for="tv">
+                                            Tv
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="parking" type="checkbox" value="parking" id="parking">
+                                        <label class="form-check-label" for="parking">
+                                            Parking
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="elevator" type="checkbox" value="elevator" id="elevator">
+                                        <label class="form-check-label" for="elevator">
+                                            Elevator
+                                        </label>
+                                    </div>
+                                </div> 
                             </div> 
-                            <div class="col-lg-5 col-md-6 col-sm-12"> 
-                                <div class="form-group"> 
-                                    <label for="roomType">Room Type</label> 
-                                    <select class="form-control"> 
-                                        <option>Private room</option> 
-                                        <option>Shared room</option> 
-                                        <option>Whole building</option> 
-                                    </select> 
-                                </div> 
-                                <div class="form-group"> 
-                                    <label for="floor">Floor</label> 
-                                    <input type="text" class="form-control" id="floor" placeholder="Type floor number"> 
-                                </div> 
-                                <div class="form-group">
-                                    <label for="peopleCapacity">People Capacity</label> 
-                                    <input type="text" class="form-control" id="peopleCapacity" placeholder="Type people capacity"> 
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" name="tv" type="checkbox" value="tv" id="tv">
-                                    <label class="form-check-label" for="tv">
-                                        Tv
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" name="parking" type="checkbox" value="parking" id="parking">
-                                    <label class="form-check-label" for="parking">
-                                        Parking
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" name="elevator" type="checkbox" value="elevator" id="elevator">
-                                    <label class="form-check-label" for="elevator">
-                                        Elevator
-                                    </label>
-                                </div>
-                            </div> 
-                        </div> 
-                        <div class="row justify-content-center"> 
-                            <div class="col-md-12 col-lg-10 col-12"> 
-                                <div class="form-group files">
-                                    <label class="my-auto">Upload Photo</label> 
-                                    <input id="file" type="file" class="form-control" />
-                                </div> 
-                            </div> 
-                        </div> 
-                        <div class="row justify-content-center"> 
-                            <div class="col-md-12 col-lg-10 col-12"> 
-                                <div class="form-group"> 
-                                    <label for="exampleFormControlTextarea2">Comments</label> 
-                                    <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="5"></textarea>
-                                </div> 
-                                <div class="mb-2 mt-4"> 
-                                    <div class="text-right">
-                                        <button type="button" class="btn btn-primary btn-block">
-                                            <small class="font-weight-bold">Add Residence</small>
-                                        </button> 
+                            <div class="row justify-content-center"> 
+                                <div class="col-md-12 col-lg-10 col-12"> 
+                                    <div class="form-group files">
+                                        <label class="my-auto">Upload Photo</label> 
+                                        <input ngModel name="photo" id="file" type="file" class="form-control" #photoInput="ngModel" required/>
                                     </div> 
                                 </div> 
                             </div>
+                            <div class="help-is-error" *ngIf="photoInput.invalid && photoInput.touched">
+                                Photo is required.
+                            </div>
+                            <div class="row justify-content-center"> 
+                                <div class="col-md-12 col-lg-10 col-12"> 
+                                    <div class="form-group"> 
+                                        <label for="exampleFormControlTextarea2">Comments</label> 
+                                        <textarea ngModel name="comment" class="form-control rounded-0" id="exampleFormControlTextarea2" rows="5"></textarea>
+                                    </div> 
+                                    <div class="mb-2 mt-4"> 
+                                        <div class="text-right">
+                                            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary btn-block">
+                                                <small class="font-weight-bold">Add Residence</small>
+                                            </button> 
+                                        </div> 
+                                    </div> 
+                                </div>
+                            </div> 
                         </div> 
                     </div> 
                 </div> 
-            </div> 
-        </div> 
+            </div>
+        </form>  
     </div>
 </div>
 
