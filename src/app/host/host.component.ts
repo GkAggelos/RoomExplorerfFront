@@ -3,6 +3,8 @@ import { Residence } from '../model/residence';
 import { ResidenceService } from '../service/residence.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { PhotoService } from '../service/photo.service';
+import { Photo } from '../model/photo';
 
 @Component({
   selector: 'app-host',
@@ -12,8 +14,14 @@ import { NgForm } from '@angular/forms';
 export class HostComponent implements OnInit{
 
   public residences: Residence[];
+  public urls: String[];
+  public names: String[];
 
-  constructor(private residenceService: ResidenceService){this.residences = [];}
+  constructor(private residenceService: ResidenceService, private photoService: PhotoService) {
+    this.residences = [];
+    this.urls = [];
+    this.names = [];
+  }
 
   ngOnInit(): void {
     this.getResidences();
@@ -31,10 +39,68 @@ export class HostComponent implements OnInit{
     );
   }
 
+  public onSelect(e: any) {
+    if (e.target.files) {
+      for (let i=0; i<File.length; i++) {
+        var reader = new FileReader();
+        this.names.push(e.target.files[i].name);
+        reader.readAsDataURL(e.target.files[i]);
+        reader.onload=(events:any)=>{
+          this.urls.push(events.target.result);
+        }
+        
+      }
+    }
+  }
+
   public onAddResidence(addForm: NgForm): void {
-    this.residenceService.addResidence(addForm.value).subscribe(
+    var residence: Residence = {id:0, pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+      host:{ id:1, username:'aggelos_28', firstName:'Aggelos', lastName:'Gounelas', password:'a', email:'aggelosgounelas27@gmail.com', phoneNumber: '6987492651', approved:true}, 
+      description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]};
+
+    residence.location = addForm.value.location;
+    residence.area = addForm.value.area;
+    residence.pricing = addForm.value.pricing;
+    residence.floor = addForm.value.floor;
+    residence.peopleCapacity = addForm.value.peopleCapacity;
+    residence.bedNumber = addForm.value.bedNumber;
+    residence.bedroomNumber = addForm.value.bedroomNumber
+    residence.bathroomNumber = addForm.value.bathroomNumber
+    residence.acreage = addForm.value.acreage
+    residence.comment = addForm.value.comment;
+    residence.description = addForm.value.description
+    residence.roomType = addForm.value.roomType;
+    if (addForm.value.living_room) residence.has_living_room = true;
+    if (addForm.value.wifi) residence.has_wifi = true;
+    if (addForm.value.heating) residence.has_heating = true;
+    if (addForm.value.air_condition) residence.has_air_condition = true;
+    if (addForm.value.cuisine) residence.has_cuisine = true;
+    if (addForm.value.tv) residence.has_tv = true;
+    if (addForm.value.parking) residence.has_parking = true;
+    if (addForm.value.elevator) residence.has_elevator = true;
+
+    this.residenceService.addResidence(residence).subscribe(
       (response: Residence) => {
         console.log(response);
+        for (let index = 0; index < this.urls.length; index++) {
+          this.photoService.addPhoto({id:0 , url: this.urls[index].toString() , residence: response}).subscribe(
+            (response: Photo) => {
+              console.log(response);
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
+        }
+        this.residenceService.getResidences().subscribe(
+          (response: Residence[])=> {
+            this.residences = response;
+            console.log(this.residences);
+          },
+          (error: HttpErrorResponse) => {
+              alert(error.message);
+          }
+        );
       },
       (error: HttpErrorResponse) => {
         alert(error.message);

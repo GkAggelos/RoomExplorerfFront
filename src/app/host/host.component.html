@@ -10,7 +10,9 @@
                 <div class="col-lg-10 col-md-12 "> 
                     <div class="card shadow-lg card-1"> 
                         <div class="card-body inner-card"> 
-                            <div class="row justify-content-center"> 
+                            <div class="row justify-content-center">
+                                <h5> Find your location </h5>
+                                <div id="map"></div>
                                 <div class="col-lg-5 col-md-6 col-sm-12"> 
                                     <div class="form-group">
                                         <label for="location">Location</label>
@@ -32,6 +34,20 @@
                                     </div>
                                     <div class="help-is-error" *ngIf="priceInput.invalid && priceInput.touched">
                                         Price is required.
+                                    </div>
+                                    <div class="form-group"> 
+                                        <label for="BedNumber">Bed Number</label> 
+                                        <input type="number" ngModel name="bedNumber" class="form-control" id="bedNumber" placeholder="Type number of beds" #areaInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="areaInput.invalid && areaInput.touched">
+                                        Bed Number is required.
+                                    </div>
+                                    <div class="form-group"> 
+                                        <label for=" BedroomNumber">Bedroom Number</label> 
+                                        <input type="number" ngModel name="bedroomNumber" class="form-control" id="bedroomNumber" placeholder="Type number of bedrooms" #areaInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="areaInput.invalid && areaInput.touched">
+                                        Bedroom Number is required.
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" ngModel name="wifi" type="checkbox" value="wifi" id="wifi">
@@ -62,9 +78,9 @@
                                     <div class="form-group"> 
                                         <label for="roomType">Room Type</label> 
                                         <select ngModel name="roomType" class="form-control" #roomTypeInput="ngModel" required> 
-                                            <option>Private room</option> 
-                                            <option>Shared room</option> 
-                                            <option>Whole building</option> 
+                                            <option value="0">Private room</option> 
+                                            <option value="1">Shared room</option> 
+                                            <option value="2">Whole building</option> 
                                         </select> 
                                     </div>
                                     <div class="help-is-error" *ngIf="roomTypeInput.invalid && roomTypeInput.touched">
@@ -84,6 +100,20 @@
                                     <div class="help-is-error" *ngIf="capacityInput.invalid && capacityInput.touched">
                                         People capacity is required.
                                     </div>
+                                    <div class="form-group">
+                                        <label for="bathroomNumber">Bathroom Number</label> 
+                                        <input ngModel name="bathroomNumber" type="number" class="form-control" id="bathroomNumber" placeholder="Type bathroom number" #capacityInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="capacityInput.invalid && capacityInput.touched">
+                                        Bathroom number is required.
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="acreage">Acreage</label> 
+                                        <input ngModel name="acreage" type="number" class="form-control" id="acreage" placeholder="Type acreage" #capacityInput="ngModel" required> 
+                                    </div>
+                                    <div class="help-is-error" *ngIf="capacityInput.invalid && capacityInput.touched">
+                                        Acreage is required.
+                                    </div>
                                     <div class="form-check">
                                         <input class="form-check-input" ngModel name="tv" type="checkbox" value="tv" id="tv">
                                         <label class="form-check-label" for="tv">
@@ -102,25 +132,33 @@
                                             Elevator
                                         </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" ngModel name="living_room" type="checkbox" value="living_room" id="living_room">
+                                        <label class="form-check-label" for="living_room">
+                                            Living room
+                                        </label>
+                                    </div>
                                 </div> 
                             </div> 
                             <div class="row justify-content-center"> 
                                 <div class="col-md-12 col-lg-10 col-12"> 
                                     <div class="form-group files">
                                         <label class="my-auto">Upload Photo</label> 
-                                        <input ngModel name="photo" id="file" type="file" class="form-control" #photoInput="ngModel" required/>
+                                        <input ngModel name="photos" id="file" type="file" class="form-control" #photoInput="ngModel" (change)="onSelect($event)" multiple />
+                                        <p *ngFor="let name of names"> {{name}}<br> </p>
                                     </div> 
                                 </div> 
-                            </div>
-                            <div class="help-is-error" *ngIf="photoInput.invalid && photoInput.touched">
-                                Photo is required.
                             </div>
                             <div class="row justify-content-center"> 
                                 <div class="col-md-12 col-lg-10 col-12"> 
                                     <div class="form-group"> 
-                                        <label for="exampleFormControlTextarea2">Comments</label> 
-                                        <textarea ngModel name="comment" class="form-control rounded-0" id="exampleFormControlTextarea2" rows="5"></textarea>
+                                        <label for="exampleFormControlTextarea1">Description</label> 
+                                        <textarea ngModel name="description"  id="exampleFormControlTextarea1" rows="5"></textarea>
                                     </div> 
+                                    <div class="form-group"> 
+                                        <label for="exampleFormControlTextarea2">Comments</label> 
+                                        <textarea ngModel name="comment"  id="exampleFormControlTextarea2" rows="5"></textarea>
+                                    </div>
                                     <div class="mb-2 mt-4"> 
                                         <div class="text-right">
                                             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary btn-block">
@@ -138,6 +176,14 @@
     </div>
 </div>
 
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+    }).addTo(map);
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3 mb-lg-5">
@@ -153,6 +199,7 @@
                                 <th>Floor</th>
                                 <th>Room Type</th>
                                 <th>Pricing</th>
+                                <th>View</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let residence of residences" >
@@ -184,6 +231,9 @@
                                             <div class="h6 mb-0 lh-1">{{residence?.pricing}}</div>
                                         </div>
                                     </div>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" href="residence/?id={{residence?.id}}&host=true&renter=false">View Residence</a>
                                 </td>
                             </tr>
                         </tbody>

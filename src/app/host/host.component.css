@@ -39,7 +39,6 @@ select:after{
     resize: none
 }
 textarea{
-    padding: 50px 45px 50px 45px;
     border: 1px solid lightgrey;
     border-radius: 0px !important;
     margin-bottom: 5px;
@@ -114,3 +113,4 @@ button:focus{
     background: url('https://i.imgur.com/VXWKoBD.png') top center no-repeat #fff;
     background-size: 55px 55px
 }
+#map { height: 180px; }

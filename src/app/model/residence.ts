@@ -1,4 +1,5 @@
 import { Host } from "./host";
+import { Photo } from "./photo";
 import { Reservation } from "./reservation";
 
 export interface Residence {
@@ -8,10 +9,16 @@ export interface Residence {
     area: number;
     floor: number;
     peopleCapacity: number;
+    bedNumber: number;
+    bathroomNumber: number;
+    bedroomNumber: number;
+    acreage: number;
     roomType: number;
     comment: string;
-    photo: string;
+    description: string;
+    photos: Photo[];
     host: Host;
+    has_living_room: boolean;
     has_wifi: boolean;
     has_heating: boolean;
     has_air_condition: boolean;

@@ -5,6 +5,7 @@ import { AdminComponent } from './admin/admin.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HostComponent } from './host/host.component';
+import { ResidenceComponent } from './residence/residence.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,11 @@ const routes: Routes = [
     path: 'host',
     component: HostComponent
   },
+
+  {
+    path: 'residence',
+    component: ResidenceComponent
+  }
 ];
 
 @NgModule({

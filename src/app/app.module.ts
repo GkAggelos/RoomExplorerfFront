@@ -14,6 +14,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AllreadExistsValidatorDirective } from './validation/allread-exists-validator.directive';
 import { HostComponent } from './host/host.component';
+import { ResidenceComponent } from './residence/residence.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import { HostComponent } from './host/host.component';
     ProfileComponent,
     AllreadExistsValidatorDirective,
     HostComponent,
+    ResidenceComponent,
   ],
   imports: [
     BrowserModule,

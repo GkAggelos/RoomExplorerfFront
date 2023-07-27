@@ -83,10 +83,10 @@
              </button>
           </div>
           <div class="modal-body">
-            <form #signInForm="ngForm"  >
+            <form #editForm="ngForm"  >
                <div class="form-group">
                  <label for="username">Username</label>
-                 <input type="text" ngModel name="username" class="form-control" id="sign_in_username" placeholder="Username" #userNameInput="ngModel" required 
+                 <input type="text" ngModel name="username" class="form-control" id="username" placeholder="Username" #userNameInput="ngModel" required 
                  appAllreadExistsValidator [records]="usernameRecords">
                </div>
                <div class="help-is-error" *ngIf="userNameInput.invalid && userNameInput.touched && !userNameInput.errors?.['allreadyExists']">
@@ -97,7 +97,7 @@
                </div>
                <div class="form-group">
                  <label for="password">Password</label>
-                 <input type="password" ngModel name="password" class="form-control" id="sign_in_password" placeholder="Password" #passwordInput="ngModel" required>
+                 <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Password" #passwordInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="passwordInput.invalid && passwordInput.touched">
                  Password is required.
@@ -109,7 +109,7 @@
                <div class="help-is-error" *ngIf="conf_passwordInput.invalid && conf_passwordInput.touched">
                  Have to confirm your password.
                </div>
-               <div class="help-is-error" *ngIf="passwordNotMatch(signInForm.value.password, signInForm.value.conf_password)">
+               <div class="help-is-error" *ngIf="passwordNotMatch(editForm.value.password, editForm.value.conf_password)">
                  Password does not match.
                </div>
                <div class="form-group">
@@ -146,7 +146,7 @@
                </div>
                <div class="modal-footer">
                   <button type="button" id="signIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button [disabled]="signInForm.invalid || passwordNotMatch(signInForm.value.password, signInForm.value.conf_password)"
+                  <button [disabled]="editForm.invalid || passwordNotMatch(editForm.value.password, editForm.value.conf_password)"
                   type="submit" class="btn btn-primary">Save changes</button>
                 </div>
              </form>
