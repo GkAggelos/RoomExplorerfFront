@@ -1,18 +1,20 @@
 <!-- Header -->
 <nav class="navbar navbar-expand-lg p-3 mb-2 fs-5 bg-danger">
     <div class="container-fluid" id="main-container">
-      <a class="navbar-brand fs-2 text-white" href="">Room Explorer</a>
+      <a class="navbar-brand fs-2 text-white" *ngIf="role === 'host'" href="/host?id={{userId}}">Room Explorer</a>
+      <a class="navbar-brand fs-2 text-white" *ngIf="role === 'admin'" href="/admin?id={{userId}}">Room Explorer</a>
+      <a class="navbar-brand fs-2 text-white" *ngIf="role === 'renter' || role === ''" href="">Room Explorer</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 fs-5 mb-lg-0">
-          <li class="nav-item" *ngIf="role === 'host'">
+         <ul class="navbar-nav me-auto mb-2 fs-5 mb-lg-0">
+        <!--  <li class="nav-item" *ngIf="role === 'host'">
             <a class="nav-link text-white" aria-current="page" href="/host?id={{userId}}">Host</a>
           </li>
           <li class="nav-item" *ngIf="role === 'admin'">
             <a class="nav-link text-white" href="/admin?id={{userId}}">Admin</a>
-          </li>
+          </li>-->
         </ul>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <ul class="navbar-nav mr-auto mb-2 fs-5 mb-lg-0">

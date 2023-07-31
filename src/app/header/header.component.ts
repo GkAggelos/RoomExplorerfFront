@@ -100,7 +100,9 @@ export class HeaderComponent implements OnInit{
         console.log(response);
         localStorage.removeItem("token");
         this.route.navigateByUrl('/');
-        window.location.reload();
+        this.role = "";
+        this.username = "";
+        this.userId = 0;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -122,6 +124,12 @@ export class HeaderComponent implements OnInit{
         this.role = decodedJwtData.role;
         this.username = decodedJwtData.sub;
         this.userId = decodedJwtData.jti;
+        if (this.role === 'host') {
+          this.route.navigateByUrl(`/host/${this.userId}`);
+        }
+        if (this.role === 'admin') {
+          this.route.navigateByUrl(`/admin/${this.userId}`);
+        }
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
