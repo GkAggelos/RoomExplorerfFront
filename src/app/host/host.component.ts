@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Residence } from '../model/residence';
+import { Host } from '../model/host';
 import { ResidenceService } from '../service/residence.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { PhotoService } from '../service/photo.service';
 import { Photo } from '../model/photo';
+import { ActivatedRoute } from '@angular/router';
+import { HostService } from '../service/host.service';
 
 @Component({
   selector: 'app-host',
@@ -16,19 +19,39 @@ export class HostComponent implements OnInit{
   public residences: Residence[];
   public urls: String[];
   public names: String[];
+  public id: number = 0;
+  public host: Host = {id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo:'', approved:false};
 
-  constructor(private residenceService: ResidenceService, private photoService: PhotoService) {
+  constructor(private residenceService: ResidenceService, private photoService: PhotoService, private route: ActivatedRoute, private hostServise: HostService) {
     this.residences = [];
     this.urls = [];
     this.names = [];
   }
 
   ngOnInit(): void {
-    this.getResidences();
+    var temp: string;
+    this.route.queryParams.subscribe((queryParam) =>{
+      temp = queryParam?.['id'];
+      this.id = parseInt(temp);
+      this.getHost();
+      this.getResidences();
+    });
+  }
+
+  public getHost(): void {
+    this.hostServise.getHostById(this.id).subscribe(
+      (response: Host) => {
+        this.host = response;
+        console.log(response);
+      },
+      (error: HttpErrorResponse) => {
+          alert(error.message);
+      }
+    );
   }
 
   public getResidences(): void {
-    this.residenceService.getResidences().subscribe(
+    this.residenceService.getHostResidences(this.id).subscribe(
       (response: Residence[])=> {
         this.residences = response;
         console.log(this.residences);
@@ -55,8 +78,8 @@ export class HostComponent implements OnInit{
 
   public onAddResidence(addForm: NgForm): void {
     var residence: Residence = {id:0, pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
-      host:{ id:1, username:'aggelos_28', firstName:'Aggelos', lastName:'Gounelas', password:'a', email:'aggelosgounelas27@gmail.com', phoneNumber: '6987492651', approved:true}, 
-      description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]};
+      host:this.host, description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false,
+      has_parking:false, has_elevator:false, reservations:[]};
 
     residence.location = addForm.value.location;
     residence.area = addForm.value.area;
@@ -92,7 +115,7 @@ export class HostComponent implements OnInit{
             }
           );
         }
-        this.residenceService.getResidences().subscribe(
+        this.residenceService.getHostResidences(this.id).subscribe(
           (response: Residence[])=> {
             this.residences = response;
             console.log(this.residences);

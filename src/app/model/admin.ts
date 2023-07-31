@@ -6,4 +6,5 @@ export interface Admin {
     lastName: string;
     email: string;
     phoneNumber: string;
+    photo: string;
 }

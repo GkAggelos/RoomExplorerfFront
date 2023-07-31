@@ -5,5 +5,6 @@ export interface Renter {
     firstName: string;
     lastName: string;
     email: string;
+    photo: string;
     phoneNumber: string;
 }

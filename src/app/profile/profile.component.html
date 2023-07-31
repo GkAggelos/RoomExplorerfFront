@@ -48,24 +48,36 @@
 <div class="container" id="main-container" *ngIf="!isForAdmin">
     <div class="card  align-self-center">
         <div class="card-body row">
-           <div class="col-6">
-              <a href=""><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+           <div class="col-6" *ngIf="ishost">
+              <a href="" *ngIf="host.photo === null || host.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a role="button" (click)="onOpenModal('delete',host.photo)" *ngIf="host.photo !== null && host.photo !== ''"><img src="{{host.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
+            </div>
+            <div class="col-6" *ngIf="isrenter">
+              <a href="" *ngIf="renter.photo === null || renter.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a role="button" (click)="onOpenModal('delete', renter.photo)" *ngIf="renter.photo !== null && renter.photo !== ''"><img src="{{renter.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
             </div>
            <div class="col-6 card-title align-self-center mb-0">
-              <h5>Username</h5>
+              <h4 *ngIf="ishost">{{host.username}}</h4>
+              <h4 *ngIf="isrenter">{{renter.username}}</h4>
             </div>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">First Name</li>
-            <li class="list-group-item">Last Name</li>
-            <li class="list-group-item">Password</li>
-           <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email</li>
-            <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone :</li>
-            <li class="list-group-item" *ngIf="ishost">Approved</li>
+            <li class="list-group-item" *ngIf="ishost">First Name : <b> {{host.firstName}} </b></li>
+            <li class="list-group-item" *ngIf="isrenter">First Name : <b> {{renter.firstName}} </b></li>
+            <li class="list-group-item" *ngIf="ishost">Last Name : <b> {{host.lastName}} </b></li>
+            <li class="list-group-item" *ngIf="isrenter">Last Name : <b> {{renter.lastName}} </b></li>
+            <li class="list-group-item" *ngIf="ishost">Password : <b> {{host.password}} </b></li>
+            <li class="list-group-item" *ngIf="isrenter">Password : <b> {{renter.password}} </b></li>
+            <li class="list-group-item" *ngIf="ishost"><i class="fa fa-envelope float-right"></i>Email : <b> {{host.email}} </b></li>
+            <li class="list-group-item" *ngIf="isrenter"><i class="fa fa-envelope float-right"></i>Email : <b> {{renter.email}} </b></li>
+            <li class="list-group-item" *ngIf="ishost"><i class="fa fa-phone float-right"></i>Phone : <b> {{host.phoneNumber}} </b></li>
+            <li class="list-group-item" *ngIf="isrenter"><i class="fa fa-phone float-right"></i>Phone : <b> {{renter.phoneNumber}} </b></li>
+            <li class="list-group-item" *ngIf="ishost && host.approved === false">Approved : <b class="red">{{host.approved}}</b></li>
+            <li class="list-group-item" *ngIf="ishost && host.approved">Approved : <b class="green">{{host.approved}}</b></li>
         </ul>
         <div class="card-body">
            <div class="float-right btn-group btn-group-sm">
-              <a (click)="onOpenModal()"  class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+              <a (click)="onOpenModal('edit', '')"  class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
               <a  class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
             </div>
         </div>
@@ -77,16 +89,16 @@
     <div class="modal-dialog" role="document">
        <div class="modal-content">
           <div class="modal-header">
-             <h5 class="modal-title" id="updateUserModalLabel">Edit Employee </h5>
+             <h5 class="modal-title" id="userEditModalLabel">Edit Employee </h5>
              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
              <span aria-hidden="true">&times;</span>
              </button>
           </div>
           <div class="modal-body">
-            <form #editForm="ngForm"  >
+            <form #editForm="ngForm" (ngSubmit)="onEdit(editForm)" >
                <div class="form-group">
                  <label for="username">Username</label>
-                 <input type="text" ngModel name="username" class="form-control" id="username" placeholder="Username" #userNameInput="ngModel" required 
+                 <input type="text" ngModel name="username" class="form-control" id="edit_username" placeholder="Username" #userNameInput="ngModel" required 
                  appAllreadExistsValidator [records]="usernameRecords">
                </div>
                <div class="help-is-error" *ngIf="userNameInput.invalid && userNameInput.touched && !userNameInput.errors?.['allreadyExists']">
@@ -97,14 +109,14 @@
                </div>
                <div class="form-group">
                  <label for="password">Password</label>
-                 <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Password" #passwordInput="ngModel" required>
+                 <input type="password" ngModel name="password" class="form-control" id="edit_password" placeholder="Password" #passwordInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="passwordInput.invalid && passwordInput.touched">
                  Password is required.
                </div>
                <div class="form-group">
                  <label for="password">Confirm Password</label>
-                 <input type="password" ngModel name="conf_password" class="form-control" id="conf_password" #conf_passwordInput="ngModel" placeholder="Password" required>
+                 <input type="password" ngModel name="conf_password" class="form-control" id="edit_conf_password" #conf_passwordInput="ngModel" placeholder="Password" required>
                </div>
                <div class="help-is-error" *ngIf="conf_passwordInput.invalid && conf_passwordInput.touched">
                  Have to confirm your password.
@@ -114,21 +126,21 @@
                </div>
                <div class="form-group">
                  <label for="firstName">First Name</label>
-                 <input type="text" ngModel name="firstName" class="form-control" id="firstName" placeholder="FirstName" #firstNameInput="ngModel" required>
+                 <input type="text" ngModel name="firstName" class="form-control" id="edit_firstName" placeholder="FirstName" #firstNameInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="firstNameInput.invalid && firstNameInput.touched">
                  First Name is required.
                </div>
                <div class="form-group">
                  <label for="lastName">Last Name</label>
-                 <input type="lastName" ngModel name="lastName" class="form-control" id="lastName" placeholder="LastName" #lastNameInput="ngModel" required>
+                 <input type="lastName" ngModel name="lastName" class="form-control" id="edit_lastName" placeholder="LastName" #lastNameInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="lastNameInput.invalid && lastNameInput.touched">
                  Last Name is required.
                </div>
                <div class="form-group">
                  <label for="email">Email Address</label>
-                 <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" #emailInput="ngModel" required email
+                 <input type="email" ngModel name="email" class="form-control" id="edit_email" placeholder="Email" #emailInput="ngModel" required email
                  appAllreadExistsValidator [records]="emailRecords">
                </div>
                <div class="help-is-error" *ngIf="emailInput.invalid && emailInput.touched && !emailInput.errors?.['allreadyExists']">
@@ -139,13 +151,19 @@
                </div>
                <div class="form-group">
                  <label for="phoneNumber">Phone Number</label>
-                 <input type="text" ngModel name="phoneNumber" class="form-control" id="phone" placeholder="Phone" #phoneNumberInput="ngModel" required>
+                 <input type="text" ngModel name="phoneNumber" class="form-control" id="edit_phone" placeholder="Phone" #phoneNumberInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="phoneNumberInput.invalid && phoneNumberInput.touched">
                  Phone Number is required.
                </div>
+               <div class="row justify-content-center"> 
+                <div class="form-group files">
+                    <label class="my-auto">Upload Photo</label> 
+                    <input ngModel name="photo" id="file" type="file" class="form-control" #photoInput="ngModel" (change)="onSelect($event)"/>
+                </div> 
+            </div>
                <div class="modal-footer">
-                  <button type="button" id="signIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id="edit-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button [disabled]="editForm.invalid || passwordNotMatch(editForm.value.password, editForm.value.conf_password)"
                   type="submit" class="btn btn-primary">Save changes</button>
                 </div>
@@ -154,3 +172,25 @@
        </div>
     </div>
   </div>
+
+  <!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="deleteModelLabel">Delete Photo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p>Are you sure you want to delete your photo profile?</p>
+              <img class="img-fluid img-thumbnail" src="{{deletePhoto}}" alt="">
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button (click)="onDelete()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

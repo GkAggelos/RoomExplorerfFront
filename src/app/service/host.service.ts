@@ -15,6 +15,14 @@ export class HostService {
     return this.http.get<Host[]>(`${this.hostUrl}/all`);
   }
 
+  public getUsernames(): Observable<String[]> {
+    return this.http.get<String[]>(`${this.hostUrl}/find/all/usernames`);
+  }
+
+  public getEmails(): Observable<String[]> {
+    return this.http.get<String[]>(`${this.hostUrl}/find/all/emails`);
+  }
+
   public getHostById(id: number): Observable<Host> {
     return this.http.get<Host>(`${this.hostUrl}/find/${id}`);
   }

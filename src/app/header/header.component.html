@@ -7,22 +7,35 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 fs-5 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link text-white" aria-current="page" href="/host">Host</a>
+          <li class="nav-item" *ngIf="role === 'host'">
+            <a class="nav-link text-white" aria-current="page" href="/host?id={{userId}}">Host</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="/admin">Admin</a>
+          <li class="nav-item" *ngIf="role === 'admin'">
+            <a class="nav-link text-white" href="/admin?id={{userId}}">Admin</a>
           </li>
         </ul>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <ul class="navbar-nav mr-auto mb-2 fs-5 mb-lg-0">
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="!role">
               <a class="nav-link text-white" role="button" (click)="onOpenModal('log_in')">Log in</a>
             </li>
           </ul>
           <ul class="navbar-nav mr-auto mb-2 fs-5 mb-lg-0">
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="!role">
               <a class="nav-link text-white" role="button" (click)="onOpenModal('sign_in')">Sign in</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav mr-auto mb-2 fs-5 mb-lg-0">
+            <li class="nav-item" *ngIf="role === 'host'">
+              <a class="nav-link text-white" aria-current="page" href="/profile?isForAdmin=false&host=true&renter=false&id={{userId}}">{{username}}</a>
+            </li>
+            <li class="nav-item" *ngIf="role === 'renter'">
+              <a class="nav-link text-white" aria-current="page" href="/profile?isForAdmin=false&host=false&renter=true&id={{userId}}">{{username}}</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav mr-auto mb-2 fs-5 mb-lg-0">
+            <li class="nav-item" *ngIf="role">
+              <a class="nav-link text-white" role="button" (click)="onOpenModal('log_out')">Log out</a>
             </li>
           </ul>
         </div>
@@ -98,7 +111,7 @@
             </div>
             <div class="form-group">
               <label for="phoneNumber">Phone Number</label>
-              <input type="text" ngModel name="phoneNumber" class="form-control" id="phone" placeholder="Phone" #phoneNumberInput="ngModel" required>
+              <input type="text" ngModel name="phoneNumber" class="form-control" id="phone" placeholder="Phone" #phoneNumberInput="ngModel"  required>
             </div>
             <div class="help-is-error" *ngIf="phoneNumberInput.invalid && phoneNumberInput.touched">
               Phone Number is required.
@@ -121,7 +134,7 @@
             <div class="modal-footer">
               <button type="button" id="signIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button [disabled]="signInForm.invalid || NoneChecked() || passwordNotMatch(signInForm.value.password, signInForm.value.conf_password)"
-              type="submit" class="btn btn-primary">Sign In</button>
+              type="submit" class="btn btn-primary">Sign in</button>
             </div>
           </form>
        </div>
@@ -140,21 +153,89 @@
           </button>
        </div>
        <div class="modal-body">
-          <form #logInForm="ngForm">
+          <form #logInForm="ngForm" (ngSubmit)="onLogInUser(logInForm)">
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" ngModel name="username" class="form-control" id="log_in_username" placeholder="Username" required>
+              <input type="text" ngModel name="username" class="form-control" id="log_in_username" placeholder="Username" #usernameInput="ngModel" required>
+            </div>
+            <div class="help-is-error" *ngIf="usernameInput.invalid && usernameInput.touched">
+              Username is required.
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" ngModel name="password" class="form-control" id="log_in_password" placeholder="Password" required>
+              <input type="password" ngModel name="password" class="form-control" id="log_in_password" placeholder="Password" #password2Input="ngModel" required>
+            </div>
+            <div class="help-is-error" *ngIf="password2Input.invalid && password2Input.touched">
+              Password is required.
+            </div>
+            <div class="form-group">
+              <label for="radio">Log in as :</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" ngModel name="log_in_role" value="admin" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Admin
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" ngModel name="log_in_role" value="host" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Host
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" ngModel name="log_in_role" value="renter" id="flexRadioDefault3" checked>
+                <label class="form-check-label" for="flexRadioDefault3">
+                  Renter
+                </label>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" id="logIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button [disabled]="logInForm.invalid" type="submit" class="btn btn-primary">Log In</button>
+              <button [disabled]="logInForm.invalid" type="submit" class="btn btn-primary">Log in</button>
             </div>
           </form>
        </div>
     </div>
+  </div>
+</div>
+
+<!-- Error for host Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="errorModelLabel">Not Approved</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p>Admin has to approve you to log in as Host.</p>
+              <div class="modal-footer">
+                  <button (click)="refresh()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Log Out Modal -->
+<div class="modal fade" id="logOutModal" tabindex="-1" role="dialog" aria-labelledby="logOutModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="logOutModelLabel">Log Out</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p>Are you sure you want to log out</p>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button (click)="onLogOut()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+              </div>
+          </div>
+      </div>
   </div>
 </div>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { JwtModule } from "@auth0/angular-jwt";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,12 +10,13 @@ import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { FormsModule } from '@angular/forms';
 import { HostService } from './service/host.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AllreadExistsValidatorDirective } from './validation/allread-exists-validator.directive';
 import { HostComponent } from './host/host.component';
 import { ResidenceComponent } from './residence/residence.component';
+import { AuthenticateInterceptor } from './interceptor/authenticate.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,9 +34,19 @@ import { ResidenceComponent } from './residence/residence.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter:  () => localStorage.getItem('access_token')
+      }
+    })
   ],
-  providers: [HostService],
+  providers: [HostService,
+  {
+    provide: HTTP_INTERCEPTORS, 
+    useClass: AuthenticateInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

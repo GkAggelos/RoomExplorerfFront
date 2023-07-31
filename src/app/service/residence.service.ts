@@ -12,8 +12,8 @@ export class ResidenceService {
 
   constructor(private http: HttpClient) { }
 
-  public getResidences(): Observable<Residence[]> {
-    return this.http.get<Residence[]>(`${this.residenceUrl}/all`);
+  public getHostResidences(id: number): Observable<Residence[]> {
+    return this.http.get<Residence[]>(`${this.residenceUrl}/find/host/${id}`);
   }
 
   public addResidence(residence: Residence): Observable<Residence> {
