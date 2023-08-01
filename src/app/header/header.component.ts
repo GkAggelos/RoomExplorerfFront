@@ -27,6 +27,9 @@ export class HeaderComponent implements OnInit{
   public userId: number = 0;
   public authenticate: Authenticate = {username:'', password:'', role:''};
   public register: Register = {username:'', password:'', firstName:'', lastName:'', email:'', phoneNumber:'', role:''};
+  public host_not_approved: boolean = false;
+  public incorrect_password: boolean = false;
+  public incorrect_username: boolean = false;
 
   constructor(private hostService: HostService, private renterService: RenterService, private userService: UserService, private jwtHelper: JwtHelperService, private route: Router) {
     this.isRenterChecked = true; 
@@ -111,13 +114,26 @@ export class HeaderComponent implements OnInit{
   }
 
   public onLogInUser(logInForm: NgForm): void {
-    document.getElementById('logIn-user-form')?.click();
     this.authenticate.username = logInForm.value.username;
     this.authenticate.password = logInForm.value.password;
     this.authenticate.role = logInForm.value.log_in_role;
     this.userService.authenticateUser(this.authenticate).subscribe(
       (response: Jwt) => {
         console.log(response.token);
+        if (response.message === 'User with this username not found') {
+          this.incorrect_username = true;
+          return;
+        }
+        if (response.message === 'User password incorrect') {
+          this.incorrect_password = true;
+          return;
+        }
+        if (response.message === 'Host not approved') {
+          document.getElementById('logIn-user-form')?.click();
+          this.onOpenModal('error');
+          return;
+        }
+        document.getElementById('logIn-user-form')?.click();
         this.token = response.token;
         localStorage.setItem("token", response.token);
         let decodedJwtData = this.jwtHelper.decodeToken(response.token);
@@ -125,10 +141,10 @@ export class HeaderComponent implements OnInit{
         this.username = decodedJwtData.sub;
         this.userId = decodedJwtData.jti;
         if (this.role === 'host') {
-          this.route.navigateByUrl(`/host/${this.userId}`);
+          this.route.navigateByUrl(`/host?id=${this.userId}`);
         }
         if (this.role === 'admin') {
-          this.route.navigateByUrl(`/admin/${this.userId}`);
+          this.route.navigateByUrl(`/admin?id=${this.userId}`);
         }
       },
       (error: HttpErrorResponse) => {

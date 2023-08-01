@@ -191,6 +191,12 @@
                 </label>
               </div>
             </div>
+            <div class="help-is-error" *ngIf="incorrect_username">
+              Incorrect username try again.
+            </div>
+            <div class="help-is-error" *ngIf="incorrect_password">
+              Incorrect password try again.
+            </div>
             <div class="modal-footer">
               <button type="button" id="logIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button [disabled]="logInForm.invalid" type="submit" class="btn btn-primary">Log in</button>

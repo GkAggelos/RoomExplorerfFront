@@ -31,4 +31,8 @@ export class UserService {
   public logOutUser(): Observable<any> {
     return this.http.delete<any>(`${this.userAuthUrl}/logout`);
   }
+
+  public deleteUser(role: string, username: string): Observable<any> {
+    return this.http.delete<any>(`${this.userUrl}/delete/${role}/${username}`);
+  }
 }

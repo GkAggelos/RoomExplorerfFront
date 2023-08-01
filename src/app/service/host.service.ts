@@ -34,4 +34,5 @@ export class HostService {
   public updateHost(host: Host): Observable<Host> {
     return this.http.put<Host>(`${this.hostUrl}/update`, host);
   }
+
 }

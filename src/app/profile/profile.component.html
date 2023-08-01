@@ -50,11 +50,11 @@
         <div class="card-body row">
            <div class="col-6" *ngIf="ishost">
               <a href="" *ngIf="host.photo === null || host.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
-              <a role="button" (click)="onOpenModal('delete',host.photo)" *ngIf="host.photo !== null && host.photo !== ''"><img src="{{host.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a role="button" (click)="onOpenModal('deletePhoto',host.photo)" *ngIf="host.photo !== null && host.photo !== ''"><img src="{{host.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
             </div>
             <div class="col-6" *ngIf="isrenter">
               <a href="" *ngIf="renter.photo === null || renter.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
-              <a role="button" (click)="onOpenModal('delete', renter.photo)" *ngIf="renter.photo !== null && renter.photo !== ''"><img src="{{renter.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a role="button" (click)="onOpenModal('deletePhoto', renter.photo)" *ngIf="renter.photo !== null && renter.photo !== ''"><img src="{{renter.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
             </div>
            <div class="col-6 card-title align-self-center mb-0">
               <h4 *ngIf="ishost">{{host.username}}</h4>
@@ -78,7 +78,7 @@
         <div class="card-body">
            <div class="float-right btn-group btn-group-sm">
               <a (click)="onOpenModal('edit', '')"  class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-              <a  class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+              <a (click)="onOpenModal('deleteAccount', '')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
             </div>
         </div>
     </div>
@@ -173,12 +173,12 @@
     </div>
   </div>
 
-  <!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <!-- Delete photo Modal -->
+<div class="modal fade" id="deletePhotoModal" tabindex="-1" role="dialog" aria-labelledby="deletePhotoModelLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="deleteModelLabel">Delete Photo</h5>
+              <h5 class="modal-title" id="deletePhotoModelLabel">Delete Photo</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
               </button>
@@ -188,7 +188,28 @@
               <img class="img-fluid img-thumbnail" src="{{deletePhoto}}" alt="">
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                  <button (click)="onDelete()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+                  <button (click)="onDeletePhoto()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+ <!-- Delete profile Modal -->
+ <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="deleteAccountModelLabel">Delete Account</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p>Are you sure you want to delete your account?</p>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button (click)="onDeleteAccount()" class="btn btn-danger" data-dismiss="modal">Yes</button>
               </div>
           </div>
       </div>

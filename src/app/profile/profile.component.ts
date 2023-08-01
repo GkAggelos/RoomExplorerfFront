@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Host } from '../model/host';
 import { HostService } from '../service/host.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
   public url: String = "";
   public deletePhoto: String = "";
 
-  constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, private userService: UserService) {
+  constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, private userService: UserService, private router: Router) {
     this.host = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', approved:false, password:'', photo:''};
     this.renter = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
     this.ishost = false;
@@ -157,6 +157,8 @@ export class ProfileComponent implements OnInit {
           this.hostService.getHostById(this.id).subscribe(
             (response: Host) => {
               this.host = response;
+              this.username = response.username;
+              this.email = response.email;
             },
             (error: HttpErrorResponse) => {
               alert(error.message);
@@ -191,7 +193,35 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  public onDelete(): void {
+  public onDeleteAccount(): void {
+    if (this.ishost) {
+      this.userService.deleteUser("host", this.host.username).subscribe(
+        (response: any) => {
+          console.log(response);
+          localStorage.removeItem("token");
+          this.router.navigateByUrl('/');
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+
+    if (this.isrenter) {
+      this.userService.deleteUser("renter", this.renter.username).subscribe(
+        (response: any) => {
+          console.log(response);
+          localStorage.removeItem("token");
+          this.router.navigateByUrl('/');
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+  }
+
+  public onDeletePhoto(): void {
     if (this.ishost) {
       this.host.photo = '';
       this.userService.updateUser(this.host, "host", this.host.username).subscribe(
@@ -235,7 +265,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  public  onOpenModal(mode: string, photo: string): void {
+  public onOpenModal(mode: string, photo: string): void {
     const container = document.getElementById('main-container');
       const button = document.createElement('button');
       button.type = 'button';
@@ -246,9 +276,13 @@ export class ProfileComponent implements OnInit {
         button.setAttribute('data-target', '#updateUserModal');
         this.loadData();
       }
-      if (mode === 'delete') {
+      if (mode === 'deletePhoto') {
         this.deletePhoto = photo;
-        button.setAttribute('data-target', '#deleteModal');
+        button.setAttribute('data-target', '#deletePhotoModal');
+      }
+      if (mode === 'deleteAccount') {
+        this.deletePhoto = photo;
+        button.setAttribute('data-target', '#deleteAccountModal');
       }
 
       container?.appendChild(button);
