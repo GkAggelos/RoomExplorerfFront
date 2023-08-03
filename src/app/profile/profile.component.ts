@@ -9,6 +9,8 @@ import { Renter } from '../model/renter';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { Jwt } from '../model/Jwt';
+import { AdminService } from '../service/admin.service';
+import { Admin } from '../model/admin';
 
 
 @Component({
@@ -20,8 +22,10 @@ export class ProfileComponent implements OnInit {
 
   public host: Host;
   public renter: Renter;
+  public admin: Admin;
   public ishost: boolean;
   public isrenter: boolean;
+  public isadmin: boolean;
   public isForAdmin: boolean;
   public emailRecords : String[];
   public usernameRecords : String[];
@@ -31,11 +35,14 @@ export class ProfileComponent implements OnInit {
   public url: String = "";
   public deletePhoto: String = "";
 
-  constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, private userService: UserService, private router: Router) {
+  constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, 
+    private userService: UserService, private router: Router, private adminService: AdminService) {
     this.host = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', approved:false, password:'', photo:''};
     this.renter = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
+    this.admin = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
     this.ishost = false;
     this.isrenter = false;
+    this.isadmin = false;
     this.isForAdmin = false;
     this.id = 0;
 
@@ -106,6 +113,9 @@ export class ProfileComponent implements OnInit {
       temp = queryParam?.['renter'];
       if (temp === "true") this.isrenter = true;
 
+      temp = queryParam?.['admin'];
+      if (temp === "true") this.isadmin = true;
+
       temp = queryParam?.['id'];
       this.id = parseInt(temp);
 
@@ -134,6 +144,19 @@ export class ProfileComponent implements OnInit {
           }
         );
       }
+
+      if (this.isadmin) {
+        this.adminService.getAdminById(this.id).subscribe(
+          (response: Admin) => {
+            this.admin = response;
+            this.username = response.username;
+            this.email = response.email;
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        );
+      }
     });
   }
 
@@ -150,6 +173,7 @@ export class ProfileComponent implements OnInit {
   public onEdit(editForm: NgForm): void {
     document.getElementById('edit-user-form')?.click();
     editForm.value.photo = this.url;
+
     if (this.ishost) {
       this.userService.updateUser(editForm.value, "host", this.host.username).subscribe(
         (response: Jwt) => {
@@ -191,6 +215,28 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
+
+    if (this.isadmin) {
+      this.userService.updateUser(editForm.value, "admin", this.admin.username).subscribe(
+        (response: Jwt) => {
+          localStorage.setItem("token", response.token);
+          this.adminService.getAdminById(this.id).subscribe(
+            (response: Admin) => {
+              this.admin = response;
+              this.username = response.username;
+              this.email = response.email
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+
   }
 
   public onDeleteAccount(): void {
@@ -263,6 +309,29 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
+
+    if (this.isadmin) {
+      this.admin.photo = '';
+      this.userService.updateUser(this.admin, "admin", this.admin.username).subscribe(
+        (response: Jwt) => {
+          localStorage.setItem("token", response.token);
+          this.adminService.getAdminById(this.id).subscribe(
+            (response: Admin) => {
+              this.admin = response;
+              this.username = response.username;
+              this.email = response.email
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+
   }
 
   public onOpenModal(mode: string, photo: string): void {

@@ -2,7 +2,8 @@
    <div class="card  align-self-center">
        <div class="card-body row">
           <div class="col-6">
-             <a><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+            <a *ngIf="host.photo === null || host.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+            <a *ngIf="host.photo !== null && host.photo !== ''"><img src="{{host.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
            </div>
           <div class="col-6 card-title align-self-center mb-0">
              <h4>{{host.username}}</h4>
@@ -27,7 +28,8 @@
    <div class="card  align-self-center">
        <div class="card-body row">
           <div class="col-6">
-             <a><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+            <a *ngIf="renter.photo === null || renter.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a role="button" *ngIf="renter.photo !== null && renter.photo !== ''"><img src="{{renter.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
            </div>
           <div class="col-6 card-title align-self-center mb-0">
              <h4>{{renter.username}}</h4>
@@ -49,36 +51,46 @@
     <div class="card  align-self-center">
         <div class="card-body row">
            <div class="col-6" *ngIf="ishost">
-              <a href="" *ngIf="host.photo === null || host.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a *ngIf="host.photo === null || host.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
               <a role="button" (click)="onOpenModal('deletePhoto',host.photo)" *ngIf="host.photo !== null && host.photo !== ''"><img src="{{host.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
             </div>
             <div class="col-6" *ngIf="isrenter">
-              <a href="" *ngIf="renter.photo === null || renter.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a *ngIf="renter.photo === null || renter.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
               <a role="button" (click)="onOpenModal('deletePhoto', renter.photo)" *ngIf="renter.photo !== null && renter.photo !== ''"><img src="{{renter.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
+            </div>
+            <div class="col-6" *ngIf="isadmin">
+              <a *ngIf="admin.photo === null || admin.photo === ''"><img src="https://via.placeholder.com/700x300" alt="" class="img-fluid rounded-circle w-50"></a>
+              <a role="button" (click)="onOpenModal('deletePhoto', admin.photo)" *ngIf="admin.photo !== null && admin.photo !== ''"><img src="{{admin.photo}}" alt="" class="img-fluid rounded-circle w-50"></a>
             </div>
            <div class="col-6 card-title align-self-center mb-0">
               <h4 *ngIf="ishost">{{host.username}}</h4>
               <h4 *ngIf="isrenter">{{renter.username}}</h4>
+              <h4 *ngIf="isadmin">{{admin.username}}</h4>
             </div>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngIf="ishost">First Name : <b> {{host.firstName}} </b></li>
             <li class="list-group-item" *ngIf="isrenter">First Name : <b> {{renter.firstName}} </b></li>
+            <li class="list-group-item" *ngIf="isadmin">First Name : <b> {{admin.firstName}} </b></li>
             <li class="list-group-item" *ngIf="ishost">Last Name : <b> {{host.lastName}} </b></li>
             <li class="list-group-item" *ngIf="isrenter">Last Name : <b> {{renter.lastName}} </b></li>
+            <li class="list-group-item" *ngIf="isadmin">Last Name : <b> {{admin.lastName}} </b></li>
             <li class="list-group-item" *ngIf="ishost">Password : <b> {{host.password}} </b></li>
             <li class="list-group-item" *ngIf="isrenter">Password : <b> {{renter.password}} </b></li>
+            <li class="list-group-item" *ngIf="isadmin">Password : <b> {{admin.password}} </b></li>
             <li class="list-group-item" *ngIf="ishost"><i class="fa fa-envelope float-right"></i>Email : <b> {{host.email}} </b></li>
             <li class="list-group-item" *ngIf="isrenter"><i class="fa fa-envelope float-right"></i>Email : <b> {{renter.email}} </b></li>
+            <li class="list-group-item" *ngIf="isadmin"><i class="fa fa-envelope float-right"></i>Email : <b> {{admin.email}} </b></li>
             <li class="list-group-item" *ngIf="ishost"><i class="fa fa-phone float-right"></i>Phone : <b> {{host.phoneNumber}} </b></li>
             <li class="list-group-item" *ngIf="isrenter"><i class="fa fa-phone float-right"></i>Phone : <b> {{renter.phoneNumber}} </b></li>
+            <li class="list-group-item" *ngIf="isadmin"><i class="fa fa-phone float-right"></i>Phone : <b> {{admin.phoneNumber}} </b></li>
             <li class="list-group-item" *ngIf="ishost && host.approved === false">Approved : <b class="red">{{host.approved}}</b></li>
             <li class="list-group-item" *ngIf="ishost && host.approved">Approved : <b class="green">{{host.approved}}</b></li>
         </ul>
         <div class="card-body">
            <div class="float-right btn-group btn-group-sm">
               <a (click)="onOpenModal('edit', '')"  class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-              <a (click)="onOpenModal('deleteAccount', '')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+              <a (click)="onOpenModal('deleteAccount', '')" *ngIf="!isadmin" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
             </div>
         </div>
     </div>
