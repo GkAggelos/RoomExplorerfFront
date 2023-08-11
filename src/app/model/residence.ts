@@ -4,6 +4,8 @@ import { Reservation } from "./reservation";
 
 export interface Residence {
     id: number;
+    available_from: string;
+    available_till: string;
     pricing: number;
     location: string;
     area: number;

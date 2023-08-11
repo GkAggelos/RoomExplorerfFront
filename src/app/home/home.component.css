@@ -2,7 +2,7 @@
     background-image: url('../../assets/images/hamburg.jpeg');
     background-position: center;
     background-size: cover;
-    padding: 26rem;
+    padding: 23rem;
     height: 80%;
 }
 .search-slt{
@@ -25,3 +25,13 @@
     height: calc(3rem + 2px) !important;
     border-radius:0;
 }
+input[type="date"]::before { 
+    content: attr(data-placeholder);
+    width: 100%;
+}
+
+/* hide our custom/fake placeholder text when in focus to show the default
+ * 'mm/dd/yyyy' value and when valid to show the users' date of birth value.
+ */
+input[type="date"]:focus::before,
+input[type="date"]:valid::before { display: none }

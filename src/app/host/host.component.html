@@ -13,7 +13,14 @@
                             <div class="row justify-content-center">
                                 <h5> Find your location </h5>
                                 <div id="map"></div>
-                                <div class="col-lg-5 col-md-6 col-sm-12"> 
+                                <div class="col-lg-5 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="start">Start Available Date</label>
+                                        <input type="date" ngModel name="startDate" class="form-control" id="start" #startInput="ngModel" required>
+                                    </div>
+                                    <div class="help-is-error" *ngIf="startInput.invalid && startInput.touched">
+                                        Start available date is required.
+                                    </div> 
                                     <div class="form-group">
                                         <label for="location">Location</label>
                                         <input type="text" ngModel name="location" class="form-control" id="location" placeholder="Type location" #locationInput="ngModel" required> 
@@ -74,7 +81,14 @@
                                         </label>
                                     </div>
                                 </div> 
-                                <div class="col-lg-5 col-md-6 col-sm-12"> 
+                                <div class="col-lg-5 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="end">End Available Date</label>
+                                        <input type="date" ngModel name="endDate" class="form-control" id="end" #endInput="ngModel" required>
+                                    </div>
+                                    <div class="help-is-error" *ngIf="endInput.invalid && endInput.touched">
+                                        End available date is required.
+                                    </div> 
                                     <div class="form-group"> 
                                         <label for="roomType">Room Type</label> 
                                         <select ngModel name="roomType" class="form-control" #roomTypeInput="ngModel" required> 
@@ -184,7 +198,7 @@
     }).addTo(map);
 </script>
 
-<div class="container">
+<div class="container" id="main-container">
     <div class="row">
         <div class="col-12 mb-3 mb-lg-5">
             <div class="overflow-hidden card table-nowrap table-card">
@@ -200,6 +214,7 @@
                                 <th>Room Type</th>
                                 <th>Pricing</th>
                                 <th>View</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let residence of residences" >
@@ -235,9 +250,35 @@
                                 <td>
                                     <a class="btn btn-primary" href="residence/?id={{residence?.id}}&host=true&renter=false">View Residence</a>
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" (click)="onOpenModal(residence)">
+                                        Delete Residence
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModelLabel">Delete Residence</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this residence <b>{{deleteResidence.location}} {{deleteResidence.area}}?</b></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button (click)="onDeleteResidence(deleteResidence.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
                 </div>
             </div>
         </div>

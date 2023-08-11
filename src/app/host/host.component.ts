@@ -17,10 +17,14 @@ import { HostService } from '../service/host.service';
 export class HostComponent implements OnInit{
 
   public residences: Residence[];
+  public deleteResidence: Residence = {id:0, available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+  host:{id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo:'', approved:false}, description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false,
+  has_parking:false, has_elevator:false, reservations:[]};
   public urls: String[];
   public names: String[];
   public id: number = 0;
   public host: Host = {id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo:'', approved:false};
+  public photos: Photo[] = [];
 
   constructor(private residenceService: ResidenceService, private photoService: PhotoService, private route: ActivatedRoute, private hostServise: HostService) {
     this.residences = [];
@@ -76,11 +80,65 @@ export class HostComponent implements OnInit{
     }
   }
 
+  public onDeleteResidence(id: number): void {
+    this.residenceService.getPhotosByResidenceId(id).subscribe(
+      (response: Photo[]) => {
+        this.photos = response;
+        for (let index = 0; index < this.photos.length; index++) {
+          this.photoService.deletePhoto(this.photos[index].id).subscribe(
+            (response: void) => {
+              console.log(response);
+              if (index == (this.photos.length - 1)) {
+                this.residenceService.deleteResidence(id).subscribe(
+                  (response: any) => {
+                    console.log(response);
+                    this.residenceService.getHostResidences(this.id).subscribe(
+                      (response: Residence[])=> {
+                        this.residences = response;
+                        console.log(this.residences);
+                      },
+                      (error: HttpErrorResponse) => {
+                          alert(error.message);
+                      }
+                    );
+                  },
+                  (error: HttpErrorResponse) => {
+                    alert(error.message);
+                  }
+                );
+              }
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
+        }
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public onOpenModal(residence: Residence): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    this.deleteResidence = residence;
+    button.setAttribute('data-target', '#deleteModal')
+    container?.appendChild(button);
+    button.click();
+  }
+
   public onAddResidence(addForm: NgForm): void {
-    var residence: Residence = {id:0, pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+    var residence: Residence = {id:0, available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
       host:this.host, description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false,
       has_parking:false, has_elevator:false, reservations:[]};
 
+    residence.available_from = addForm.value.startDate;
+    residence.available_till = addForm.value.endDate;
     residence.location = addForm.value.location;
     residence.area = addForm.value.area;
     residence.pricing = addForm.value.pricing;
@@ -131,3 +189,4 @@ export class HostComponent implements OnInit{
     );
   }
 }
+

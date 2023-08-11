@@ -32,4 +32,8 @@ export class ResidenceService {
     return this.http.put<Residence>(`${this.residenceUrl}/update`, residence);
   }
 
+  public deleteResidence(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.residenceUrl}/delete/${id}`);
+  }
+
 }

@@ -202,7 +202,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" id="logIn-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button [disabled]="logInForm.invalid" type="submit" class="btn btn-primary">Log in</button>
+              <button [disabled]="logInForm.invalid || emptyRadio(logInForm)" type="submit" class="btn btn-primary">Log in</button>
             </div>
           </form>
        </div>

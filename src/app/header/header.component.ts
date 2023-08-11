@@ -113,6 +113,11 @@ export class HeaderComponent implements OnInit{
     )
   }
 
+  public emptyRadio(logInForm: NgForm): boolean {
+    if (logInForm.value.log_in_role) return false;
+    return true;
+  }
+
   public onLogInUser(logInForm: NgForm): void {
     this.authenticate.username = logInForm.value.username;
     this.authenticate.password = logInForm.value.password;

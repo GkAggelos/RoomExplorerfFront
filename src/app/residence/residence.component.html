@@ -18,6 +18,26 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="start">Start Available Date</label>
+                                <input type="date" ngModel="{{residence.available_from}}" name="startDate" class="form-control" id="start" #startInput="ngModel" required> 
+                                <div class="help-is-error" *ngIf="startInput.invalid && startInput.touched">
+                                    Start available date is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group"> 
+                                <label for="end">End Available Date</label>
+                                <input type="date" ngModel="{{residence.available_till}}" name="endDate" class="form-control" id="end" #endInput="ngModel" required> 
+                                <div class="help-is-error" *ngIf="endInput.invalid && endInput.touched">
+                                    End available date is required.
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="location">Location</label>
                                 <input type="text" ngModel="{{residence.location}}" name="location" class="form-control" id="location" placeholder="Type location" #locationInput="ngModel" required> 
                                 <div class="help-is-error" *ngIf="locationInput.invalid && locationInput.touched">

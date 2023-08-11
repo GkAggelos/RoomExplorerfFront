@@ -46,7 +46,7 @@ export class ResidenceComponent implements OnInit{
     this.urls = [];
     this.names = [];
   
-    this.residence = {id:0, pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+    this.residence = {id:0, available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
     host:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: '', approved:true}, 
     description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]};
     this.deletePhoto = {id:0, url:'', residence: this.residence};
@@ -67,6 +67,8 @@ export class ResidenceComponent implements OnInit{
       this.residenceService.getResidenceById(this.id).subscribe(
         (response: Residence) => {
           this.residence = response;
+          this.residence.available_from = this.residence.available_from.substring(0,10);
+          this.residence.available_till = this.residence.available_till.substring(0,10);
           this.isWifiChecked = this.residence.has_wifi;
           this.isHeatingChecked = this.residence.has_heating;
           this.isAirConditionChecked = this.residence.has_air_condition;
@@ -137,6 +139,8 @@ export class ResidenceComponent implements OnInit{
 
   public onEditResidence(editForm: NgForm): void {
 
+    this.residence.available_from = editForm.value.startDate;
+    this.residence.available_till = editForm.value.endDate;
     this.residence.location = editForm.value.location;
     this.residence.area = editForm.value.area;
     this.residence.pricing = editForm.value.pricing;
@@ -162,6 +166,8 @@ export class ResidenceComponent implements OnInit{
       (response: Residence) => {
         console.log(response);
         this.residence = response;
+        this.residence.available_from = response.available_from.substring(0,10);
+        this.residence.available_till = response.available_till.substring(0,10);
         for (let index = 0; index < this.urls.length; index++) {
           this.photoService.addPhoto({id:0 , url: this.urls[index].toString() , residence: response}).subscribe(
             (response: Photo) => {
