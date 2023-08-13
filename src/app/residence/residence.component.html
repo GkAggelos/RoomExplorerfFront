@@ -234,3 +234,241 @@
         </div>
     </div>
 </div>
+
+<!-- Page Content -->
+<div class="container" *ngIf="isrenter">
+
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Photos</h1>
+  
+    <hr class="mt-2 mb-5">
+  
+    <div class="row text-center text-lg-start">
+        <div class="col-lg-3 col-md-4 col-6" *ngFor="let photo of photos">
+            <div class="d-block mb-4 h-100">
+                <img id="myImage" class="img-fluid img-thumbnail" src="{{photo.url}}" alt="">
+            </div>
+        </div>
+    </div>
+
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Space</h1>
+  
+    <hr class="mt-2 mb-5">
+
+    <div class="row text-center text-lg-start">
+        <div class="fs-5 mb-3">
+            <b>{{residence.roomType}}</b> at the <b>{{residence.floor}}</b> floor with
+            <br>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+            </svg>
+            {{residence.peopleCapacity}} people capacity
+            <br>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-closed-fill" viewBox="0 0 16 16">
+                <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1h8zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            </svg>
+            {{residence.bedroomNumber}} bedrooms
+            <br>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-closed-fill" viewBox="0 0 16 16">
+              <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1h8zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            </svg>
+            {{residence.bedNumber}} beds
+            <br>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-closed-fill" viewBox="0 0 16 16">
+                <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1h8zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            </svg>
+            {{residence.bathroomNumber}} bathrooms
+            <br>
+            <b>{{residence.acreage}} sq.m</b> acreage
+        </div>
+    </div>    
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Amenities</h1>
+  
+    <hr class="mt-2 mb-5">
+        
+    <div class="row mt-2 fs-5 mb-3">
+        <div class="col-md-2">
+            <div *ngIf="residence.has_living_room" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                living room</b>
+            </div>
+            <div *ngIf="!residence.has_living_room" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                living room</b>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div *ngIf="residence.has_wifi" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                wifi</b>
+            </div>
+            <div *ngIf="!residence.has_wifi" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                wifi</b>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div *ngIf="residence.has_parking" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                parking</b>
+            </div>
+            <div *ngIf="!residence.has_parking" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                parking</b>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div *ngIf="residence.has_elevator" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                elevator</b>
+            </div>
+            <div *ngIf="!residence.has_elevator" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                elevator</b>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 fs-5 mb-3">
+        <div class="col-md-2">
+            <div *ngIf="residence.has_heating" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                heating</b>
+            </div>
+            <div *ngIf="!residence.has_heating" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                heating</b>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div *ngIf="residence.has_air_condition" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                air condition</b>
+            </div>
+            <div *ngIf="!residence.has_air_condition" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                air condition</b>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div *ngIf="residence.has_cuisine" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                cuisine</b>
+            </div>
+            <div *ngIf="!residence.has_cuisine" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                cuisine</b>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div *ngIf="residence.has_tv" class="text-success">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                </svg>
+                tv</b>
+            </div>
+            <div *ngIf="!residence.has_tv" class="text-danger">
+                <b>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                tv</b>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Description</h1>
+  
+    <hr class="mt-2 mb-5">
+
+    <div class="fs-6 mb-3">
+        <p>{{residence.description}}</p>
+    </div>
+
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Rules</h1>
+  
+    <hr class="mt-2 mb-5">
+
+    <div class="fs-6 mb-3">
+        <p>{{residence.comment}}</p>
+    </div>
+
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Location</h1>
+  
+    <hr class="mt-2 mb-5">
+
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Host informations</h1>
+  
+    <hr class="mt-2 mb-5">
+    <div class="fs-6 mb-3">
+        <img *ngIf="residence.host.photo === null || residence.host.photo === ''" src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-fluid rounded-circle w-2">
+        <img *ngIf="residence.host.photo !== null && residence.host.photo !== ''" src="{{residence.host.photo}}" class="img-fluid rounded-circle w-2">
+        <br>
+        First name: <b>{{residence.host.firstName}}</b>
+        <br>
+        Last name: <b>{{residence.host.lastName}}</b> 
+        <br>
+        Email: <b>{{residence.host.email}}</b> 
+        <br> 
+        Phone number: <b>{{residence.host.phoneNumber}}</b> 
+        <br> 
+    </div>
+
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Reviews</h1>
+    <hr class="mt-2 mb-5">
+
+    <div class="row">
+        <div class="col-md-12">
+            <form #commentForm="ngForm" (ngSubmit)="onAddComment(commentForm)">
+                <input id="ratings-hidden" name="rating" type="hidden"> 
+                <textarea class="form-control animated" cols="50" id="new-review" ngModel name="comment" placeholder="Enter your review here..." rows="5" required></textarea>
+
+                <div class="text-right">
+                    <div class="stars starrr" data-rating="0" ngModel name="stars"></div>
+                    <button [disabled]="commentForm.invalid" class="btn btn-success btn-lg" type="submit">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

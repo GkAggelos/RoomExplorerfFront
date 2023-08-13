@@ -20,7 +20,8 @@ export class AuthenticateInterceptor implements HttpInterceptor {
     request.url !== "http://localhost:8080/host/find/all/emails" &&
     request.url !== "http://localhost:8080/renter/find/all/emails" &&
     request.url !== "http://localhost:8080/api/v1/auth/register" &&
-    request.url !== "http://localhost:8080/api/v1/auth/authenticate") {
+    request.url !== "http://localhost:8080/api/v1/auth/authenticate" &&
+    localToken !== null) {
       request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + localToken)});
     }
     return next.handle(request);

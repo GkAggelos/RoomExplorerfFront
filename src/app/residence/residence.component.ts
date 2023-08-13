@@ -93,6 +93,10 @@ export class ResidenceComponent implements OnInit{
     });
   }
 
+  public onAddComment(commentForm: NgForm) : void {
+    
+  }
+
   public onSelect(e: any) {
     if (e.target.files) {
       for (let i=0; i<File.length; i++) {
