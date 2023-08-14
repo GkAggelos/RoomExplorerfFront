@@ -29,4 +29,5 @@ export interface Residence {
     has_parking: boolean;
     has_elevator: boolean;
     reservations: Reservation[];
+    photo: string;
 }

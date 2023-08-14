@@ -17,7 +17,7 @@ import { HostService } from '../service/host.service';
 export class HostComponent implements OnInit{
 
   public residences: Residence[];
-  public deleteResidence: Residence = {id:0, available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+  public deleteResidence: Residence = {id:0, photo:'',available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
   host:{id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo:'', approved:false}, description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false,
   has_parking:false, has_elevator:false, reservations:[]};
   public urls: String[];
@@ -133,7 +133,7 @@ export class HostComponent implements OnInit{
   }
 
   public onAddResidence(addForm: NgForm): void {
-    var residence: Residence = {id:0, available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+    var residence: Residence = {id:0, photo:'', available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
       host:this.host, description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false,
       has_parking:false, has_elevator:false, reservations:[]};
 
