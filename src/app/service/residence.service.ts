@@ -37,7 +37,7 @@ export class ResidenceService {
   }
 
   public getResidencesBySearch(location: String, checkIn: String, checkOut: String, people: number): Observable<Residence[]> {
-    return this.http.get<Residence[]>(`${this.residenceUrl}/search?location=${location}&arriveDate=${checkIn}&leaveDate=${checkOut}&peopleCapacity=${people}`);
+    return this.http.get<Residence[]>(`${this.residenceUrl}/search?location=${location}&arrivalDate=${checkIn}&leaveDate=${checkOut}&peopleCapacity=${people}`);
   }
 
 }

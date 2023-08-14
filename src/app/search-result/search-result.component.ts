@@ -33,6 +33,7 @@ export class SearchResultComponent implements OnInit{
       this.residenceService.getResidencesBySearch(this.location, this.checkIn, this.checkOut, this.people).subscribe(
         (response: Residence[]) => {
           this.results = response;
+          console.log(response);
         },
         (error: HttpErrorResponse) => {
           alert(error.message);

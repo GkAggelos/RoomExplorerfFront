@@ -81,38 +81,18 @@ export class HostComponent implements OnInit{
   }
 
   public onDeleteResidence(id: number): void {
-    this.residenceService.getPhotosByResidenceId(id).subscribe(
-      (response: Photo[]) => {
-        this.photos = response;
-        for (let index = 0; index < this.photos.length; index++) {
-          this.photoService.deletePhoto(this.photos[index].id).subscribe(
-            (response: void) => {
-              console.log(response);
-              if (index == (this.photos.length - 1)) {
-                this.residenceService.deleteResidence(id).subscribe(
-                  (response: any) => {
-                    console.log(response);
-                    this.residenceService.getHostResidences(this.id).subscribe(
-                      (response: Residence[])=> {
-                        this.residences = response;
-                        console.log(this.residences);
-                      },
-                      (error: HttpErrorResponse) => {
-                          alert(error.message);
-                      }
-                    );
-                  },
-                  (error: HttpErrorResponse) => {
-                    alert(error.message);
-                  }
-                );
-              }
-            },
-            (error: HttpErrorResponse) => {
+    this.residenceService.deleteResidence(id).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.residenceService.getHostResidences(this.id).subscribe(
+          (response: Residence[])=> {
+            this.residences = response;
+            console.log(this.residences);
+          },
+          (error: HttpErrorResponse) => {
               alert(error.message);
-            }
-          );
-        }
+          }
+        );
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
