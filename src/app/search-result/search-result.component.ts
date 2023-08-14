@@ -35,18 +35,6 @@ export class SearchResultComponent implements OnInit{
       this.residenceService.getResidencesBySearch(this.location, this.checkIn, this.checkOut, this.people).subscribe(
         (response: Residence[]) => {
           this.results = response;
-          if (this.results.length == 0) this.noResults = true;
-          for (let index = 0; index < this.results.length; index++) {
-            this.residenceService.getPhotosByResidenceId(this.results[index].id).subscribe(
-              (response: Photo[]) => {
-                this.results[index].photo = response[0].url;
-              },
-              (error: HttpErrorResponse) => {
-                alert(error.message);
-              }
-            );
-          }
-          console.log(response);
         },
         (error: HttpErrorResponse) => {
           alert(error.message);
