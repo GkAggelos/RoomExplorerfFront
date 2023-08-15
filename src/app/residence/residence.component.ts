@@ -6,6 +6,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Photo } from '../model/photo';
 import { PhotoService } from '../service/photo.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Reservation } from '../model/reservation';
+import { ReservationService } from '../service/reservation.service';
+import { formatDate } from '@angular/common';
+import { RenterService } from '../service/renter.service';
+import { Renter } from '../model/renter';
 
 @Component({
   selector: 'app-residence',
@@ -29,8 +35,14 @@ export class ResidenceComponent implements OnInit{
   public deletePhoto: Photo;
   public urls: String[];
   public names: String[];
+  public renter_id: number = 0;
+  public reservations: Reservation[] = [];
+  public checkIn: string = "";
+  public checkOut: string = "";
+  public renter: Renter = {id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: ''};
 
-  constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private photoService: PhotoService) { 
+  constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private photoService: PhotoService, private jwtHelper: JwtHelperService,
+    private reservationService: ReservationService, private renterService: RenterService) { 
     this.ishost = false; 
     this.isrenter = false;
     this.id = 0;
@@ -45,7 +57,7 @@ export class ResidenceComponent implements OnInit{
     this.photos = [];
     this.urls = [];
     this.names = [];
-  
+
     this.residence = {id:0, photo:'', available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
     host:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: '', approved:true}, 
     description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]};
@@ -63,6 +75,35 @@ export class ResidenceComponent implements OnInit{
 
       temp = queryParam?.['id'];
       this.id = parseInt(temp);
+      this.checkIn = queryParam?.["check_in"];
+      this.checkOut = queryParam?.["check_out"];
+
+      var token = localStorage.getItem("token");
+      if (token) {
+        let decodedJwtData = this.jwtHelper.decodeToken(token);
+        if (decodedJwtData.role === "renter") {
+          this.renter_id = decodedJwtData.jti;
+          this.renterService.getRenterById(this.renter_id).subscribe(
+            (response: Renter) => {
+              this.renter = response;
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
+        }
+      }
+
+      if (this.ishost) {
+        this.reservationService.getReservationsByResidenceId(this.id).subscribe(
+          (response: Reservation[]) => {
+            this.reservations = response;
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        );
+      }
 
       this.residenceService.getResidenceById(this.id).subscribe(
         (response: Residence) => {
@@ -93,8 +134,40 @@ export class ResidenceComponent implements OnInit{
     });
   }
 
-  public onAddComment(commentForm: NgForm) : void {
-    
+  public addReservation(): void {
+    var reservation: Reservation = {id:0, stars:0, review:'', reservationDate:'', arrivalDate:'', leaveDate:'', state:-1, renter:this.renter, residence:this.residence};
+    reservation.arrivalDate = this.checkIn;
+    reservation.leaveDate = this.checkOut;
+    reservation.state = 0;
+    reservation.reservationDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+    this.reservationService.addReservation(reservation).subscribe(
+      (response: Reservation) => {
+        console.log(response);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public onChangeState(state: number, reservation: Reservation) : void {
+    reservation.state = state;
+    this.reservationService.updateReservation(reservation).subscribe(
+      (response: Reservation) => {
+        console.log(response);
+        this.reservationService.getReservationsByResidenceId(this.id).subscribe(
+          (response: Reservation[]) => {
+            this.reservations = response;
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        );
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
   public onSelect(e: any) {

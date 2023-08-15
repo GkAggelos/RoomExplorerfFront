@@ -12,7 +12,6 @@
        <ul class="list-group list-group-flush">
            <li class="list-group-item">First Name : <b> {{host.firstName}} </b></li>
            <li class="list-group-item">Last Name : <b>{{host.lastName}}</b></li>
-           <li class="list-group-item">Password : <b>{{host.password}}</b></li>
            <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <b>{{host.email}}</b></li>
            <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : <b>{{host.phoneNumber}}</b></li>
            <li class="list-group-item" *ngIf="host.approved === false">Approved : <b class="red">{{host.approved}}</b></li>
@@ -38,7 +37,6 @@
        <ul class="list-group list-group-flush">
            <li class="list-group-item">First Name : <b> {{renter.firstName}} </b></li>
            <li class="list-group-item">Last Name : <b>{{renter.lastName}}</b></li>
-           <li class="list-group-item">Password : <b>{{renter.password}}</b></li>
            <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <b>{{renter.email}}</b></li>
            <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : <b>{{renter.phoneNumber}}</b></li>
        </ul>
@@ -75,9 +73,6 @@
             <li class="list-group-item" *ngIf="ishost">Last Name : <b> {{host.lastName}} </b></li>
             <li class="list-group-item" *ngIf="isrenter">Last Name : <b> {{renter.lastName}} </b></li>
             <li class="list-group-item" *ngIf="isadmin">Last Name : <b> {{admin.lastName}} </b></li>
-            <li class="list-group-item" *ngIf="ishost">Password : <b> {{host.password}} </b></li>
-            <li class="list-group-item" *ngIf="isrenter">Password : <b> {{renter.password}} </b></li>
-            <li class="list-group-item" *ngIf="isadmin">Password : <b> {{admin.password}} </b></li>
             <li class="list-group-item" *ngIf="ishost"><i class="fa fa-envelope float-right"></i>Email : <b> {{host.email}} </b></li>
             <li class="list-group-item" *ngIf="isrenter"><i class="fa fa-envelope float-right"></i>Email : <b> {{renter.email}} </b></li>
             <li class="list-group-item" *ngIf="isadmin"><i class="fa fa-envelope float-right"></i>Email : <b> {{admin.email}} </b></li>
@@ -94,6 +89,65 @@
             </div>
         </div>
     </div>
+    <div class="container" *ngIf="isrenter">
+      <div class="row">
+          <div class="col-12 mb-3 mb-lg-5">
+              <div class="overflow-hidden card table-nowrap table-card">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                      <h5 class="mb-0">Reservations</h5>
+                  </div>
+                  <div class="table-responsive">
+                      <table class="table mb-0">
+                          <thead class="small text-uppercase bg-body text-muted">
+                              <tr>
+                                  <th>Location</th>
+                                  <th>Check In</th>
+                                  <th>Check Out</th>
+                                  <th>Book Date</th>
+                                  <th>View</th>
+                              </tr>
+                          </thead>
+                          <tbody *ngFor="let reservation of reservations">
+                              <tr class="align-middle">
+                                  <td>
+                                      <div class="d-flex align-items-center">
+                                          <div>
+                                              <div class="h6 mb-0 lh-1">{{reservation.residence.location}}</div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <div class="d-flex align-items-center">
+                                          <div>
+                                              <div class="h6 mb-0 lh-1">{{reservation.arrivalDate}}</div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{reservation.arrivalDate}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                  <td>
+                                      <div class="d-flex align-items-center">
+                                          <div>
+                                              <div class="h6 mb-0 lh-1">{{reservation.reservationDate}}</div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <a class="btn btn-primary" href="reservation/?id={{reservation?.id}}">View Reservation</a>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 
 <!-- Edit Modal -->

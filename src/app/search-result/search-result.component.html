@@ -237,12 +237,12 @@
         <div class="d-flex flex-column bg-light">
             <div class="d-flex p-2 col-lg-12" *ngFor="let residence of results">
                 <div class="flex-shrink-0">
-                    <a href="residence/?id={{residence.id}}&host=false&renter=true">
+                    <a href="residence/?id={{residence.id}}&host=false&renter=true&check_in={{checkIn}}&check_out={{checkOut}}">
                         <img class="img-fluid rounded mb-3 mb-md-0" src={{residence.photo}} alt="" class="hotel-img">
                     </a>
                     <hr>
                 </div>
-                <div class="flex-grow-1 ms-0 ">
+                <div class="flex-grow-1 ms-3 ">
                     <h1> {{residence.pricing}} $<h6>per day</h6></h1>
                     <h4>{{residence.roomType}}</h4>
                     <div class="d-flex flex-column tags pt-1"> 
@@ -269,7 +269,7 @@
                                 </div> 
                             </div>  
                         </div> 
-                        <a class="btn btn-primary" href="residence/?id={{residence.id}}&host=false&renter=true">View Residence</a>
+                        <a class="btn btn-primary" href="residence/?id={{residence.id}}&host=false&renter=true&check_in={{checkIn}}&check_out={{checkOut}}">View Residence</a>
                     </div>
                 </div>
             </div>

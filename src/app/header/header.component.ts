@@ -40,7 +40,6 @@ export class HeaderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    //localStorage.removeItem("token");
     var token = localStorage.getItem("token");
     if (token) {
       let decodedJwtData = this.jwtHelper.decodeToken(token);

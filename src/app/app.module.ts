@@ -17,6 +17,7 @@ import { AllreadExistsValidatorDirective } from './validation/allread-exists-val
 import { HostComponent } from './host/host.component';
 import { ResidenceComponent } from './residence/residence.component';
 import { AuthenticateInterceptor } from './interceptor/authenticate.interceptor';
+import { ReservationComponent } from './reservation/reservation.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +30,7 @@ import { AuthenticateInterceptor } from './interceptor/authenticate.interceptor'
     AllreadExistsValidatorDirective,
     HostComponent,
     ResidenceComponent,
+    ReservationComponent,
   ],
   imports: [
     BrowserModule,

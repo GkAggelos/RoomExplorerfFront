@@ -6,6 +6,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HostComponent } from './host/host.component';
 import { ResidenceComponent } from './residence/residence.component';
+import { ReservationComponent } from './reservation/reservation.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,11 @@ const routes: Routes = [
   {
     path: 'residence',
     component: ResidenceComponent
+  },
+
+  {
+    path: 'reservation',
+    component: ReservationComponent
   }
 ];
 

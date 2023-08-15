@@ -11,6 +11,8 @@ import { UserService } from '../service/user.service';
 import { Jwt } from '../model/Jwt';
 import { AdminService } from '../service/admin.service';
 import { Admin } from '../model/admin';
+import { ReservationService } from '../service/reservation.service';
+import { Reservation } from '../model/reservation';
 
 
 @Component({
@@ -34,9 +36,10 @@ export class ProfileComponent implements OnInit {
   public id: number;
   public url: String = "";
   public deletePhoto: String = "";
+  public reservations: Reservation[] = [];
 
   constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, 
-    private userService: UserService, private router: Router, private adminService: AdminService) {
+    private userService: UserService, private router: Router, private adminService: AdminService, private reservationService: ReservationService) {
     this.host = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', approved:false, password:'', photo:''};
     this.renter = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
     this.admin = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
@@ -118,6 +121,17 @@ export class ProfileComponent implements OnInit {
 
       temp = queryParam?.['id'];
       this.id = parseInt(temp);
+
+      if (this.isrenter && !this.isForAdmin) {
+        this.reservationService.getReservationsByRenterId(this.id).subscribe(
+          (response: Reservation[]) => {
+            this.reservations = response;
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        );
+      }
 
       if (this.ishost) {
         this.hostService.getHostById(this.id).subscribe(

@@ -38,3 +38,12 @@ files:before{
     height: 80px;
     width: 150px;
 }
+.green {
+    color: green;
+}
+.red {
+    color: red;
+}
+.orange{
+    color: #f3a91f;
+}

@@ -213,6 +213,80 @@
     </div>
 </div>
 
+<div class="container" *ngIf="ishost">
+    <div class="row">
+        <div class="col-12 mb-3 mb-lg-5">
+            <div class="overflow-hidden card table-nowrap table-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Reservations</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="small text-uppercase bg-body text-muted">
+                            <tr>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Book Date</th>
+                                <th>Renter</th>
+                                <th>State</th>
+                                <th>Accept</th>
+                                <th>Reject</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let reservation of reservations">
+                            <tr class="align-middle">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{reservation.arrivalDate}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                  <div class="d-flex align-items-center">
+                                      <div>
+                                          <div class="h6 mb-0 lh-1">{{reservation.arrivalDate}}</div>
+                                      </div>
+                                  </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{reservation.reservationDate}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="h6 mb-0 lh-1">{{reservation.renter.username}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div *ngIf="reservation.state.toString() === 'PENDING'" class="h6 mb-0 lh-1 orange">{{reservation.state}}</div>
+                                            <div *ngIf="reservation.state.toString() === 'ACCEPTED'" class="h6 mb-0 lh-1 green">{{reservation.state}}</div>
+                                            <div *ngIf="reservation.state.toString() === 'REJECTED'" class="h6 mb-0 lh-1 red">{{reservation.state}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td> 
+                                    <button type="button" (click)="onChangeState(1,reservation)" class="btn btn-success">Accept</button>
+                                </td>
+                                <td>
+                                    <button type="button" (click)="onChangeState(2,reservation)" class="btn btn-danger">Reject</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -454,21 +528,13 @@
         Phone number: <b>{{residence.host.phoneNumber}}</b> 
         <br> 
     </div>
-
+    <button class="btn btn-primary btn-lg" *ngIf="renter_id != 0">Send message</button>
+    <div class="position-relative">
+    <div class="position-absolute bottom-0 end-0">
+        <button type="button" (click)="addReservation()" class="btn btn-success btn-lg" *ngIf="renter_id != 0">Book now</button>
+    </div>
+    </div>
+    
     <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Reviews</h1>
     <hr class="mt-2 mb-5">
-
-    <div class="row">
-        <div class="col-md-12">
-            <form #commentForm="ngForm" (ngSubmit)="onAddComment(commentForm)">
-                <input id="ratings-hidden" name="rating" type="hidden"> 
-                <textarea class="form-control animated" cols="50" id="new-review" ngModel name="comment" placeholder="Enter your review here..." rows="5" required></textarea>
-
-                <div class="text-right">
-                    <div class="stars starrr" data-rating="0" ngModel name="stars"></div>
-                    <button [disabled]="commentForm.invalid" class="btn btn-success btn-lg" type="submit">Post</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
