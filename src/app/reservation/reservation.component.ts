@@ -24,6 +24,7 @@ export class ReservationComponent implements OnInit {
 
   public onAddReview(reviewForm: NgForm): void {
     this.reservation.review = reviewForm.value.review;
+    this.reservation.stars = parseInt(reviewForm.value.rating1);
     this.reservationService.updateReservation(this.reservation).subscribe(
       (response: Reservation) => {
         this.reservation = response;
@@ -32,6 +33,11 @@ export class ReservationComponent implements OnInit {
         alert(error.message);
       }
     );
+  }
+
+  public emptyRadio(reviewForm: NgForm): boolean {
+    if (reviewForm.value.rating1) return false;
+    return true;
   }
 
   public ngOnInit(): void {

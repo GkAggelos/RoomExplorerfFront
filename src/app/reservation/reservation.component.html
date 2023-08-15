@@ -20,15 +20,28 @@
         </ul>
     </div>
 
-    <div class="row" *ngIf="(reservation.review === null || reservation.review === '') && reservation.state.toString() === 'ACCEPTED'">
+    <div class="row" *ngIf=" reservation.state.toString() === 'ACCEPTED'">
         <div class="col-md-12">
             <form #reviewForm="ngForm" (ngSubmit)="onAddReview(reviewForm)">
                 <input id="ratings-hidden" name="rating" type="hidden"> 
                 <textarea class="form-control animated" cols="50" id="new-review" ngModel name="review" placeholder="Enter your review here..." rows="5" required></textarea>
     
                 <div class="text-right">
-                    <div class="stars starrr" data-rating="0" ngModel name="stars"></div>
-                    <button [disabled]="reviewForm.invalid" class="btn btn-success btn-lg" type="submit">Post</button>
+                    <div class="rating-css">
+                        <div class="star-icon">
+                            <input type="radio" ngModel name="rating1" value="1" id="rating1">
+                            <label for="rating1" class="fa fa-star"></label>
+                            <input type="radio" ngModel name="rating1" value="2" id="rating2">
+                            <label for="rating2" class="fa fa-star"></label>
+                            <input type="radio" ngModel name="rating1" value="3" id="rating3">
+                            <label for="rating3" class="fa fa-star"></label>
+                            <input type="radio" ngModel name="rating1" value="4" id="rating4">
+                            <label for="rating4" class="fa fa-star"></label>
+                            <input type="radio" ngModel name="rating1" value="5" id="rating5">
+                            <label for="rating5" class="fa fa-star"></label>
+                        </div>
+                    </div>
+                    <button [disabled]="reviewForm.invalid || emptyRadio(reviewForm)" class="btn btn-success btn-lg" type="submit">Post</button>
                 </div>
             </form>
         </div>

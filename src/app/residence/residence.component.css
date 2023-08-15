@@ -47,3 +47,7 @@ files:before{
 .orange{
     color: #f3a91f;
 }
+.star {
+    color: #ffa500;
+    font-size: .8rem
+}

@@ -94,16 +94,14 @@ export class ResidenceComponent implements OnInit{
         }
       }
 
-      if (this.ishost) {
-        this.reservationService.getReservationsByResidenceId(this.id).subscribe(
-          (response: Reservation[]) => {
-            this.reservations = response;
-          },
-          (error: HttpErrorResponse) => {
-            alert(error.message);
-          }
-        );
-      }
+      this.reservationService.getReservationsByResidenceId(this.id).subscribe(
+        (response: Reservation[]) => {
+          this.reservations = response;
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
 
       this.residenceService.getResidenceById(this.id).subscribe(
         (response: Residence) => {
@@ -143,11 +141,27 @@ export class ResidenceComponent implements OnInit{
     this.reservationService.addReservation(reservation).subscribe(
       (response: Reservation) => {
         console.log(response);
+        const container = document.getElementById('main-container');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.style.display = 'none';
+        button.setAttribute('data-toggle', 'modal');
+        button.setAttribute('data-target', '#warningModal');
+        container?.appendChild(button);
+        button.click();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     );
+  }
+
+  createRange(number: number){
+    return new Array(number);
+  }
+
+  public refresh(): void {
+    window.location.reload();
   }
 
   public onChangeState(state: number, reservation: Reservation) : void {
