@@ -16,6 +16,8 @@ export interface Residence {
     bedroomNumber: number;
     acreage: number;
     roomType: number;
+    reviewsNumber: number;
+    starsAverage: number;
     comment: string;
     description: string;
     photos: Photo[];

@@ -25,6 +25,10 @@ export class SearchResultComponent implements OnInit{
     this.getResults();
   }
 
+  createRange(number: number){
+    return new Array(number);
+  }
+
   public getResults(): void {
     this.route.queryParams.subscribe((queryParam) => {
       this.location = queryParam?.["location"];

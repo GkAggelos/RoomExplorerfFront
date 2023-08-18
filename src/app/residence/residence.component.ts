@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Residence } from '../model/residence';
 import { ResidenceService } from '../service/residence.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Photo } from '../model/photo';
@@ -12,6 +12,7 @@ import { ReservationService } from '../service/reservation.service';
 import { formatDate } from '@angular/common';
 import { RenterService } from '../service/renter.service';
 import { Renter } from '../model/renter';
+import { MessageResponse } from '../model/messageResponse';
 
 @Component({
   selector: 'app-residence',
@@ -58,7 +59,7 @@ export class ResidenceComponent implements OnInit{
     this.urls = [];
     this.names = [];
 
-    this.residence = {id:0, photo:'', available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+    this.residence = {id:0, photo:'', reviewsNumber: 0, starsAverage: 1, available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
     host:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: '', approved:true}, 
     description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]};
     this.deletePhoto = {id:0, url:'', residence: this.residence};
@@ -66,7 +67,9 @@ export class ResidenceComponent implements OnInit{
 
   public ngOnInit(): void {
     var temp: string;
+
     this.route.queryParams.subscribe((queryParam) =>{
+
       temp = queryParam?.['host'];
       if (temp === "true") this.ishost = true;
 
@@ -139,14 +142,15 @@ export class ResidenceComponent implements OnInit{
     reservation.state = 0;
     reservation.reservationDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     this.reservationService.addReservation(reservation).subscribe(
-      (response: Reservation) => {
+      (response: MessageResponse) => {
         console.log(response);
         const container = document.getElementById('main-container');
         const button = document.createElement('button');
         button.type = 'button';
         button.style.display = 'none';
         button.setAttribute('data-toggle', 'modal');
-        button.setAttribute('data-target', '#warningModal');
+        if (response.message === 'ok') button.setAttribute('data-target', '#warningOkModal');
+        if (response.message === 'error') button.setAttribute('data-target', '#warningErrorModal');
         container?.appendChild(button);
         button.click();
       },
@@ -160,9 +164,6 @@ export class ResidenceComponent implements OnInit{
     return new Array(number);
   }
 
-  public refresh(): void {
-    window.location.reload();
-  }
 
   public onChangeState(state: number, reservation: Reservation) : void {
     reservation.state = state;

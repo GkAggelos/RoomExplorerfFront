@@ -203,7 +203,7 @@
                         <textarea ngModel="{{residence.description}}" name="description" class="form-control rounded-0"  id="exampleFormControlTextarea1" rows="5"></textarea>
                     </div> 
                     <div class="form-group"> 
-                        <label for="exampleFormControlTextarea2">Comments</label> 
+                        <label for="exampleFormControlTextarea2">Rules</label> 
                         <textarea ngModel="{{residence.comment}}" name="comment" class="form-control rounded-0" id="exampleFormControlTextarea2" rows="5"></textarea>
                     </div> 
                     <div class="mt-5 text-right"><button [disabled]="editForm.invalid" type="submit" class="btn btn-primary profile-button">Save changes</button></div>
@@ -586,12 +586,12 @@
 
 </div>
 
-<!-- Warning for book Modal -->
-<div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModelLabel" aria-hidden="true">
+<!-- Warning Ok for book Modal -->
+<div class="modal fade" id="warningOkModal" tabindex="-1" role="dialog" aria-labelledby="warningOkModelLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="warningModalLabel">Reservation Succeeded</h5>
+                <h5 class="modal-title" id="warningOkModalLabel">Reservation Succeeded</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -600,9 +600,29 @@
                 <p>Now host has to accept your request.</p>
                 <p>In order to inform for the state of your reservation go to your profile.</p>
                 <div class="modal-footer">
-                    <button (click)="refresh()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-  </div>
+</div>
+
+  <!-- Warning Error for book Modal -->
+<div class="modal fade" id="warningErrorModal" tabindex="-1" role="dialog" aria-labelledby="warningErrorModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="warningErrorModalLabel">Reservation Failed</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>It seems that you have allready book this residence.</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
