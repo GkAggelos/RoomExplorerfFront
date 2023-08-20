@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Residence } from '../model/residence';
 import { Photo } from '../model/photo';
+import { PageResponse } from '../model/pageResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ export class ResidenceService {
 
   public getHostResidences(id: number): Observable<Residence[]> {
     return this.http.get<Residence[]>(`${this.residenceUrl}/find/host/${id}`);
+  }
+
+  public getHostResidencesPagination(id: number, page: number): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.residenceUrl}/find/host/${id}/${page}`);
   }
 
   public addResidence(residence: Residence): Observable<Residence> {

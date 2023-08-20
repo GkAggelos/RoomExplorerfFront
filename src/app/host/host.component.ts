@@ -8,6 +8,7 @@ import { PhotoService } from '../service/photo.service';
 import { Photo } from '../model/photo';
 import { ActivatedRoute } from '@angular/router';
 import { HostService } from '../service/host.service';
+import { PageResponse } from '../model/pageResponse';
 
 @Component({
   selector: 'app-host',
@@ -25,6 +26,13 @@ export class HostComponent implements OnInit{
   public id: number = 0;
   public host: Host = {id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo:'', approved:false};
   public photos: Photo[] = [];
+  public recordsNumber: number = 0;
+  public fromRecord: number = 0;
+  public toRecord: number = 0;
+  public pages: number = 1;
+  public previousPage: number = 0;
+  public nextPage: number = 0;
+  public currentPage: number = 0;
 
   constructor(private residenceService: ResidenceService, private photoService: PhotoService, private route: ActivatedRoute, private hostServise: HostService) {
     this.residences = [];
@@ -54,14 +62,58 @@ export class HostComponent implements OnInit{
     );
   }
 
-  public getResidences(): void {
-    this.residenceService.getHostResidences(this.id).subscribe(
-      (response: Residence[])=> {
-        this.residences = response;
-        console.log(this.residences);
+  public createRange(number: number){
+    return new Array(number);
+  }
+
+  public onChangePage(page: number) {
+    this.residenceService.getHostResidencesPagination(this.id, page).subscribe(
+      (response: PageResponse) => {
+        this.residences = response.response.content;
+        this.recordsNumber = response.recordCount;
+        this.currentPage = page;
+
+        this.fromRecord = 1;
+        if (response.recordCount <= 10) this.toRecord = response.recordCount;
+        else this.toRecord = 10;
+        for (let index = 0; index < page; index++) {
+          this.fromRecord += 10;
+          this.toRecord += 10;
+        }
+        if (this.toRecord > response.recordCount) this.toRecord = response.recordCount;
+
+        this.previousPage = page - 1;
+        if (response.recordCount !== this.toRecord) this.nextPage = page + 1;
+        else this.nextPage = -1; 
       },
       (error: HttpErrorResponse) => {
-          alert(error.message);
+        alert(error.message);
+      }
+    );
+  }
+
+
+  public getResidences(): void {
+
+    this.residenceService.getHostResidencesPagination(this.id, 0).subscribe(
+      (response: PageResponse) => {
+        this.residences = response.response.content;
+        this.recordsNumber = response.recordCount;
+
+        if (response.recordCount > 0) this.fromRecord = 1;
+        if (response.recordCount <= 10) this.toRecord = response.recordCount;
+        else this.toRecord = 10;
+        
+        var number = Math.floor(response.recordCount / 10);
+        if (response.recordCount % 10 !== 0)  this.pages = number + 1;
+        else this.pages = number;
+        
+        this.previousPage = -1;
+        if (this.recordsNumber !== this.toRecord) this.nextPage = 1;
+        else this.nextPage = -1 
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
       }
     );
   }
@@ -84,13 +136,27 @@ export class HostComponent implements OnInit{
     this.residenceService.deleteResidence(id).subscribe(
       (response: any) => {
         console.log(response);
-        this.residenceService.getHostResidences(this.id).subscribe(
-          (response: Residence[])=> {
-            this.residences = response;
-            console.log(this.residences);
+        this.residenceService.getHostResidencesPagination(this.id, 0).subscribe(
+          (response: PageResponse) => {
+            this.residences = response.response.content;
+            this.recordsNumber = response.recordCount;
+
+            if (response.recordCount > 0) this.fromRecord = 1;
+            if (response.recordCount <= 10) this.toRecord = response.recordCount;
+            else this.toRecord = 10;
+        
+            var number = Math.floor(response.recordCount / 10);
+            if (response.recordCount % 10 !== 0)  this.pages = number + 1;
+            else this.pages = number;
+        
+            this.previousPage = -1;
+            if (this.recordsNumber !== this.toRecord) this.nextPage = 1;
+            else this.nextPage = -1
+
+            this.currentPage = 0;
           },
           (error: HttpErrorResponse) => {
-              alert(error.message);
+            alert(error.message);
           }
         );
       },
@@ -153,13 +219,27 @@ export class HostComponent implements OnInit{
             }
           );
         }
-        this.residenceService.getHostResidences(this.id).subscribe(
-          (response: Residence[])=> {
-            this.residences = response;
-            console.log(this.residences);
+        this.residenceService.getHostResidencesPagination(this.id, 0).subscribe(
+          (response: PageResponse) => {
+            this.residences = response.response.content;
+            this.recordsNumber = response.recordCount;
+
+            if (response.recordCount > 0) this.fromRecord = 1;
+            if (response.recordCount <= 10) this.toRecord = response.recordCount;
+            else this.toRecord = 10;
+        
+            var number = Math.floor(response.recordCount / 10);
+            if (response.recordCount % 10 !== 0)  this.pages = number + 1;
+            else this.pages = number;
+        
+            this.previousPage = -1;
+            if (this.recordsNumber !== this.toRecord) this.nextPage = 1;
+            else this.nextPage = -1
+
+            this.currentPage = 0;
           },
           (error: HttpErrorResponse) => {
-              alert(error.message);
+            alert(error.message);
           }
         );
       },

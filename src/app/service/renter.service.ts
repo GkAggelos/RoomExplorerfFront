@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Renter } from '../model/renter';
+import { PageResponse } from '../model/pageResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class RenterService {
 
   public getRenters(): Observable<Renter[]> {
     return this.http.get<Renter[]>(`${this.renterUrl}/all`);
+  }
+
+  public getRentersPagination(page: number): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.renterUrl}/all/${page}`);
   }
 
   public getUsernames(): Observable<String[]> {

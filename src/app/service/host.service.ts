@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Host } from '../model/host';
+import { PageResponse } from '../model/pageResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class HostService {
 
   public getHosts(): Observable<Host[]> {
     return this.http.get<Host[]>(`${this.hostUrl}/all`);
+  }
+
+  public getHostsPagination(page: number): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.hostUrl}/all/${page}`);
   }
 
   public getUsernames(): Observable<String[]> {

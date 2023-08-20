@@ -144,6 +144,33 @@
                           </tbody>
                       </table>
                   </div>
+                  <div class="card_bottom">
+                    <div class="datatable-info">Showing {{fromRecord}} to {{toRecord}} of {{recordsNumber}} entries</div>
+                    <nav class="datatable-pagination position-absolute bottom-0 end-0">
+                        <ul class="datatable-pagination-list">
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="previousPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)">‹</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="previousPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)">‹</a>
+                            </li>
+                            <div *ngFor="let item of createRange(pages); let i=index">
+                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="currentPage !== i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
+                                </li>
+                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="currentPage === i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
+                                </li>
+                            </div>
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="nextPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(nextPage)">›</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="nextPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(nextPage)">›</a>
+                            </li>
+                        </ul>
+                    </nav>        
+                </div>
               </div>
           </div>
       </div>

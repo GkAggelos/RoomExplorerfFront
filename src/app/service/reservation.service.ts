@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Reservation } from '../model/reservation';
 import { Observable } from 'rxjs';
 import { MessageResponse } from '../model/messageResponse';
+import { PageResponse } from '../model/pageResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,12 @@ export class ReservationService {
     return this.http.get<Reservation[]>(`${this.reservationUrl}/find/renter/${id}`);
   }
 
-  public getReservationsByResidenceId(id: number): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.reservationUrl}/find/residence/${id}`);
+  public getReservationsByRenterIdPagination(id: number, page: number): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.reservationUrl}/find/renter/${id}/${page}`);
+  }
+
+  public getReservationsByResidenceIdPagination(id: number, page: number): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.reservationUrl}/find/residence/${id}/${page}`);
   }
 
   public getReservationById(id: number): Observable<Reservation> {

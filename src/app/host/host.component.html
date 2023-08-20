@@ -44,16 +44,16 @@
                                     </div>
                                     <div class="form-group"> 
                                         <label for="BedNumber">Bed Number</label> 
-                                        <input type="number" ngModel name="bedNumber" class="form-control" id="bedNumber" placeholder="Type number of beds" #areaInput="ngModel" required> 
+                                        <input type="number" ngModel name="bedNumber" class="form-control" id="bedNumber" placeholder="Type number of beds" #bedNumberInput="ngModel" required> 
                                     </div>
-                                    <div class="help-is-error" *ngIf="areaInput.invalid && areaInput.touched">
+                                    <div class="help-is-error" *ngIf="bedNumberInput.invalid && bedNumberInput.touched">
                                         Bed Number is required.
                                     </div>
                                     <div class="form-group"> 
                                         <label for=" BedroomNumber">Bedroom Number</label> 
-                                        <input type="number" ngModel name="bedroomNumber" class="form-control" id="bedroomNumber" placeholder="Type number of bedrooms" #areaInput="ngModel" required> 
+                                        <input type="number" ngModel name="bedroomNumber" class="form-control" id="bedroomNumber" placeholder="Type number of bedrooms" #bedroomNumberInput="ngModel" required> 
                                     </div>
-                                    <div class="help-is-error" *ngIf="areaInput.invalid && areaInput.touched">
+                                    <div class="help-is-error" *ngIf="bedroomNumberInput.invalid && bedroomNumberInput.touched">
                                         Bedroom Number is required.
                                     </div>
                                     <div class="form-check">
@@ -116,16 +116,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="bathroomNumber">Bathroom Number</label> 
-                                        <input ngModel name="bathroomNumber" type="number" class="form-control" id="bathroomNumber" placeholder="Type bathroom number" #capacityInput="ngModel" required> 
+                                        <input ngModel name="bathroomNumber" type="number" class="form-control" id="bathroomNumber" placeholder="Type bathroom number" #bathroomNumberInput="ngModel" required> 
                                     </div>
-                                    <div class="help-is-error" *ngIf="capacityInput.invalid && capacityInput.touched">
+                                    <div class="help-is-error" *ngIf="bathroomNumberInput.invalid && bathroomNumberInput.touched">
                                         Bathroom number is required.
                                     </div>
                                     <div class="form-group">
                                         <label for="acreage">Acreage</label> 
-                                        <input ngModel name="acreage" type="number" class="form-control" id="acreage" placeholder="Type acreage" #capacityInput="ngModel" required> 
+                                        <input ngModel name="acreage" type="number" class="form-control" id="acreage" placeholder="Type acreage" #acreageInput="ngModel" required> 
                                     </div>
-                                    <div class="help-is-error" *ngIf="capacityInput.invalid && capacityInput.touched">
+                                    <div class="help-is-error" *ngIf="acreageInput.invalid && acreageInput.touched">
                                         Acreage is required.
                                     </div>
                                     <div class="form-check">
@@ -258,6 +258,33 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="card_bottom">
+                    <div class="datatable-info">Showing {{fromRecord}} to {{toRecord}} of {{recordsNumber}} entries</div>
+                    <nav class="datatable-pagination position-absolute bottom-0 end-0">
+                        <ul class="datatable-pagination-list">
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="previousPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)">‹</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="previousPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)">‹</a>
+                            </li>
+                            <div *ngFor="let item of createRange(pages); let i=index">
+                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="currentPage !== i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
+                                </li>
+                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="currentPage === i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
+                                </li>
+                            </div>
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="nextPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(nextPage)">›</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="nextPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(nextPage)">›</a>
+                            </li>
+                        </ul>
+                    </nav>        
                 </div>
             </div>
         </div>

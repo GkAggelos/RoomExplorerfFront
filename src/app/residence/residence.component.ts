@@ -13,6 +13,7 @@ import { formatDate } from '@angular/common';
 import { RenterService } from '../service/renter.service';
 import { Renter } from '../model/renter';
 import { MessageResponse } from '../model/messageResponse';
+import { PageResponse } from '../model/pageResponse';
 
 @Component({
   selector: 'app-residence',
@@ -41,6 +42,14 @@ export class ResidenceComponent implements OnInit{
   public checkIn: string = "";
   public checkOut: string = "";
   public renter: Renter = {id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: ''};
+  public recordsNumber: number = 0;
+  public fromRecord: number = 0;
+  public toRecord: number = 0;
+  public pages: number = 1;
+  public previousPage: number = 0;
+  public nextPage: number = 0;
+  public currentPage: number = 0;
+  
 
   constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private photoService: PhotoService, private jwtHelper: JwtHelperService,
     private reservationService: ReservationService, private renterService: RenterService) { 
@@ -97,9 +106,22 @@ export class ResidenceComponent implements OnInit{
         }
       }
 
-      this.reservationService.getReservationsByResidenceId(this.id).subscribe(
-        (response: Reservation[]) => {
-          this.reservations = response;
+      this.reservationService.getReservationsByResidenceIdPagination(this.id, 0).subscribe(
+        (response: PageResponse) => {
+          this.reservations = response.response.content;
+          this.recordsNumber = response.recordCount;
+
+          if (response.recordCount > 0) this.fromRecord = 1;
+          if (response.recordCount <= 10) this.toRecord = response.recordCount;
+          else this.toRecord = 10;
+          
+          var number = Math.floor(response.recordCount / 10);
+          if (response.recordCount % 10 !== 0)  this.pages = number + 1;
+          else this.pages = number;
+          
+          this.previousPage = -1;
+          if (this.recordsNumber !== this.toRecord) this.nextPage = 1;
+          else this.nextPage = -1 
         },
         (error: HttpErrorResponse) => {
           alert(error.message);
@@ -160,8 +182,33 @@ export class ResidenceComponent implements OnInit{
     );
   }
 
-  createRange(number: number){
+  public createRange(number: number){
     return new Array(number);
+  }
+
+  public onChangePage(page: number) {
+    this.reservationService.getReservationsByResidenceIdPagination(this.id, page).subscribe(
+      (response: PageResponse) => {
+        this.reservations = response.response.content;
+        this.currentPage = page;
+
+        this.fromRecord = 1;
+        if (response.recordCount <= 10) this.toRecord = response.recordCount;
+        else this.toRecord = 10;
+        for (let index = 0; index < page; index++) {
+          this.fromRecord += 10;
+          this.toRecord += 10;
+        }
+        if (this.toRecord > response.recordCount) this.toRecord = response.recordCount;
+
+        this.previousPage = page - 1;
+        if (response.recordCount !== this.toRecord) this.nextPage = page + 1;
+        else this.nextPage = -1; 
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
 
@@ -170,9 +217,9 @@ export class ResidenceComponent implements OnInit{
     this.reservationService.updateReservation(reservation).subscribe(
       (response: Reservation) => {
         console.log(response);
-        this.reservationService.getReservationsByResidenceId(this.id).subscribe(
-          (response: Reservation[]) => {
-            this.reservations = response;
+        this.reservationService.getReservationsByResidenceIdPagination(this.id, this.currentPage).subscribe(
+          (response: PageResponse) => {
+            this.reservations = response.response.content;  
           },
           (error: HttpErrorResponse) => {
             alert(error.message);

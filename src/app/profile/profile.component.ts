@@ -13,6 +13,7 @@ import { AdminService } from '../service/admin.service';
 import { Admin } from '../model/admin';
 import { ReservationService } from '../service/reservation.service';
 import { Reservation } from '../model/reservation';
+import { PageResponse } from '../model/pageResponse';
 
 
 @Component({
@@ -37,6 +38,13 @@ export class ProfileComponent implements OnInit {
   public url: String = "";
   public deletePhoto: String = "";
   public reservations: Reservation[] = [];
+  public recordsNumber: number = 0;
+  public fromRecord: number = 0;
+  public toRecord: number = 0;
+  public pages: number = 1;
+  public previousPage: number = 0;
+  public nextPage: number = 0;
+  public currentPage: number = 0;
 
   constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, 
     private userService: UserService, private router: Router, private adminService: AdminService, private reservationService: ReservationService) {
@@ -123,9 +131,22 @@ export class ProfileComponent implements OnInit {
       this.id = parseInt(temp);
 
       if (this.isrenter && !this.isForAdmin) {
-        this.reservationService.getReservationsByRenterId(this.id).subscribe(
-          (response: Reservation[]) => {
-            this.reservations = response;
+        this.reservationService.getReservationsByRenterIdPagination(this.id, 0).subscribe(
+          (response: PageResponse) => {
+            this.reservations = response.response.content;
+            this.recordsNumber = response.recordCount;
+
+            if (response.recordCount > 0) this.fromRecord = 1;
+            if (response.recordCount <= 10) this.toRecord = response.recordCount;
+            else this.toRecord = 10;
+        
+            var number = Math.floor(response.recordCount / 10);
+            if (response.recordCount % 10 !== 0)  this.pages = number + 1;
+            else this.pages = number;
+        
+            this.previousPage = -1;
+            if (this.recordsNumber !== this.toRecord) this.nextPage = 1;
+            else this.nextPage = -1; 
           },
           (error: HttpErrorResponse) => {
             alert(error.message);
@@ -172,6 +193,36 @@ export class ProfileComponent implements OnInit {
         );
       }
     });
+  }
+
+  public createRange(number: number){
+    return new Array(number);
+  }
+
+  public onChangePage(page: number) {
+    this.reservationService.getReservationsByRenterIdPagination(this.id, page).subscribe(
+      (response: PageResponse) => {
+        this.reservations = response.response.content;
+        this.recordsNumber = response.recordCount;
+        this.currentPage = page;
+
+        this.fromRecord = 1;
+        if (response.recordCount <= 10) this.toRecord = response.recordCount;
+        else this.toRecord = 10;
+        for (let index = 0; index < page; index++) {
+          this.fromRecord += 10;
+          this.toRecord += 10;
+        }
+        if (this.toRecord > response.recordCount) this.toRecord = response.recordCount;
+
+        this.previousPage = page - 1;
+        if (response.recordCount !== this.toRecord) this.nextPage = page + 1;
+        else this.nextPage = -1; 
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
   public onSelect(e: any) {

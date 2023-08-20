@@ -58,6 +58,33 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="card_bottom">
+                    <div class="datatable-info">Showing {{hostFromRecord}} to {{hostToRecord}} of {{hostRecordsNumber}} entries</div>
+                    <nav class="datatable-pagination position-absolute bottom-0 end-0">
+                        <ul class="datatable-pagination-list">
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="hostPreviousPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(hostPreviousPage)">‹</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="hostPreviousPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(hostPreviousPage)">‹</a>
+                            </li>
+                            <div *ngFor="let item of createRange(hostPages); let i=index">
+                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="hostCurrentPage !== i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(i)">{{i + 1}}</a>
+                                </li>
+                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="hostCurrentPage === i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(i)">{{i + 1}}</a>
+                                </li>
+                            </div>
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="hostNextPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(hostNextPage)">›</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="hostNextPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(hostNextPage)">›</a>
+                            </li>
+                        </ul>
+                    </nav>        
+                </div>
             </div>
         </div>
     </div>
@@ -109,6 +136,33 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="card_bottom">
+                    <div class="datatable-info">Showing {{renterFromRecord}} to {{renterToRecord}} of {{renterRecordsNumber}} entries</div>
+                    <nav class="datatable-pagination position-absolute bottom-0 end-0">
+                        <ul class="datatable-pagination-list">
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="renterPreviousPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(renterPreviousPage)">‹</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="renterPreviousPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(renterPreviousPage)">‹</a>
+                            </li>
+                            <div *ngFor="let item of createRange(renterPages); let i=index">
+                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="renterCurrentPage !== i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(i)">{{i + 1}}</a>
+                                </li>
+                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="renterCurrentPage === i">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(i)">{{i + 1}}</a>
+                                </li>
+                            </div>
+                            <li class="datatable-pagination-list-item datatable-hidden" *ngIf="renterNextPage !== -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(renterNextPage)">›</a>
+                            </li>
+                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="renterNextPage === -1">
+                                <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(renterNextPage)">›</a>
+                            </li>
+                        </ul>
+                    </nav>        
                 </div>
             </div>
         </div>
