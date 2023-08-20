@@ -33,6 +33,7 @@ export class HostComponent implements OnInit{
   public previousPage: number = 0;
   public nextPage: number = 0;
   public currentPage: number = 0;
+  public roomType: string = "";
 
   constructor(private residenceService: ResidenceService, private photoService: PhotoService, private route: ActivatedRoute, private hostServise: HostService) {
     this.residences = [];
@@ -47,6 +48,7 @@ export class HostComponent implements OnInit{
       this.id = parseInt(temp);
       this.getHost();
       this.getResidences();
+      this.roomType = "2";
     });
   }
 

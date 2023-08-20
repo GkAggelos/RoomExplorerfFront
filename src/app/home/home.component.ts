@@ -9,9 +9,17 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit{
 
+  public people: string = "";
+
   constructor(private route: Router) {}
 
   public ngOnInit(): void {
+    this.people = "Select number of persons";
+  }
+
+  public NoneSelected(searchForm: NgForm): boolean {
+    if (searchForm.value.people === "Select number of persons") return true;
+    return false;
   }
 
   public onSearch(searchForm: NgForm): void {

@@ -91,7 +91,7 @@
                                     </div> 
                                     <div class="form-group"> 
                                         <label for="roomType">Room Type</label> 
-                                        <select ngModel name="roomType" class="form-control" #roomTypeInput="ngModel" required> 
+                                        <select [(ngModel)]="roomType" name="roomType" class="form-control" #roomTypeInput="ngModel" required> 
                                             <option value="0">Private room</option> 
                                             <option value="1">Shared room</option> 
                                             <option value="2">Whole building</option> 

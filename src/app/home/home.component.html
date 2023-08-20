@@ -18,7 +18,7 @@
                                 <input class="form-control search-slt" type="date" ngModel name="check_out" data-placeholder="Check Out" required aria-required="true">
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-30 p-0">
-                                <select ngModel name="people" class="form-control search-slt" data-placeholder="Select number of persons" id="exampleFormControlSelect1"  required>
+                                <select [ngModel]="people" name="people" class="form-control search-slt"  id="exampleFormControlSelect1"  required>
                                     <option>Select number of persons</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -29,7 +29,7 @@
                                 </select>
                             </div>
                             <div class="col-lg-2.5 col-md-2.5 col-sm-30 p-0">
-                                <button [disabled]="searchForm.invalid" type="submit" class="btn btn-danger wrn-btn">
+                                <button [disabled]="searchForm.invalid || NoneSelected(searchForm)" type="submit" class="btn btn-danger wrn-btn">
                                     Search
                                 </button>
                             </div>

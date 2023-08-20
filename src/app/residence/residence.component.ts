@@ -49,6 +49,7 @@ export class ResidenceComponent implements OnInit{
   public previousPage: number = 0;
   public nextPage: number = 0;
   public currentPage: number = 0;
+  public roomType: string = "";
   
 
   constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private photoService: PhotoService, private jwtHelper: JwtHelperService,
@@ -141,6 +142,9 @@ export class ResidenceComponent implements OnInit{
           this.isParkingChecked = this.residence.has_parking;
           this.isElevatorChecked = this.residence.has_elevator;
           this.isLivingRoomChecked = this.residence.has_living_room;
+          if (this.residence.roomType.toString() == "PRIVATE") this.roomType = "0";
+          if (this.residence.roomType.toString() == "SHARED") this.roomType = "1";
+          if (this.residence.roomType.toString() == "HOUSE") this.roomType = "2";
           this.residenceService.getPhotosByResidenceId(response.id).subscribe(
             (response: Photo[]) => {
               this.photos = response;
