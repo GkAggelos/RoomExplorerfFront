@@ -1,9 +1,9 @@
 .search-sec-has-bg-img{
-    background-image: url('../../assets/images/hamburg.jpeg');
+    background-image: url('../../assets/images/maldives-resort-aerial-view-island-sea.jpg');
     background-position: center;
     background-size: cover;
-    padding: 23rem;
-    height: 80%;
+    padding: 25rem;
+    height: 86%;
 }
 .search-slt{
     display: block;

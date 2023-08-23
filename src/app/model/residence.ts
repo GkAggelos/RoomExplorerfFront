@@ -7,8 +7,11 @@ export interface Residence {
     available_from: string;
     available_till: string;
     pricing: number;
-    location: string;
-    area: number;
+    city: string;
+    area: string;
+    address: string;
+    coordinateX: number;
+    coordinateY: number;
     floor: number;
     peopleCapacity: number;
     bedNumber: number;

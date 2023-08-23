@@ -9,6 +9,8 @@ import { Photo } from '../model/photo';
 import { ActivatedRoute } from '@angular/router';
 import { HostService } from '../service/host.service';
 import { PageResponse } from '../model/pageResponse';
+import * as Leaflet from 'leaflet';
+import "leaflet-control-geocoder";
 
 @Component({
   selector: 'app-host',
@@ -18,7 +20,8 @@ import { PageResponse } from '../model/pageResponse';
 export class HostComponent implements OnInit{
 
   public residences: Residence[];
-  public deleteResidence: Residence = {id:0, reviewsNumber: 0, starsAverage: 1, photo:'',available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+  public deleteResidence: Residence = {id:0, reviewsNumber: 0, starsAverage: 1, photo:'',available_from:'', available_till:'', pricing:0.0, city:'', area:"", address: "" ,floor:0, 
+  coordinateX:0.0, coordinateY:0.0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
   host:{id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo:'', approved:false}, description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false,
   has_parking:false, has_elevator:false, reservations:[]};
   public urls: String[];
@@ -34,12 +37,42 @@ export class HostComponent implements OnInit{
   public nextPage: number = 0;
   public currentPage: number = 0;
   public roomType: string = "";
+  public coordinateX: number = 0.0;
+  public coordinateY: number = 0.0;
+  public NoneCoordinate: boolean = true; 
 
   constructor(private residenceService: ResidenceService, private photoService: PhotoService, private route: ActivatedRoute, private hostServise: HostService) {
     this.residences = [];
     this.urls = [];
     this.names = [];
   }
+
+  map!: Leaflet.Map;
+  markers: Leaflet.Marker[] = [];
+  options = {
+    layers: [
+      Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      })
+    ],
+    zoom: 5,
+    center: { lat: 37.95591229014076, lng: 23.751258552074436 }
+  }
+
+  onMapReady($event: Leaflet.Map) {
+    this.map = $event;
+    var geocoder = (Leaflet.Control as any).geocoder({
+      defaultMarkGeocode: true
+    })
+      .on('markgeocode', (e: { geocode: { center: any; }; }) => {
+        var marker = e.geocode.center;
+        this.coordinateX = marker.lat;
+        this.coordinateY = marker.lng;
+        this.NoneCoordinate = false;
+      })
+      .addTo(this.map);
+  }
+
 
   ngOnInit(): void {
     var temp: string;
@@ -181,14 +214,18 @@ export class HostComponent implements OnInit{
   }
 
   public onAddResidence(addForm: NgForm): void {
-    var residence: Residence = {id:0, reviewsNumber: 0, starsAverage: 1, photo:'', available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+    var residence: Residence = {id:0, reviewsNumber: 0, starsAverage: 1, photo:'', available_from:'', available_till:'', pricing:0.0, city:'', area:"", address:"", floor:0,
+      coordinateX: 0.0, coordinateY: 0.0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
       host:this.host, description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false,
       has_parking:false, has_elevator:false, reservations:[]};
 
     residence.available_from = addForm.value.startDate;
     residence.available_till = addForm.value.endDate;
-    residence.location = addForm.value.location;
+    residence.city = addForm.value.city;
     residence.area = addForm.value.area;
+    residence.address = addForm.value.address;
+    residence.coordinateX = this.coordinateX;
+    residence.coordinateY = this.coordinateY;
     residence.pricing = addForm.value.pricing;
     residence.floor = addForm.value.floor;
     residence.peopleCapacity = addForm.value.peopleCapacity;

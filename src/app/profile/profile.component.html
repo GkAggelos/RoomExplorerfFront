@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <div class="container" id="main-container" *ngIf="ishost && isForAdmin">
    <div class="card  align-self-center">
        <div class="card-body row">
@@ -19,8 +21,8 @@
        </ul>
    </div>
    <button type="button" class="btn btn-success" *ngIf="host.approved === false" (click)="onApproveHost()">Approve this host</button><br><br>
-   <button type="button" class="btn btn-primary">Get residences</button><br><br>
-   <button type="button" class="btn btn-primary">Get critics</button>
+   <button type="button" (click)="downloadResidences(host.id)" class="btn btn-primary"><i class="fa fa-download"></i> Download residences</button><br><br>
+   <button type="button" (click)="downloadReservationsForHost(host.id)" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations</button>
 </div>
 
 <div class="container" id="main-container" *ngIf="isrenter && isForAdmin">
@@ -41,8 +43,8 @@
            <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : <b>{{renter.phoneNumber}}</b></li>
        </ul>
    </div>
-   <button type="button" class="btn btn-primary">Get reservations</button><br><br>
-   <button type="button" class="btn btn-primary">Get critics</button>
+   <button type="button" (click)="downloadReservationsForRenter(renter.id)" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations</button><br><br>
+   <button type="button" class="btn btn-primary"><i class="fa fa-download"></i> Download critics</button>
 </div>
 
 <div class="container" id="main-container" *ngIf="!isForAdmin">
@@ -112,7 +114,7 @@
                                   <td>
                                       <div class="d-flex align-items-center">
                                           <div>
-                                              <div class="h6 mb-0 lh-1">{{reservation.residence.location}}</div>
+                                              <div class="h6 mb-0 lh-1">{{reservation.residence.city}} {{reservation.residence.area}}</div>
                                           </div>
                                       </div>
                                   </td>
@@ -191,7 +193,7 @@
             <form #editForm="ngForm" (ngSubmit)="onEdit(editForm)" >
                <div class="form-group">
                  <label for="username">Username</label>
-                 <input type="text" ngModel name="username" class="form-control" id="edit_username" placeholder="Username" #userNameInput="ngModel" required 
+                 <input type="text" ngModel="{{user.username}}" name="username" class="form-control" id="edit_username" placeholder="Username" #userNameInput="ngModel" required 
                  appAllreadExistsValidator [records]="usernameRecords">
                </div>
                <div class="help-is-error" *ngIf="userNameInput.invalid && userNameInput.touched && !userNameInput.errors?.['allreadyExists']">
@@ -219,21 +221,21 @@
                </div>
                <div class="form-group">
                  <label for="firstName">First Name</label>
-                 <input type="text" ngModel name="firstName" class="form-control" id="edit_firstName" placeholder="FirstName" #firstNameInput="ngModel" required>
+                 <input type="text" ngModel="{{user.firstName}}" name="firstName" class="form-control" id="edit_firstName" placeholder="FirstName" #firstNameInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="firstNameInput.invalid && firstNameInput.touched">
                  First Name is required.
                </div>
                <div class="form-group">
                  <label for="lastName">Last Name</label>
-                 <input type="lastName" ngModel name="lastName" class="form-control" id="edit_lastName" placeholder="LastName" #lastNameInput="ngModel" required>
+                 <input type="lastName" ngModel="{{user.lastName}}" name="lastName" class="form-control" id="edit_lastName" placeholder="LastName" #lastNameInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="lastNameInput.invalid && lastNameInput.touched">
                  Last Name is required.
                </div>
                <div class="form-group">
                  <label for="email">Email Address</label>
-                 <input type="email" ngModel name="email" class="form-control" id="edit_email" placeholder="Email" #emailInput="ngModel" required email
+                 <input type="email" ngModel="{{user.email}}" name="email" class="form-control" id="edit_email" placeholder="Email" #emailInput="ngModel" required email
                  appAllreadExistsValidator [records]="emailRecords">
                </div>
                <div class="help-is-error" *ngIf="emailInput.invalid && emailInput.touched && !emailInput.errors?.['allreadyExists']">
@@ -244,7 +246,7 @@
                </div>
                <div class="form-group">
                  <label for="phoneNumber">Phone Number</label>
-                 <input type="text" ngModel name="phoneNumber" class="form-control" id="edit_phone" placeholder="Phone" #phoneNumberInput="ngModel" required>
+                 <input type="text" ngModel="{{user.phoneNumber}}" name="phoneNumber" class="form-control" id="edit_phone" placeholder="Phone" #phoneNumberInput="ngModel" required>
                </div>
                <div class="help-is-error" *ngIf="phoneNumberInput.invalid && phoneNumberInput.touched">
                  Phone Number is required.

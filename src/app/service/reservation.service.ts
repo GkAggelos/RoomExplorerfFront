@@ -17,6 +17,10 @@ export class ReservationService {
     return this.http.get<Reservation[]>(`${this.reservationUrl}/find/renter/${id}`);
   }
 
+  public getReservationsByHostId(id: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.reservationUrl}/find/host/${id}`);
+  }
+
   public getReservationsByRenterIdPagination(id: number, page: number): Observable<PageResponse> {
     return this.http.get<PageResponse>(`${this.reservationUrl}/find/renter/${id}/${page}`);
   }

@@ -23,6 +23,6 @@ export class HomeComponent implements OnInit{
   }
 
   public onSearch(searchForm: NgForm): void {
-    this.route.navigateByUrl(`/search?location=${searchForm.value.location}&check_in=${searchForm.value.check_in}&check_out=${searchForm.value.check_out}&people=${searchForm.value.people}`);
+    this.route.navigateByUrl(`/search?city=${searchForm.value.city}&check_in=${searchForm.value.check_in}&check_out=${searchForm.value.check_out}&people=${searchForm.value.people}`);
   }
 }

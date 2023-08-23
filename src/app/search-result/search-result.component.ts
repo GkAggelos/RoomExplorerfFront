@@ -13,7 +13,7 @@ import { Photo } from '../model/photo';
 export class SearchResultComponent implements OnInit{
   
   public results: Residence[] = [];
-  public location: String = "";
+  public city: String = "";
   public checkIn: String = "";
   public checkOut: String = "";
   public people: number = 0;
@@ -31,12 +31,12 @@ export class SearchResultComponent implements OnInit{
 
   public getResults(): void {
     this.route.queryParams.subscribe((queryParam) => {
-      this.location = queryParam?.["location"];
+      this.city = queryParam?.["city"];
       this.checkIn = queryParam?.["check_in"];
       this.checkOut = queryParam?.["check_out"];
       this.people = queryParam?.["people"];
 
-      this.residenceService.getResidencesBySearch(this.location, this.checkIn, this.checkOut, this.people).subscribe(
+      this.residenceService.getResidencesBySearch(this.city, this.checkIn, this.checkOut, this.people).subscribe(
         (response: Residence[]) => {
           this.results = response;
           if (this.results.length == 0) this.noResults = true;

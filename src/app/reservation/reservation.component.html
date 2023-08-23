@@ -7,7 +7,8 @@
             <li class="list-group-item" *ngIf="reservation.state.toString() === 'PENDING'"> State : <b class="orange"> {{reservation.state}} </b></li>
             <li class="list-group-item" *ngIf="reservation.state.toString() === 'ACCEPTED'"> State : <b class="green"> {{reservation.state}} </b></li>
             <li class="list-group-item" *ngIf="reservation.state.toString() === 'REJECTED'"> State : <b class="red"> {{reservation.state}} </b></li>
-            <li class="list-group-item">Residence Location : <b> {{reservation.residence.location}} </b></li>
+            <li class="list-group-item">Residence Location : <b> {{reservation.residence.city}} {{reservation.residence.area}} </b></li>
+            <li class="list-group-item">Residence Address : <b> {{reservation.residence.address}}</b></li>
             <li class="list-group-item" *ngIf="reservation.review !== null && reservation.review !== ''">Review : <b> {{reservation.review}} </b></li>
             <li class="list-group-item" *ngIf="reservation.review !== null && reservation.review !== ''"> 
                 <div class="fs-5 mb-3"> 

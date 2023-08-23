@@ -14,6 +14,7 @@ import { RenterService } from '../service/renter.service';
 import { Renter } from '../model/renter';
 import { MessageResponse } from '../model/messageResponse';
 import { PageResponse } from '../model/pageResponse';
+import * as Leaflet from 'leaflet';
 
 @Component({
   selector: 'app-residence',
@@ -50,6 +51,8 @@ export class ResidenceComponent implements OnInit{
   public nextPage: number = 0;
   public currentPage: number = 0;
   public roomType: string = "";
+  public coordinateX: number = 0.0;
+  public coordinateY: number = 0.0;
   
 
   constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private photoService: PhotoService, private jwtHelper: JwtHelperService,
@@ -69,10 +72,61 @@ export class ResidenceComponent implements OnInit{
     this.urls = [];
     this.names = [];
 
-    this.residence = {id:0, photo:'', reviewsNumber: 0, starsAverage: 1, available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+    this.residence = {id:0, photo:'', reviewsNumber: 0, starsAverage: 1, available_from:'', available_till:'', pricing:0.0, city:'', area:"", address:"", floor:0, 
+    coordinateX:0.0, coordinateY: 0.0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
     host:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: '', approved:true}, 
     description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]};
     this.deletePhoto = {id:0, url:'', residence: this.residence};
+  }
+
+  map!: Leaflet.Map;
+  markers: Leaflet.Marker[] = [];
+  options = {
+    layers: [
+      Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      })
+    ],
+    zoom: 10,
+    center: { lat: 37.95591229014076, lng: 23.751258552074436 }
+  }
+
+  initMarker() {
+    const initialMarkers = [
+      {
+        position: { lat: this.coordinateX, lng: this.coordinateY },
+        draggable: false
+      }
+    ];
+    for (let index = 0; index < initialMarkers.length; index++) {
+      const data = initialMarkers[index];
+      const marker = this.generateMarker(data, index);
+      marker.addTo(this.map).bindPopup(`<b>${this.residence.address} <br>  ${this.residence.city}, ${this.residence.area}</b>`);
+      this.map.panTo(data.position);
+      this.markers.push(marker)
+    }
+  }
+
+  generateMarker(data: any, index: number) {
+    return Leaflet.marker(data.position, { draggable: data.draggable })
+  }
+
+  onMapReadyChange($event: Leaflet.Map) {
+    this.map = $event;
+    this.initMarker();
+    var geocoder = (Leaflet.Control as any).geocoder({
+      defaultMarkGeocode: true
+    })
+      .on('markgeocode', (e: { geocode: { center: any; }; }) => {
+        var marker = e.geocode.center;
+        this.coordinateX = marker.lat;
+        this.coordinateY = marker.lng;
+      })
+      .addTo(this.map);
+  }
+
+  onMapReadyShow($event: Leaflet.Map) {
+    this.map = $event;
   }
 
   public ngOnInit(): void {
@@ -142,6 +196,9 @@ export class ResidenceComponent implements OnInit{
           this.isParkingChecked = this.residence.has_parking;
           this.isElevatorChecked = this.residence.has_elevator;
           this.isLivingRoomChecked = this.residence.has_living_room;
+          this.coordinateX = this.residence.coordinateX;
+          this.coordinateY = this.residence.coordinateY;
+          this.initMarker();
           if (this.residence.roomType.toString() == "PRIVATE") this.roomType = "0";
           if (this.residence.roomType.toString() == "SHARED") this.roomType = "1";
           if (this.residence.roomType.toString() == "HOUSE") this.roomType = "2";
@@ -261,6 +318,17 @@ export class ResidenceComponent implements OnInit{
     button.click();
   }
 
+  public onOpenModalSave(): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#saveModal')
+    container?.appendChild(button);
+    button.click();
+  }
+
   public onDeletePhoto(id: number): void {
     this.photoService.deletePhoto(id).subscribe(
       (response: void) => {
@@ -284,8 +352,11 @@ export class ResidenceComponent implements OnInit{
 
     this.residence.available_from = editForm.value.startDate;
     this.residence.available_till = editForm.value.endDate;
-    this.residence.location = editForm.value.location;
+    this.residence.city = editForm.value.city;
     this.residence.area = editForm.value.area;
+    this.residence.address = editForm.value.address;
+    this.residence.coordinateX = this.coordinateX;
+    this.residence.coordinateY = this.coordinateY;
     this.residence.pricing = editForm.value.pricing;
     this.residence.floor = editForm.value.floor;
     this.residence.peopleCapacity = editForm.value.peopleCapacity;
@@ -311,6 +382,7 @@ export class ResidenceComponent implements OnInit{
         this.residence = response;
         this.residence.available_from = response.available_from.substring(0,10);
         this.residence.available_till = response.available_till.substring(0,10);
+        this.onOpenModalSave();
         for (let index = 0; index < this.urls.length; index++) {
           this.photoService.addPhoto({id:0 , url: this.urls[index].toString() , residence: response}).subscribe(
             (response: Photo) => {

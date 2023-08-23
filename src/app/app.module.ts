@@ -18,6 +18,7 @@ import { HostComponent } from './host/host.component';
 import { ResidenceComponent } from './residence/residence.component';
 import { AuthenticateInterceptor } from './interceptor/authenticate.interceptor';
 import { ReservationComponent } from './reservation/reservation.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +38,7 @@ import { ReservationComponent } from './reservation/reservation.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    LeafletModule,
     JwtModule.forRoot({
       config: {
         tokenGetter:  () => localStorage.getItem('access_token')

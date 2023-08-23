@@ -51,6 +51,22 @@ files:before{
     color: #ffa500;
     font-size: .8rem
 }
+#map { 
+  height: 300px; 
+  width: 100%;
+}
+.map-container {
+    position: relative;
+    margin-top: 10px;
+    height: 305px; 
+    width: 100%;
+  }
+  
+  .map-frame {
+    border: 2px solid black;
+    height: 100%;
+  }
+
 .datatable-bottom {
 	padding: 8px 10px;
 }

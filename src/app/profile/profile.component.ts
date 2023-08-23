@@ -14,6 +14,9 @@ import { Admin } from '../model/admin';
 import { ReservationService } from '../service/reservation.service';
 import { Reservation } from '../model/reservation';
 import { PageResponse } from '../model/pageResponse';
+import { User } from '../model/user';
+import { ResidenceService } from '../service/residence.service';
+import { Residence } from '../model/residence';
 
 
 @Component({
@@ -45,12 +48,15 @@ export class ProfileComponent implements OnInit {
   public previousPage: number = 0;
   public nextPage: number = 0;
   public currentPage: number = 0;
+  public user: User;
 
   constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, 
-    private userService: UserService, private router: Router, private adminService: AdminService, private reservationService: ReservationService) {
+    private userService: UserService, private router: Router, private adminService: AdminService, private reservationService: ReservationService,
+    private residenceService: ResidenceService) {
     this.host = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', approved:false, password:'', photo:''};
     this.renter = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
     this.admin = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
+    this.user = {username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
     this.ishost = false;
     this.isrenter = false;
     this.isadmin = false;
@@ -160,6 +166,11 @@ export class ProfileComponent implements OnInit {
             this.host = response;
             this.username = response.username;
             this.email = response.email;
+            this.user.username = this.host.username;
+            this.user.firstName = this.host.firstName;
+            this.user.lastName = this.host.lastName;
+            this.user.email = this.host.email;
+            this.user.phoneNumber = this.host.phoneNumber;
           },
           (error: HttpErrorResponse) => {
             alert(error.message);
@@ -172,7 +183,12 @@ export class ProfileComponent implements OnInit {
           (response: Renter) => {
             this.renter = response;
             this.username = response.username;
-            this.email = response.email
+            this.email = response.email;
+            this.user.username = this.renter.username;
+            this.user.firstName = this.renter.firstName;
+            this.user.lastName = this.renter.lastName;
+            this.user.email = this.renter.email;
+            this.user.phoneNumber = this.renter.phoneNumber;
           },
           (error: HttpErrorResponse) => {
             alert(error.message);
@@ -186,6 +202,11 @@ export class ProfileComponent implements OnInit {
             this.admin = response;
             this.username = response.username;
             this.email = response.email;
+            this.user.username = this.admin.username;
+            this.user.firstName = this.admin.firstName;
+            this.user.lastName = this.admin.lastName;
+            this.user.email = this.admin.email;
+            this.user.phoneNumber = this.admin.phoneNumber;
           },
           (error: HttpErrorResponse) => {
             alert(error.message);
@@ -193,6 +214,57 @@ export class ProfileComponent implements OnInit {
         );
       }
     });
+  }
+
+  public downloadResidences(id: number): void {
+    this.residenceService.getHostResidences(id).subscribe(
+      (response: Residence[]) => {
+        let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+          type: "application/json"
+        });
+        let a = document.createElement("a");
+        a.download = "residences.json";
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public downloadReservationsForRenter(id: number): void {
+    this.reservationService.getReservationsByRenterId(id).subscribe(
+      (response: Reservation[]) => {
+        let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+          type: "application/json"
+        });
+        let a = document.createElement("a");
+        a.download = "reservationsForRenter.json";
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public downloadReservationsForHost(id: number): void {
+    this.reservationService.getReservationsByHostId(id).subscribe(
+      (response: Reservation[]) => {
+        let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+          type: "application/json"
+        });
+        let a = document.createElement("a");
+        a.download = "reservationsForHost.json";
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
   public createRange(number: number){

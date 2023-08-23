@@ -38,10 +38,10 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="location">Location</label>
-                                <input type="text" ngModel="{{residence.location}}" name="location" class="form-control" id="location" placeholder="Type location" #locationInput="ngModel" required> 
-                                <div class="help-is-error" *ngIf="locationInput.invalid && locationInput.touched">
-                                    Location is required.
+                                <label for="city">City</label>
+                                <input type="text" ngModel="{{residence.city}}" name="city" class="form-control" id="city" placeholder="Type city" #cityInput="ngModel" required> 
+                                <div class="help-is-error" *ngIf="cityInput.invalid && cityInput.touched">
+                                    City is required.
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                         <div class="col-md-6">
                             <div class="form-group"> 
                                 <label for="Area">Area</label> 
-                                <input type="number" ngModel="{{residence.area}}" name="area" class="form-control" id="area" placeholder="Type area number" #areaInput="ngModel" required> 
+                                <input type="text" ngModel="{{residence.area}}" name="area" class="form-control" id="area" placeholder="Type area" #areaInput="ngModel" required> 
                             </div>
                             <div class="help-is-error" *ngIf="areaInput.invalid && areaInput.touched">
                                 Area is required.
@@ -191,6 +191,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-15 col-12">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" ngModel="{{residence.address}}" name="address" class="form-control" id="address" placeholder="Type address" #addressInput="ngModel" required>
+                                <div class="help-is-error" *ngIf="addressInput.invalid && addressInput.touched">
+                                    Address is required.
+                                </div> 
+                                <div class="map-container "> 
+                                    <div class="map-frame">
+                                        <div id="map"
+                                            leaflet
+                                            [leafletOptions]="options"
+                                            (leafletMapReady)="onMapReadyChange($event)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row justify-content-center"> 
                         <div class="form-group files">
                             <label class="my-auto">Upload Photo</label> 
@@ -208,6 +228,26 @@
                     </div> 
                     <div class="mt-5 text-right"><button [disabled]="editForm.invalid" type="submit" class="btn btn-primary profile-button">Save changes</button></div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Save Modal -->
+  <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saveModalLabel">Save Succeeded</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Your changes was successfuly saved.</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -359,6 +399,8 @@
         <div class="fs-5 mb-3">
             <b>{{residence.roomType}}</b> at the <b>{{residence.floor}}</b> floor with
             <br>
+            Location: <b>{{residence.city}} {{residence.area}}</b> <br>
+            Address: <b>{{residence.address}}</b> <br>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
             </svg>
@@ -538,6 +580,20 @@
     <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Location</h1>
   
     <hr class="mt-2 mb-5">
+
+    <div class="row">
+        <div class="col-md-12 col-lg-20 col-12">
+            <div class="map-container "> 
+                <div class="map-frame">
+                    <div id="map"
+                        leaflet
+                        [leafletOptions]="options"
+                        (leafletMapReady)="onMapReadyShow($event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Host informations</h1>
   

@@ -14,7 +14,8 @@ export class ReservationComponent implements OnInit {
 
   public reservation: Reservation = {id:0, stars:0, review:'', reservationDate:'', arrivalDate:'', leaveDate:'', state:-1, 
             renter:{id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: ''},
-            residence:{id:0, reviewsNumber: 0, starsAverage: 1, photo:'', available_from:'', available_till:'', pricing:0.0, location:'', area:0, floor:0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+            residence:{id:0, reviewsNumber: 0, starsAverage: 1, photo:'', available_from:'', available_till:'', pricing:0.0, city:'', area:"", address:"" ,floor:0, 
+            coordinateX:0.0, coordinateY:0.0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
             host:{ id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: '', approved:true}, 
             description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]}
   };
