@@ -1,4 +1,4 @@
-<div class="container card-0 justify-content-center "> 
+<div class="container card-0 justify-content-center" *ngIf="!unauthorized"> 
     <div class="card-body px-sm-4 px-0"> 
         <div class="row justify-content-center mb-5"> 
             <div class="col-md-10 col"> 
@@ -208,7 +208,7 @@
     </div>
 </div>
 
-<div class="container" id="main-container">
+<div class="container" id="main-container" *ngIf="!unauthorized">
     <div class="row">
         <div class="col-12 mb-3 mb-lg-5">
             <div class="overflow-hidden card table-nowrap table-card">
@@ -320,4 +320,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div *ngIf="unauthorized">
+    <h1>Error Unauthorized</h1>
 </div>

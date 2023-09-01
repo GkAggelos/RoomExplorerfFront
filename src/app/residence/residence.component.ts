@@ -15,6 +15,9 @@ import { Renter } from '../model/renter';
 import { MessageResponse } from '../model/messageResponse';
 import { PageResponse } from '../model/pageResponse';
 import * as Leaflet from 'leaflet';
+import { Message } from '../model/message';
+import { MessageService } from '../service/message.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-residence',
@@ -43,20 +46,33 @@ export class ResidenceComponent implements OnInit{
   public checkIn: string = "";
   public checkOut: string = "";
   public renter: Renter = {id:0, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: ''};
-  public recordsNumber: number = 0;
-  public fromRecord: number = 0;
-  public toRecord: number = 0;
-  public pages: number = 1;
-  public previousPage: number = 0;
-  public nextPage: number = 0;
-  public currentPage: number = 0;
+  public recordsNumberForReservation: number = 0;
+  public fromRecordForReservation: number = 0;
+  public toRecordForReservation: number = 0;
+  public pagesForReservation: number = 1;
+  public previousPageForReservation: number = 0;
+  public nextPageForReservation: number = 0;
+  public currentPageForReservation: number = 0;
   public roomType: string = "";
   public coordinateX: number = 0.0;
   public coordinateY: number = 0.0;
+  public recordsNumberForMessage: number = 0;
+  public fromRecordForMessage: number = 0;
+  public toRecordForMessage: number = 0;
+  public pagesForMessage: number = 1;
+  public previousPageForMessage: number = 0;
+  public nextPageForMessage: number = 0;
+  public currentPageForMessage: number = 0;
+  public messages: Message[] = [];
+  public replyMessage: string = '';
+  public messageId: number = 0;
+  public deleteMessage: string = '';
+  public deleteMessageId: number = 0;
+  public unauthorized: boolean = false;
   
 
   constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private photoService: PhotoService, private jwtHelper: JwtHelperService,
-    private reservationService: ReservationService, private renterService: RenterService) { 
+    private reservationService: ReservationService, private renterService: RenterService, private messageService: MessageService) { 
     this.ishost = false; 
     this.isrenter = false;
     this.id = 0;
@@ -155,7 +171,12 @@ export class ResidenceComponent implements OnInit{
               this.renter = response;
             },
             (error: HttpErrorResponse) => {
-              alert(error.message);
+              if (error.status == 403) {
+                this.unauthorized = true;
+              }
+              else {
+                alert(error.message);
+              }
             }
           );
         }
@@ -164,24 +185,65 @@ export class ResidenceComponent implements OnInit{
       this.reservationService.getReservationsByResidenceIdPagination(this.id, 0).subscribe(
         (response: PageResponse) => {
           this.reservations = response.response.content;
-          this.recordsNumber = response.recordCount;
 
-          if (response.recordCount > 0) this.fromRecord = 1;
-          if (response.recordCount <= 10) this.toRecord = response.recordCount;
-          else this.toRecord = 10;
+          for (let index = 0; index < this.reservations.length; index++) {
+            if (this.reservations[index].review === null || this.reservations[index].review === '') {
+              response.recordCount  -= 1;
+            }
+          }
+
+          this.recordsNumberForReservation = response.recordCount;
+
+          if (response.recordCount > 0) this.fromRecordForReservation = 1;
+          if (response.recordCount <= 10) this.toRecordForReservation = response.recordCount;
+          else this.toRecordForReservation = 10;
           
           var number = Math.floor(response.recordCount / 10);
-          if (response.recordCount % 10 !== 0)  this.pages = number + 1;
-          else this.pages = number;
+          if (response.recordCount % 10 !== 0)  this.pagesForReservation = number + 1;
+          else this.pagesForReservation = number;
           
-          this.previousPage = -1;
-          if (this.recordsNumber !== this.toRecord) this.nextPage = 1;
-          else this.nextPage = -1 
+          this.previousPageForReservation = -1;
+          if (this.recordsNumberForReservation !== this.toRecordForReservation) this.nextPageForReservation = 1;
+          else this.nextPageForReservation = -1;
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          if (error.status == 403) {
+            this.unauthorized = true;
+          }
+          else {
+            alert(error.message);
+          }
         }
       );
+
+      if (this.ishost) {
+        this.messageService.getMessagesByResidenceIdPegination(this.id, 0).subscribe(
+          (response: PageResponse) => {
+            this.messages = response.response.content;
+            this.recordsNumberForMessage = response.recordCount;
+
+            if (response.recordCount > 0) this.fromRecordForMessage = 1;
+            if (response.recordCount <= 10) this.toRecordForMessage = response.recordCount;
+            else this.toRecordForMessage = 10;
+            
+            var number = Math.floor(response.recordCount / 10);
+            if (response.recordCount % 10 !== 0)  this.pagesForMessage = number + 1;
+            else this.pagesForMessage = number;
+            
+            this.previousPageForMessage = -1;
+            if (this.recordsNumberForMessage !== this.toRecordForMessage) this.nextPageForMessage = 1;
+            else this.nextPageForMessage = -1;   
+          },
+          (error: HttpErrorResponse) => {
+            if (error.status == 403) {
+              this.unauthorized = true;
+            }
+            else {
+              alert(error.message);
+            }
+          } 
+        );
+      }
 
       this.residenceService.getResidenceById(this.id).subscribe(
         (response: Residence) => {
@@ -207,7 +269,12 @@ export class ResidenceComponent implements OnInit{
               this.photos = response;
             },
             (error: HttpErrorResponse) => {
-              alert(error.message);
+              if (error.status == 403) {
+                this.unauthorized = true;
+              }
+              else {
+                alert(error.message);
+              }
             }
           );
         },
@@ -238,7 +305,12 @@ export class ResidenceComponent implements OnInit{
         button.click();
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -247,29 +319,210 @@ export class ResidenceComponent implements OnInit{
     return new Array(number);
   }
 
-  public onChangePage(page: number) {
+  public onChangePageForReservation(page: number) {
     this.reservationService.getReservationsByResidenceIdPagination(this.id, page).subscribe(
       (response: PageResponse) => {
         this.reservations = response.response.content;
-        this.currentPage = page;
+        this.currentPageForReservation = page;
 
-        this.fromRecord = 1;
-        if (response.recordCount <= 10) this.toRecord = response.recordCount;
-        else this.toRecord = 10;
+        this.fromRecordForReservation = 1;
+        if (response.recordCount <= 10) this.toRecordForReservation = response.recordCount;
+        else this.toRecordForReservation = 10;
         for (let index = 0; index < page; index++) {
-          this.fromRecord += 10;
-          this.toRecord += 10;
+          this.fromRecordForReservation += 10;
+          this.toRecordForReservation += 10;
         }
-        if (this.toRecord > response.recordCount) this.toRecord = response.recordCount;
+        if (this.toRecordForReservation > response.recordCount) this.toRecordForReservation = response.recordCount;
 
-        this.previousPage = page - 1;
-        if (response.recordCount !== this.toRecord) this.nextPage = page + 1;
-        else this.nextPage = -1; 
+        this.previousPageForReservation = page - 1;
+        if (response.recordCount !== this.toRecordForReservation) this.nextPageForReservation = page + 1;
+        else this.nextPageForReservation = -1; 
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
+      }
+    );
+  }
+
+  public onChangePageForMessage(page: number) {
+    this.messageService.getMessagesByResidenceIdPegination(this.id, page).subscribe(
+      (response: PageResponse) => {
+        this.messages = response.response.content;
+        this.currentPageForMessage = page;
+
+        this.fromRecordForMessage = 1;
+        if (response.recordCount <= 10) this.toRecordForMessage = response.recordCount;
+        else this.toRecordForMessage = 10;
+        for (let index = 0; index < page; index++) {
+          this.fromRecordForMessage += 10;
+          this.toRecordForMessage += 10;
+        }
+        if (this.toRecordForMessage > response.recordCount) this.toRecordForMessage = response.recordCount;
+
+        this.previousPageForMessage = page - 1;
+        if (response.recordCount !== this.toRecordForMessage) this.nextPageForMessage = page + 1;
+        else this.nextPageForMessage = -1; 
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
+      }
+    );
+  }
+
+  public onDeleteMessage(id: number): void {
+    this.messageService.deleteMessage(id).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.messageService.getMessagesByResidenceIdPegination(this.id, 0).subscribe(
+          (response: PageResponse) => {
+            this.messages = response.response.content;
+            this.recordsNumberForMessage = response.recordCount;
+
+            if (response.recordCount > 0) this.fromRecordForMessage = 1;
+            if (response.recordCount <= 10) this.toRecordForMessage = response.recordCount;
+            else this.toRecordForMessage = 10;
+        
+            var number = Math.floor(response.recordCount / 10);
+            if (response.recordCount % 10 !== 0)  this.pagesForMessage = number + 1;
+            else this.pagesForMessage = number;
+        
+            this.previousPageForMessage = -1;
+            if (this.recordsNumberForMessage !== this.toRecordForMessage) this.nextPageForMessage = 1;
+            else this.nextPageForMessage = -1
+
+            this.currentPageForMessage = 0;
+          },
+          (error: HttpErrorResponse) => {
+            if (error.status == 403) {
+              this.unauthorized = true;
+            }
+            else {
+              alert(error.message);
+            }
+          }
+        );
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     );
+  }
+
+  public onAddMessage(addForm: NgForm, messageId: number): void {
+    var message: Message = {id:0, residence:{id:0, photo:'', reviewsNumber: 0, starsAverage: 1, available_from:'', available_till:'', pricing:0.0, city:'', area:"", address:"", floor:0, 
+                            coordinateX:0.0, coordinateY: 0.0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+                            host:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: '', approved:true}, 
+                            description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, 
+                            has_elevator:false, reservations:[]},
+                            renter:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: ''}, sender:'host', date: '', message:'' }
+    this.messageService.getMessageById(messageId).subscribe(
+      (respnose: Message) => {
+        message.residence = respnose.residence;
+        message.renter = respnose.renter;
+        message.message = addForm.value.message;
+        var date = Date.now();
+        message.date = (moment(date)).format('YYYY-MM-DDTHH:mm:ss').toString();
+        const button = document.getElementById('reply-message-form');
+        button?.click();
+        this.messageService.addMessage(message).subscribe(
+          (respnose: Message) => {
+            this.messageService.getMessagesByResidenceIdPegination(this.id, 0).subscribe(
+              (response: PageResponse) => {
+                this.onOpenModalSendedMessage();
+                this.messages = response.response.content;
+                this.recordsNumberForMessage = response.recordCount;
+    
+                if (response.recordCount > 0) this.fromRecordForMessage = 1;
+                if (response.recordCount <= 10) this.toRecordForMessage = response.recordCount;
+                else this.toRecordForMessage = 10;
+            
+                var number = Math.floor(response.recordCount / 10);
+                if (response.recordCount % 10 !== 0)  this.pagesForMessage = number + 1;
+                else this.pagesForMessage = number;
+            
+                this.previousPageForMessage = -1;
+                if (this.recordsNumberForMessage !== this.toRecordForMessage) this.nextPageForMessage = 1;
+                else this.nextPageForMessage = -1
+    
+                this.currentPageForMessage = 0;
+              },
+              (error: HttpErrorResponse) => {
+                if (error.status == 403) {
+                  this.unauthorized = true;
+                }
+                else {
+                  alert(error.message);
+                }
+              }
+            );
+          },
+          (error: HttpErrorResponse) => {
+            if (error.status == 403) {
+              this.unauthorized = true;
+            }
+            else {
+              alert(error.message);
+            }
+          }
+        );
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
+      }
+    );
+  }
+
+  
+  public onSendMessage(addForm: NgForm): void {
+    var message: Message = {id:0, residence:{id:0, photo:'', reviewsNumber: 0, starsAverage: 1, available_from:'', available_till:'', pricing:0.0, city:'', area:"", address:"", floor:0, 
+                            coordinateX:0.0, coordinateY: 0.0, peopleCapacity:0, roomType:0, comment:'', photos:[], bedNumber:0, bathroomNumber:0, bedroomNumber:0, acreage:0,
+                            host:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: '', approved:true}, 
+                            description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, 
+                            has_elevator:false, reservations:[]},
+                            renter:{ id:1, username:'', firstName:'', lastName:'', password:'', email:'', phoneNumber: '', photo: ''}, sender:'renter', date: '', message:'' }
+    message.residence = this.residence;
+    message.renter = this.renter;
+    message.message = addForm.value.message;
+    var date = Date.now();
+    message.date = (moment(date)).format('YYYY-MM-DDTHH:mm:ss').toString();
+    const button = document.getElementById('send-message-form');
+    button?.click();
+    this.messageService.addMessage(message).subscribe(
+      (respnose: Message) => {
+        this.onOpenModalSendedMessage();
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
+      }
+    );
+  }
+
+  public showDate(date: string): string {
+    return date.substring(0,10);
+  }
+
+  public showTime(date: string): string {
+    return date.substring(11,19);
   }
 
 
@@ -278,7 +531,7 @@ export class ResidenceComponent implements OnInit{
     this.reservationService.updateReservation(reservation).subscribe(
       (response: Reservation) => {
         console.log(response);
-        this.reservationService.getReservationsByResidenceIdPagination(this.id, this.currentPage).subscribe(
+        this.reservationService.getReservationsByResidenceIdPagination(this.id, this.currentPageForReservation).subscribe(
           (response: PageResponse) => {
             this.reservations = response.response.content;  
           },
@@ -288,7 +541,12 @@ export class ResidenceComponent implements OnInit{
         );
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -313,7 +571,7 @@ export class ResidenceComponent implements OnInit{
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     this.deletePhoto = photo;
-    button.setAttribute('data-target', '#deleteModal')
+    button.setAttribute('data-target', '#deleteModal');
     container?.appendChild(button);
     button.click();
   }
@@ -324,7 +582,55 @@ export class ResidenceComponent implements OnInit{
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
-    button.setAttribute('data-target', '#saveModal')
+    button.setAttribute('data-target', '#saveModal');
+    container?.appendChild(button);
+    button.click();
+  }
+
+  public onOpenModalReplyMessage(message: string, messageId: number): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    this.messageId = messageId;
+    this.replyMessage = message;
+    button.setAttribute('data-target', '#replyMessageModal');
+    container?.appendChild(button);
+    button.click();
+  }
+
+  public onOpenModalDeleteMessage(message: string, messageId: number): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    this.deleteMessageId = messageId;
+    this.deleteMessage = message;
+    button.setAttribute('data-target', '#deleteMessageModal');
+    container?.appendChild(button);
+    button.click();
+  }
+
+  public onOpenModalSendedMessage(): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#sendedMessageModal');
+    container?.appendChild(button);
+    button.click();
+  }
+
+  public onOpenModalSendMessage(): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#sendMessageModal');
     container?.appendChild(button);
     button.click();
   }
@@ -338,12 +644,22 @@ export class ResidenceComponent implements OnInit{
             this.photos = response;
           },
           (error: HttpErrorResponse) => {
-            alert(error.message);
+            if (error.status == 403) {
+              this.unauthorized = true;
+            }
+            else {
+              alert(error.message);
+            }
           }
         );
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -389,13 +705,23 @@ export class ResidenceComponent implements OnInit{
               console.log(response);
             },
             (error: HttpErrorResponse) => {
-              alert(error.message);
+              if (error.status == 403) {
+                this.unauthorized = true;
+              }
+              else {
+                alert(error.message);
+              }
             }
           );
         }
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }

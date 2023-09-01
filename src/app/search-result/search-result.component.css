@@ -92,3 +92,12 @@ label {
     border-width: 0 3px 3px 0;
     transform: rotate(45deg) scale(2)
 }
+
+.datatable-info {
+	margin: 7px 0;
+    padding-left: 20px;
+}
+
+.pagination {
+    padding-left: 20rem;
+}

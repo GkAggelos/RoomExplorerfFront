@@ -4,31 +4,27 @@
 
     <!-- Page Heading -->
     <h1 class="my-4">Search results</h1>
-
+        <div class="d-flex flex-row">
+            <div class="datatable-info">Showing {{fromRecord}} to {{toRecord}} of {{recordsNumber}} entries</div>
             <!-- Pagination -->
             <ul class="pagination justify-content-center">
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                    <a class="page-link" role="button" (click)="onChangePage(nextPage)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">1</a>
+                <li class="page-item" *ngFor="let item of createRange(pages); let i=index">
+                    <a class="page-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                    <a class="page-link" role="button" (click)="onChangePage(nextPage)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
                 </li>
             </ul>
+        </div>
 
     <div class="d-sm-flex"> 
         <div class="me-sm-2"> 
@@ -44,53 +40,60 @@
                         <div class="my-1"> 
                             <label class="tick">
                                 Less than 50 
-                                <input type="checkbox" checked="checked"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="priceLess50"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 50 - 100 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price50_100"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 100 - 200 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price100_200"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 200 - 350 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price200_350"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 350 - 600 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price350_600"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 600 - 1,000 
-                                <input type="checkbox" checked> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price600_1000"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 1,000 and Above 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="priceAbove1000"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
-                    </div> 
+                    </div>
+                    {{priceLess50}}
+                    {{price50_100}} 
+                    {{price100_200}} 
+                    {{price200_350}} 
+                    {{price350_600}} 
+                    {{price600_1000}} 
+                    {{priceAbove1000}} 
                 </div> 
                 <div class="box border-bottom"> 
                     <div class="box-label text-uppercase d-flex align-items-center">
@@ -100,25 +103,28 @@
                         <div class="my-1"> 
                             <label class="tick">
                                 Private Room 
-                                <input type="checkbox" checked="checked"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="privateRoom"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Shared Room 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="sharedRoom"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Whole Building 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="wholeBuilding"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
-                    </div> 
+                    </div>
+                    {{privateRoom}}
+                    {{sharedRoom}}
+                    {{wholeBuilding}} 
                 </div> 
                 <div class="box border-bottom"> 
                     <div class="box-label text-uppercase d-flex align-items-center">
@@ -128,60 +134,68 @@
                         <div class="my-1"> 	
                             <label class="tick">
                                 Parking 
-                                <input type="checkbox" checked="checked"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="parking"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Living Room 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="livingRoom"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Wifi 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="wifi"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Heating 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="heating"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Air Condition 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="airCondition"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Cuisine 
-                                <input type="checkbox" checked> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="cuisine"> 
                                 <span class="check"></span> 
                             </label> 
                         </div>
                         <div class="my-1"> 
                             <label class="tick">
                                 TV 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="tv"> 
                                 <span class="check"></span> 
                             </label> 
                         </div>
                         <div class="my-1"> 
                             <label class="tick">
                                 Elevator 
-                                <input type="checkbox"> 
+                                <input type="checkbox" (click)="getResults()" [(ngModel)]="elevator"> 
                                 <span class="check"></span> 
                             </label> 
                         </div>  
-                    </div> 
+                    </div>
+                    {{parking}}
+                    {{livingRoom}}
+                    {{wifi}}
+                    {{heating}}
+                    {{airCondition}}
+                    {{cuisine}}
+                    {{tv}}
+                    {{elevator}} 
                 </div> 
                 <div class="box border-bottom"> 
                     <div class="box-label text-uppercase d-flex align-items-center">
@@ -278,30 +292,28 @@
             </div>
         </div>
     </div>
-    <!-- Pagination -->
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">3</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-    </ul>
+
+    <div class="d-flex flex-row">
+        <div class="datatable-info">Showing {{fromRecord}} to {{toRecord}} of {{recordsNumber}} entries</div>
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" role="button" (click)="onChangePage(nextPage)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item" *ngFor="let item of createRange(pages); let i=index">
+                <a class="page-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" role="button" (click)="onChangePage(nextPage)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
     
 </div>

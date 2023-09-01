@@ -41,8 +41,8 @@ export class ResidenceService {
     return this.http.delete<any>(`${this.residenceUrl}/delete/${id}`);
   }
 
-  public getResidencesBySearch(city: String, checkIn: String, checkOut: String, people: number): Observable<Residence[]> {
-    return this.http.get<Residence[]>(`${this.residenceUrl}/search?city=${city}&arrivalDate=${checkIn}&leaveDate=${checkOut}&peopleCapacity=${people}`);
+  public getResidencesBySearchPagination(city: String, checkIn: String, checkOut: String, people: number, page: number): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.residenceUrl}/search/${page}?city=${city}&arrivalDate=${checkIn}&leaveDate=${checkOut}&peopleCapacity=${people}`);
   }
 
 }

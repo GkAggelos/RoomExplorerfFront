@@ -39,7 +39,8 @@ export class HostComponent implements OnInit{
   public roomType: string = "";
   public coordinateX: number = 0.0;
   public coordinateY: number = 0.0;
-  public NoneCoordinate: boolean = true; 
+  public NoneCoordinate: boolean = true;
+  public unauthorized: boolean = false; 
 
   constructor(private residenceService: ResidenceService, private photoService: PhotoService, private route: ActivatedRoute, private hostServise: HostService) {
     this.residences = [];
@@ -92,7 +93,12 @@ export class HostComponent implements OnInit{
         console.log(response);
       },
       (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
           alert(error.message);
+        }
       }
     );
   }
@@ -122,7 +128,12 @@ export class HostComponent implements OnInit{
         else this.nextPage = -1; 
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -148,7 +159,12 @@ export class HostComponent implements OnInit{
         else this.nextPage = -1 
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -162,7 +178,6 @@ export class HostComponent implements OnInit{
         reader.onload=(events:any)=>{
           this.urls.push(events.target.result);
         }
-        
       }
     }
   }
@@ -191,12 +206,22 @@ export class HostComponent implements OnInit{
             this.currentPage = 0;
           },
           (error: HttpErrorResponse) => {
-            alert(error.message);
+            if (error.status == 403) {
+              this.unauthorized = true;
+            }
+            else {
+              alert(error.message);
+            }
           }
         );
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -254,7 +279,12 @@ export class HostComponent implements OnInit{
               console.log(response);
             },
             (error: HttpErrorResponse) => {
-              alert(error.message);
+              if (error.status == 403) {
+                this.unauthorized = true;
+              }
+              else {
+                alert(error.message);
+              }
             }
           );
         }
@@ -278,12 +308,22 @@ export class HostComponent implements OnInit{
             this.currentPage = 0;
           },
           (error: HttpErrorResponse) => {
-            alert(error.message);
+            if (error.status == 403) {
+              this.unauthorized = true;
+            }
+            else {
+              alert(error.message);
+            }
           }
         );
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }

@@ -19,6 +19,7 @@ import { ResidenceComponent } from './residence/residence.component';
 import { AuthenticateInterceptor } from './interceptor/authenticate.interceptor';
 import { ReservationComponent } from './reservation/reservation.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 @NgModule({
   declarations: [
     AppComponent,

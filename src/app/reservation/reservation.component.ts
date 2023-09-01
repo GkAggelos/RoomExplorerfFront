@@ -20,6 +20,7 @@ export class ReservationComponent implements OnInit {
             description:'', has_living_room: false, has_wifi:false, has_heating:false, has_air_condition:false, has_cuisine:false, has_tv:false, has_parking:false, has_elevator:false, reservations:[]}
   };
   public id: number = 0;
+  public unauthorized: boolean = false;
 
   constructor(private reservationService: ReservationService, private route: ActivatedRoute) {}
 
@@ -31,7 +32,12 @@ export class ReservationComponent implements OnInit {
         this.reservation = response;
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -51,7 +57,12 @@ export class ReservationComponent implements OnInit {
           this.reservation = response;
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          if (error.status == 403) {
+            this.unauthorized = true;
+          }
+          else {
+            alert(error.message);
+          }
         }
       );
     });

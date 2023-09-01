@@ -28,6 +28,7 @@ export class AdminComponent implements OnInit {
   public renterPreviousPage: number = 0;
   public renterNextPage: number = 0;
   public renterCurrentPage: number = 0;
+  public unauthorized: boolean = false;
 
   constructor(private hostService: HostService, private renterService: RenterService) { this.hosts = []; this.renters = [];}
 
@@ -55,7 +56,12 @@ export class AdminComponent implements OnInit {
         else this.hostNextPage = -1; 
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -79,7 +85,12 @@ export class AdminComponent implements OnInit {
         else this.renterNextPage = -1; 
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -109,7 +120,12 @@ export class AdminComponent implements OnInit {
         else this.hostNextPage = -1; 
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }
@@ -135,7 +151,12 @@ export class AdminComponent implements OnInit {
         else this.renterNextPage = -1; 
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
       }
     );
   }

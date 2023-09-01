@@ -71,7 +71,13 @@ files:before{
 	padding: 8px 10px;
 }
 .datatable-pagination {
-    padding-right: 20px;
+  padding-right: 20px;
+}
+.for-renter {
+  padding-top: 0%;
+  padding-right: 20px;
+  padding-left: 55%;
+  padding-bottom: 1%;
 }
 .datatable-bottom > nav:first-child,
 .datatable-bottom > div:first-child {
@@ -83,7 +89,7 @@ files:before{
 }
 .datatable-info {
 	margin: 7px 0;
-    padding-left: 20px;
+  padding-left: 20px;
 }
 .datatable-pagination ul {
 	margin: 0;
