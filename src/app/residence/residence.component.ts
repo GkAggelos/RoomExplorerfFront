@@ -186,12 +186,14 @@ export class ResidenceComponent implements OnInit{
         (response: PageResponse) => {
           this.reservations = response.response.content;
 
-          for (let index = 0; index < this.reservations.length; index++) {
-            if (this.reservations[index].review === null || this.reservations[index].review === '') {
-              response.recordCount  -= 1;
+          if (this.isrenter) {
+            for (let index = 0; index < this.reservations.length; index++) {
+              if (this.reservations[index].review === null || this.reservations[index].review === '') {
+                response.recordCount  -= 1;
+              }
             }
           }
-
+          
           this.recordsNumberForReservation = response.recordCount;
 
           if (response.recordCount > 0) this.fromRecordForReservation = 1;
