@@ -65,6 +65,7 @@ export class SearchResultComponent implements OnInit{
       this.residenceService.getResidencesBySearchPagination(this.city, this.checkIn, this.checkOut, this.people, 0).subscribe(
         (response: PageResponse) => {
           this.results = response.response;
+          
           this.recordsNumber = response.recordCount;
 
           if (response.recordCount > 0) this.fromRecord = 1;
