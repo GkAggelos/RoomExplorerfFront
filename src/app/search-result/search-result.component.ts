@@ -185,7 +185,7 @@ export class SearchResultComponent implements OnInit{
     if (this.sharedRoom) this.roomType = this.roomType.concat('s');
     if (this.wholeBuilding) this.roomType = this.roomType.concat('w');
 
-    this.rooter.navigateByUrl(`/search?city=Athens&check_in=2023-03-01&check_out=2023-03-02&people=1&roomType=${this.roomType}&price=${this.price}&parking=${this.parking}&livingRoom=${this.livingRoom}&wifi=${this.wifi}&heating=${this.heating}&airCondition=${this.airCondition}&cuisine=${this.cuisine}&tv=${this.tv}&elevator=${this.elevator}`);
+    this.rooter.navigateByUrl(`/search?city=${this.city}&check_in=${this.checkIn}&check_out=${this.checkOut}&people=${this.people}&roomType=${this.roomType}&price=${this.price}&parking=${this.parking}&livingRoom=${this.livingRoom}&wifi=${this.wifi}&heating=${this.heating}&airCondition=${this.airCondition}&cuisine=${this.cuisine}&tv=${this.tv}&elevator=${this.elevator}`);
   }
 
   onChangePage(page: number): void {
