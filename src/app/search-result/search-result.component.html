@@ -1,6 +1,6 @@
 
 <!-- Page Content -->
-<div class="container" *ngIf="!noResults">
+<div class="container">
 
     <!-- Page Heading -->
     <h1 class="my-4">Search results</h1>
@@ -58,61 +58,61 @@
                     <div id="inner-box" class="collapse show"> 
                         <div class="my-1"> 
                             <label class="tick">
-                                Less than 50 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="priceLess50"> 
+                                Any price 
+                                <input type="radio" name="price" value="anyPrice" (click)="getResultsFilter('anyPrice')" [(ngModel)]="price"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
+                                Less than 50 
+                                <input type="radio" name="price" value="priceLess50" (click)="getResultsFilter('priceLess50')" [(ngModel)]="price"> 
+                                <span class="check"></span> 
+                            </label>
+                        </div> 
+                        <div class="my-1"> 
+                            <label class="tick">
                                 50 - 100 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price50_100"> 
+                                <input  type="radio" name="price" value="price50_100" (click)="getResultsFilter('price50_100')" [(ngModel)]="price"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 100 - 200 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price100_200"> 
+                                <input type="radio" name="price" value="price100_200" (click)="getResultsFilter('price100_200')" [(ngModel)]="price"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 200 - 350 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price200_350"> 
+                                <input type="radio" name="price" value="price200_350" (click)="getResultsFilter('price200_350')" [(ngModel)]="price"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 350 - 600 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price350_600"> 
+                                <input type="radio" name="price" value="price350_600" (click)="getResultsFilter('price350_600')" [(ngModel)]="price"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 600 - 1,000 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="price600_1000"> 
+                                <input type="radio" name="price" value="price600_1000" (click)="getResultsFilter('price600_1000')" [(ngModel)]="price"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 1,000 and Above 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="priceAbove1000"> 
+                                <input type="radio" name="price" value="priceAbove1000" (click)="getResultsFilter('priceAbove1000')" [(ngModel)]="price"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                     </div>
-                    {{priceLess50}}
-                    {{price50_100}} 
-                    {{price100_200}} 
-                    {{price200_350}} 
-                    {{price350_600}} 
-                    {{price600_1000}} 
-                    {{priceAbove1000}} 
                 </div> 
                 <div class="box border-bottom"> 
                     <div class="box-label text-uppercase d-flex align-items-center">
@@ -122,28 +122,25 @@
                         <div class="my-1"> 
                             <label class="tick">
                                 Private Room 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="privateRoom"> 
+                                <input type="checkbox" (click)="getResultsFilter('privateRoom')" [(ngModel)]="privateRoom"> 
                                 <span class="check"></span> 
-                            </label> 
+                            </label>
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Shared Room 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="sharedRoom"> 
+                                <input type="checkbox" [(ngModel)]="sharedRoom" (click)="getResultsFilter('sharedRoom')"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Whole Building 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="wholeBuilding"> 
+                                <input type="checkbox" (click)="getResultsFilter('wholeBuilding')" [(ngModel)]="wholeBuilding"> 
                                 <span class="check"></span> 
                             </label> 
-                        </div> 
+                        </div>
                     </div>
-                    {{privateRoom}}
-                    {{sharedRoom}}
-                    {{wholeBuilding}} 
                 </div> 
                 <div class="box border-bottom"> 
                     <div class="box-label text-uppercase d-flex align-items-center">
@@ -153,121 +150,64 @@
                         <div class="my-1"> 	
                             <label class="tick">
                                 Parking 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="parking"> 
+                                <input type="checkbox" (click)="getResultsFilter('parking')" [(ngModel)]="parking"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Living Room 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="livingRoom"> 
+                                <input type="checkbox" (click)="getResultsFilter('livingRoom')" [(ngModel)]="livingRoom"> 
                                 <span class="check"></span> 
-                            </label> 
+                            </label>
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Wifi 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="wifi"> 
+                                <input type="checkbox" (click)="getResultsFilter('wifi')" [(ngModel)]="wifi"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Heating 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="heating"> 
+                                <input type="checkbox" (click)="getResultsFilter('heating')" [(ngModel)]="heating"> 
                                 <span class="check"></span> 
-                            </label> 
+                            </label>
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Air Condition 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="airCondition"> 
+                                <input type="checkbox" (click)="getResultsFilter('airCondition')" [(ngModel)]="airCondition"> 
                                 <span class="check"></span> 
                             </label> 
                         </div> 
                         <div class="my-1"> 
                             <label class="tick">
                                 Cuisine 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="cuisine"> 
+                                <input type="checkbox" (click)="getResultsFilter('cuisine')" [(ngModel)]="cuisine"> 
                                 <span class="check"></span> 
                             </label> 
                         </div>
                         <div class="my-1"> 
                             <label class="tick">
                                 TV 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="tv"> 
+                                <input type="checkbox" (click)="getResultsFilter('tv')" [(ngModel)]="tv"> 
                                 <span class="check"></span> 
                             </label> 
                         </div>
                         <div class="my-1"> 
                             <label class="tick">
                                 Elevator 
-                                <input type="checkbox" (click)="getResults()" [(ngModel)]="elevator"> 
+                                <input type="checkbox" (click)="getResultsFilter('elevator')" [(ngModel)]="elevator"> 
                                 <span class="check"></span> 
-                            </label> 
+                            </label>
                         </div>  
                     </div>
-                    {{parking}}
-                    {{livingRoom}}
-                    {{wifi}}
-                    {{heating}}
-                    {{airCondition}}
-                    {{cuisine}}
-                    {{tv}}
-                    {{elevator}} 
-                </div> 
-                <div class="box border-bottom"> 
-                    <div class="box-label text-uppercase d-flex align-items-center">
-                        Room Facilities 
-                    </div> 
-                    <div id="room-facilities" class="collapses show"> 
-                        <div class="my-1"> 
-                            <label class="tick">
-                                Air Condentioning 
-                                <input type="checkbox"> 
-                                <span class="check"></span> 
-                            </label> 
-                        </div> 
-                        <div class="my-1"> 
-                            <label class="tick">
-                                Desk 
-                                <input type="checkbox"> 
-                                <span class="check"></span> 
-                            </label> 
-                        </div> 
-                        <div class="my-1"> 
-                            <label class="tick">
-                                Balcony 
-                                <input type="checkbox"> 
-                                <span class="check"></span> 
-                            </label> 
-                        </div> 
-                        <div class="my-1"> 
-                            <label class="tick">
-                                Flat Screen TV 
-                                <input type="checkbox"> 
-                                <span class="check"></span> 
-                            </label> 
-                        </div> 
-                        <div class="my-1"> 
-                            <label class="tick">
-                                Coffe/Tea Maker 
-                                <input type="checkbox"> 
-                                <span class="check"></span> 
-                            </label> 
-                        </div> 
-                        <div class="my-1"> 
-                            <label class="tick">
-                                Washing Machine 
-                                <input type="checkbox"> 
-                                <span class="check"></span> 
-                            </label> 
-                        </div> 
-                    </div> 
                 </div> 
             </div> 
         </div>
-        <div class="d-flex flex-column bg-light">
+        <div class="d-flex flex-column bg-light" *ngIf="!noResults">
             <div class="d-flex p-2 col-lg-12" *ngFor="let residence of results">
                 <div class="flex-shrink-0">
                     <a href="residence/?id={{residence.id}}&host=false&renter=true&check_in={{checkIn}}&check_out={{checkOut}}">
@@ -310,7 +250,18 @@
                 </div>
             </div>
         </div>
+
+        <div class="container p-2" *ngIf="noResults"> 
+            <div class="col-lg-12 col-md-12 col-xl-12">
+                <div class="alert alert-info" role="alert">
+                  <h4 class="alert-heading">NO RESIDENCE!</h4>
+                  <p>Sorry no Residence were found for this search.</p>
+                </div>
+            </div>
+        </div>
+
     </div>
+    
 
     <div class="d-flex flex-row">
         <div class="datatable-info">Showing {{fromRecord}} to {{toRecord}} of {{recordsNumber}} entries</div>
@@ -355,14 +306,4 @@
 
     
 </div>
-  <!-- /.container -->
 
-<div class="container" *ngIf="noResults"> 
-    <h1 class="my-4">Search results</h1>
-    <div class="col-lg-12 col-md-12 col-xl-12">
-        <div class="alert alert-info" role="alert">
-          <h4 class="alert-heading">NO RESIDENCE!</h4>
-          <p>Sorry no Residence were found for this search.</p>
-        </div>
-    </div>
-</div>

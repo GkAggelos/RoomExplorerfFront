@@ -41,8 +41,9 @@ export class ResidenceService {
     return this.http.delete<any>(`${this.residenceUrl}/delete/${id}`);
   }
 
-  public getResidencesBySearchPagination(city: String, checkIn: String, checkOut: String, people: number, page: number): Observable<PageResponse> {
-    return this.http.get<PageResponse>(`${this.residenceUrl}/search/${page}?city=${city}&arrivalDate=${checkIn}&leaveDate=${checkOut}&peopleCapacity=${people}`);
+  public getResidencesBySearchPaginationFilter(city: String, checkIn: String, checkOut: String, people: number, page: number, roomType: string, parking: boolean, livingRoom: boolean, 
+    wifi: boolean, heating: boolean, airCondition: boolean, cuisine: boolean, tv: boolean, elevator: boolean, price: string): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.residenceUrl}/search/filter/${page}?city=${city}&arrivalDate=${checkIn}&leaveDate=${checkOut}&peopleCapacity=${people}&roomType=${roomType}&parking=${parking}&livingRoom=${livingRoom}&wifi=${wifi}&heating=${heating}&airCondition=${airCondition}&cuisine=${cuisine}&tv=${tv}&elevator=${elevator}&price=${price}`);
   }
 
 }
