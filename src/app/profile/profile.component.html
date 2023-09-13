@@ -44,7 +44,6 @@
        </ul>
    </div>
    <button type="button" (click)="downloadReservationsForRenter(renter.id)" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations</button><br><br>
-   <button type="button" class="btn btn-primary"><i class="fa fa-download"></i> Download critics</button>
 </div>
 
 <div class="container" id="main-container" *ngIf="!isForAdmin && !unauthorized">
@@ -91,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="container" *ngIf="isrenter">
+    <div class="container" *ngIf="isrenter && !unauthorized">
       <div class="row">
           <div class="col-12 mb-3 mb-lg-5">
               <div class="overflow-hidden card table-nowrap table-card">
@@ -288,6 +287,71 @@
                             </li>
                         </ul>
                     </nav>        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="isrenter && !unauthorized">
+    <div class="row">
+        <div class="col-12 mb-3 mb-lg-5">
+            <div class="overflow-hidden card table-nowrap table-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recommended Residences</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <tbody>
+                            <tr class="align-middle">
+                                <td>
+                                    <div class="d-flex flex-column" *ngIf="renter">
+                                        <div class="d-flex p-2 col-lg-12" *ngFor="let residence of results">
+                                            <div class="flex-shrink-0">
+                                                <a href="residence/?id={{residence.id}}&host=false&renter=true&check_in=&check_out=">
+                                                    <img class="img-fluid rounded mb-3 mb-md-0" src={{residence.photo}} alt="" class="hotel-img">
+                                                </a>
+                                                <hr>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3 ">
+                                                <h1> {{residence.pricing}} $<h6>per day</h6></h1>
+                                                <h4>{{residence.roomType}}</h4>
+                                                <div class="d-flex flex-column tags pt-1"> 
+                                                    <div class="fs-6 mb-3">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-closed-fill" viewBox="0 0 16 16">
+                                                            <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1h8zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                                        </svg>
+                                                        {{residence.bedNumber}} beds
+                                                    </div>
+                                                    <div class="fs-6 mb-3">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                                        </svg>
+                                                        {{residence.peopleCapacity}} people
+                                                    </div> 
+                                                    <h5>{{residence.reviewsNumber}} reviews</h5>
+                                                    <div class="col-lg-9"> 
+                                                        <div class="rating"> 
+                                                            <div class="fs-5 mb-3"> 
+                                                                <div class="d-flex flex-row">
+                                                                    <div class="p-1" *ngFor="let item of createRange(residence.starsAverage)">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" class="star">
+                                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div> 
+                                                        </div>  
+                                                    </div> 
+                                                    <a class="btn btn-primary" href="residence/?id={{residence.id}}&host=false&renter=true&check_in=&check_out=">View Residence</a>
+                                                </div>
+                                            </div>
+                                        </div>                                   
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -224,3 +224,14 @@ color: white;
     --bs-pagination-font-size: 0.875rem;
     --bs-pagination-border-radius: 0.25rem;
   }
+
+.hotel-img {
+    width: 700px;
+    height: 300px;
+    object-fit: contain;
+}
+
+.star {
+    color: #ffa500;
+    font-size: .8rem
+}

@@ -46,4 +46,7 @@ export class ResidenceService {
     return this.http.get<PageResponse>(`${this.residenceUrl}/search/filter/${page}?city=${city}&arrivalDate=${checkIn}&leaveDate=${checkOut}&peopleCapacity=${people}&roomType=${roomType}&parking=${parking}&livingRoom=${livingRoom}&wifi=${wifi}&heating=${heating}&airCondition=${airCondition}&cuisine=${cuisine}&tv=${tv}&elevator=${elevator}&price=${price}`);
   }
 
+  public getRecommendedResidencesByRenterId(id: number): Observable<Residence[]> {
+    return this.http.get<Residence[]>(`${this.residenceUrl}/recommendations/${id}`);
+  }
 }

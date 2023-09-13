@@ -287,34 +287,59 @@ export class ResidenceComponent implements OnInit{
     });
   }
 
+  public onSetReservationDetails(form: NgForm): void {
+    this.checkIn = form.value.check_in;
+    this.checkOut = form.value.check_out;
+    const button = document.getElementById('reservation-details-form');
+    button?.click();
+    this.addReservation();
+  }
+
   public addReservation(): void {
     var reservation: Reservation = {id:0, stars:0, review:'', reservationDate:'', arrivalDate:'', leaveDate:'', state:-1, renter:this.renter, residence:this.residence};
-    reservation.arrivalDate = this.checkIn;
-    reservation.leaveDate = this.checkOut;
-    reservation.state = 0;
-    reservation.reservationDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-    this.reservationService.addReservation(reservation).subscribe(
-      (response: MessageResponse) => {
-        console.log(response);
-        const container = document.getElementById('main-container');
+    if (this.checkIn == '' || this.checkOut == '') {
+      const container = document.getElementById('main-container');
         const button = document.createElement('button');
         button.type = 'button';
         button.style.display = 'none';
         button.setAttribute('data-toggle', 'modal');
-        if (response.message === 'ok') button.setAttribute('data-target', '#warningOkModal');
-        if (response.message === 'error') button.setAttribute('data-target', '#warningErrorModal');
+        button.setAttribute('data-target', '#reservationDetailsModal');
         container?.appendChild(button);
         button.click();
-      },
-      (error: HttpErrorResponse) => {
-        if (error.status == 403) {
-          this.unauthorized = true;
+    }
+    else {
+      reservation.arrivalDate = this.checkIn;
+      reservation.leaveDate = this.checkOut;
+      reservation.state = 0;
+      reservation.reservationDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+      this.reservationService.addReservation(reservation).subscribe(
+        (response: MessageResponse) => {
+          console.log(response);
+          const container = document.getElementById('main-container');
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.style.display = 'none';
+          button.setAttribute('data-toggle', 'modal');
+          if (response.message === 'ok') button.setAttribute('data-target', '#warningOkModal');
+          if (response.message === 'error already book') button.setAttribute('data-target', '#warningErrorModal');
+          if (response.message === 'error not available') {
+            button.setAttribute('data-target', '#warningUnavailableModal');
+            this.checkIn = '';
+            this.checkOut = '';
+          }
+          container?.appendChild(button);
+          button.click();
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status == 403) {
+            this.unauthorized = true;
+          }
+          else {
+            alert(error.message);
+          }
         }
-        else {
-          alert(error.message);
-        }
-      }
-    );
+      );
+    }
   }
 
   public createRange(number: number){

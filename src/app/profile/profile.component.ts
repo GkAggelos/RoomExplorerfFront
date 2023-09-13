@@ -65,6 +65,7 @@ export class ProfileComponent implements OnInit {
   public replyMessage: string = '';
   public messageId: number = 0;
   public unauthorized: boolean = false;
+  public results: Residence[] = [];
 
   constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, 
     private userService: UserService, private router: Router, private adminService: AdminService, private reservationService: ReservationService,
@@ -177,6 +178,15 @@ export class ProfileComponent implements OnInit {
             else {
               alert(error.message);
             }
+          }
+        );
+
+        this.residenceService.getRecommendedResidencesByRenterId(this.id).subscribe(
+          (response: Residence[]) => {
+            this.results = response;
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message);
           }
         );
 
