@@ -21,6 +21,9 @@ export class AdminComponent implements OnInit {
   public hostPreviousPage: number = 0;
   public hostNextPage: number = 0;
   public hostCurrentPage: number = 0;
+  public hostMinPageNumber: number = 0;
+  public hostMaxPageNumber: number = 0;
+  public hostMaxPages: number = 0;
   public renterRecordsNumber: number = 0;
   public renterFromRecord: number = 0;
   public renterToRecord: number = 0;
@@ -28,6 +31,9 @@ export class AdminComponent implements OnInit {
   public renterPreviousPage: number = 0;
   public renterNextPage: number = 0;
   public renterCurrentPage: number = 0;
+  public renterMinPageNumber: number = 0;
+  public renterMaxPageNumber: number = 0;
+  public renterMaxPages: number = 0;
   public unauthorized: boolean = false;
 
   constructor(private hostService: HostService, private renterService: RenterService) { this.hosts = []; this.renters = [];}
@@ -44,9 +50,17 @@ export class AdminComponent implements OnInit {
         this.hostRecordsNumber = response.recordCount;
 
         if (response.recordCount > 0) this.hostFromRecord = 1;
-        if (response.recordCount <= 10) this.hostToRecord = response.recordCount;
-        else this.hostToRecord = 10;
-    
+        if (response.recordCount <= 10) { 
+          this.hostToRecord = response.recordCount;
+          this.hostMaxPages = 1;
+          this.hostMaxPageNumber = response.recordCount - 1;
+        }
+        else {
+          this.hostMaxPageNumber = 9; 
+          this.hostToRecord = 10;
+          this.hostMaxPages = 10;
+        }
+
         var number = Math.floor(response.recordCount / 10);
         if (response.recordCount % 10 !== 0)  this.hostPages = number + 1;
         else this.hostPages = number;
@@ -73,8 +87,16 @@ export class AdminComponent implements OnInit {
         this.renterRecordsNumber = response.recordCount;
 
         if (response.recordCount > 0) this.renterFromRecord = 1;
-        if (response.recordCount <= 10) this.renterToRecord = response.recordCount;
-        else this.renterToRecord = 10;
+        if (response.recordCount <= 10) {
+          this.renterToRecord = response.recordCount;
+          this.renterMaxPages = 1;
+          this.renterMaxPageNumber = response.recordCount - 1;
+        }
+        else {
+          this.renterMaxPageNumber = 9;
+          this.renterToRecord = 10;
+          this.renterMaxPages = 10;
+        }
     
         var number = Math.floor(response.recordCount / 10);
         if (response.recordCount % 10 !== 0)  this.renterPages = number + 1;
@@ -106,6 +128,16 @@ export class AdminComponent implements OnInit {
         this.hostRecordsNumber = response.recordCount;
         this.hostCurrentPage = page;
 
+        if (page > this.hostMaxPageNumber) {
+          this.hostMaxPageNumber = this.hostMaxPageNumber + 1;
+          this.hostMinPageNumber = this.hostMinPageNumber + 1;
+        }
+
+        if (page < this.hostMinPageNumber) {
+          this.hostMaxPageNumber = this.hostMaxPageNumber - 1;
+          this.hostMinPageNumber = this.hostMinPageNumber - 1;
+        }
+
         this.hostFromRecord = 1;
         if (response.recordCount <= 10) this.hostToRecord = response.recordCount;
         else this.hostToRecord = 10;
@@ -136,6 +168,16 @@ export class AdminComponent implements OnInit {
         this.renters = response.response.content;
         this.renterRecordsNumber = response.recordCount;
         this.renterCurrentPage = page;
+
+        if (page > this.renterMaxPageNumber) {
+          this.renterMaxPageNumber = this.renterMaxPageNumber + 1;
+          this.renterMinPageNumber = this.renterMinPageNumber + 1;
+        }
+
+        if (page < this.renterMinPageNumber) {
+          this.renterMaxPageNumber = this.renterMaxPageNumber - 1;
+          this.renterMinPageNumber = this.renterMinPageNumber - 1;
+        }
 
         this.renterFromRecord = 1;
         if (response.recordCount <= 10) this.renterToRecord = response.recordCount;

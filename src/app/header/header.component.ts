@@ -41,11 +41,18 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit(): void {
     var token = localStorage.getItem("token");
-    if (token) {
-      let decodedJwtData = this.jwtHelper.decodeToken(token);
+    console.log(token);
+    if (token !== null) {
+      if (this.jwtHelper.isTokenExpired(token)) {
+        localStorage.removeItem("token");
+        this.route.navigateByUrl("/");
+      }
+      else {
+        let decodedJwtData = this.jwtHelper.decodeToken(token);
         this.role = decodedJwtData.role;
         this.username = decodedJwtData.sub;
         this.userId = decodedJwtData.jti;
+      }
     }
   }
 

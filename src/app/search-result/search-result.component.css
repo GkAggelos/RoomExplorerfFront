@@ -95,14 +95,19 @@ label {
 
 .datatable-info {
 	margin: 7px 0;
-    padding-left: 20px;
+  padding-left: 20px;
+}
+
+.dots {
+  padding-top: 1rem;
 }
 
 .datatable-bottom {
 	padding: 8px 10px;
 }
 .datatable-pagination {
-    padding-left: 20rem;
+  padding-left: 10rem;
+  padding-bottom: 1rem;
 }
 .datatable-bottom > nav:first-child,
 .datatable-bottom > div:first-child {
@@ -114,7 +119,7 @@ label {
 }
 .datatable-info {
 	margin: 7px 0;
-    padding-left: 20px;
+  padding-left: 20px;
 }
 .datatable-pagination ul {
 	margin: 0;

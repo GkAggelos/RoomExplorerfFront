@@ -68,14 +68,15 @@
                             <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="hostPreviousPage === -1">
                                 <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(hostPreviousPage)">‹</a>
                             </li>
-                            <div *ngFor="let item of createRange(hostPages); let i=index">
-                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="hostCurrentPage !== i">
-                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(i)">{{i + 1}}</a>
+                            <div *ngFor="let item of createRange(hostMaxPages); let i=index">
+                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="hostCurrentPage !== (i + hostMinPageNumber)">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(i + hostMinPageNumber)">{{i + 1 + hostMinPageNumber}}</a>
                                 </li>
-                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="hostCurrentPage === i">
-                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(i)">{{i + 1}}</a>
+                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="hostCurrentPage === (i + hostMinPageNumber)">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(i + hostMinPageNumber)">{{i + 1 + hostMinPageNumber}}</a>
                                 </li>
                             </div>
+                            <p class="dots" *ngIf="(hostMaxPages + hostMinPageNumber) !== hostPages">. . .</p>
                             <li class="datatable-pagination-list-item datatable-hidden" *ngIf="hostNextPage !== -1">
                                 <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForHost(hostNextPage)">›</a>
                             </li>
@@ -147,14 +148,15 @@
                             <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="renterPreviousPage === -1">
                                 <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(renterPreviousPage)">‹</a>
                             </li>
-                            <div *ngFor="let item of createRange(renterPages); let i=index">
-                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="renterCurrentPage !== i">
-                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(i)">{{i + 1}}</a>
+                            <div *ngFor="let item of createRange(renterMaxPages); let i=index">
+                                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="renterCurrentPage !== (i + renterMinPageNumber)">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(i + renterMinPageNumber)">{{i + renterMinPageNumber + 1}}</a>
                                 </li>
-                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="renterCurrentPage === i">
-                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(i)">{{i + 1}}</a>
+                                <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="renterCurrentPage === (i + renterMinPageNumber)">
+                                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(i + renterMinPageNumber)">{{i + renterMinPageNumber + 1}}</a>
                                 </li>
                             </div>
+                            <p class="dots" *ngIf="(renterMaxPages + renterMinPageNumber) !== renterPages">. . .</p>
                             <li class="datatable-pagination-list-item datatable-hidden" *ngIf="renterNextPage !== -1">
                                 <a  class="datatable-pagination-list-item-link" role="button" (click)="onChangePageForRenter(renterNextPage)">›</a>
                             </li>

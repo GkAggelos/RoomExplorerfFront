@@ -34,6 +34,9 @@ export class SearchResultComponent implements OnInit{
   public fromRecord: number = 0;
   public toRecord: number = 0;
   public pages: number = 1;
+  public minPageNumber: number = 0;
+  public maxPageNumber: number = 0;
+  public maxPages: number = 0;
   public previousPage: number = 0;
   public nextPage: number = 0;
   public currentPage: number = 0;
@@ -79,8 +82,16 @@ export class SearchResultComponent implements OnInit{
           this.currentPage = 0;
 
           if (response.recordCount > 0) this.fromRecord = 1;
-          if (response.recordCount <= 10) this.toRecord = response.recordCount;
-          else this.toRecord = 10;
+          if (response.recordCount <= 10) {
+            this.toRecord = response.recordCount;
+            this.maxPages = 1;
+            this.maxPageNumber = response.recordCount - 1;
+          }
+          else {
+            this.maxPageNumber = 9;
+            this.toRecord = 10;
+            this.maxPages = 10;
+          }
       
           var number = Math.floor(response.recordCount / 10);
           if (response.recordCount % 10 !== 0)  this.pages = number + 1;
@@ -195,6 +206,16 @@ export class SearchResultComponent implements OnInit{
         this.results = response.response;
         this.recordsNumber = response.recordCount;
         this.currentPage = page;
+
+        if (page > this.maxPageNumber) {
+          this.maxPageNumber = this.maxPageNumber + 1;
+          this.minPageNumber = this.minPageNumber + 1;
+        }
+
+        if (page < this.minPageNumber) {
+          this.maxPageNumber = this.maxPageNumber - 1;
+          this.minPageNumber = this.minPageNumber - 1;
+        }
 
         this.fromRecord = 1;
         if (response.recordCount <= 10) this.toRecord = response.recordCount;
