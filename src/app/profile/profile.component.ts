@@ -181,14 +181,14 @@ export class ProfileComponent implements OnInit {
           }
         );
 
-        // this.residenceService.getRecommendedResidencesByRenterId(this.id).subscribe(
-        //   (response: Residence[]) => {
-        //     this.results = response;
-        //   },
-        //   (error: HttpErrorResponse) => {
-        //     alert(error.message);
-        //   }
-        // );
+        this.residenceService.getRecommendedResidencesByRenterId(this.id).subscribe(
+          (response: Residence[]) => {
+            this.results = response;
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        );
 
         this.messageService.getMessagesByRenterIdPegination(this.id, 0).subscribe(
           (response: PageResponse) => {
