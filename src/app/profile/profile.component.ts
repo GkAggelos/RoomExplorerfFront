@@ -20,6 +20,7 @@ import { Residence } from '../model/residence';
 import { Message } from '../model/message';
 import { MessageService } from '../service/message.service';
 import * as moment from 'moment';
+import { Photo } from '../model/photo';
 
 
 @Component({
@@ -184,6 +185,17 @@ export class ProfileComponent implements OnInit {
         this.residenceService.getRecommendedResidencesByRenterId(this.id).subscribe(
           (response: Residence[]) => {
             this.results = response;
+
+            for (let index = 0; index < this.results.length; index++) {
+              this.residenceService.getPhotosByResidenceId(this.results[index].id).subscribe(
+                (response: Photo[]) => {
+                  this.results[index].photo = response[0].url;
+                },
+                (error: HttpErrorResponse) => {
+                  alert(error.message);
+                }
+              );
+            }
           },
           (error: HttpErrorResponse) => {
             alert(error.message);
