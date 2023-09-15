@@ -9,7 +9,7 @@ import { PageResponse } from '../model/pageResponse';
 })
 export class MessageService {
 
-  private messageUrl = 'http://localhost:8080/message';
+  private messageUrl = 'https://localhost:8080/message';
 
   constructor(private http: HttpClient) {}
 

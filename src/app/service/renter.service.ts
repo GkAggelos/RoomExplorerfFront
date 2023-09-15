@@ -8,7 +8,7 @@ import { PageResponse } from '../model/pageResponse';
   providedIn: 'root'
 })
 export class RenterService {
-  private renterUrl = 'http://localhost:8080/renter';
+  private renterUrl = 'https://localhost:8080/renter';
 
   constructor(private http: HttpClient) { }
 

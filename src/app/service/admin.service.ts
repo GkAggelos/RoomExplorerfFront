@@ -8,7 +8,7 @@ import { Admin } from '../model/admin';
 })
 export class AdminService {
 
-  private adminUrl = 'http://localhost:8080/admin';
+  private adminUrl = 'https://localhost:8080/admin';
 
   constructor(private http: HttpClient) { }
 

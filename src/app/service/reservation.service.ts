@@ -9,7 +9,7 @@ import { PageResponse } from '../model/pageResponse';
   providedIn: 'root'
 })
 export class ReservationService {
-  private reservationUrl = 'http://localhost:8080/reservation';
+  private reservationUrl = 'https://localhost:8080/reservation';
 
   constructor(private http: HttpClient) { }
 

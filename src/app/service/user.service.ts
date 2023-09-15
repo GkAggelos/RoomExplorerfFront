@@ -11,8 +11,8 @@ import { User } from '../model/user';
 })
 export class UserService {
 
-  private userAuthUrl = 'http://localhost:8080/api/v1/auth';
-  private userUrl = 'http://localhost:8080/user'
+  private userAuthUrl = 'https://localhost:8080/api/v1/auth';
+  private userUrl = 'https://localhost:8080/user'
 
   constructor(private http: HttpClient) { }
 

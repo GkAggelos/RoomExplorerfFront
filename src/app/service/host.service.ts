@@ -8,7 +8,7 @@ import { PageResponse } from '../model/pageResponse';
   providedIn: 'root'
 })
 export class HostService {
-  private hostUrl = 'http://localhost:8080/host';
+  private hostUrl = 'https://localhost:8080/host';
 
   constructor(private http: HttpClient) { }
 

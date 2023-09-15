@@ -9,7 +9,7 @@ import { PageResponse } from '../model/pageResponse';
   providedIn: 'root'
 })
 export class ResidenceService {
-  private residenceUrl = 'http://localhost:8080/residence';
+  private residenceUrl = 'https://localhost:8080/residence';
 
   constructor(private http: HttpClient) { }
 
