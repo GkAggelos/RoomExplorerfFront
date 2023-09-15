@@ -4,46 +4,47 @@
 
     <!-- Page Heading -->
     <h1 class="my-4">Search results</h1>
-        <div class="d-flex flex-row">
-            <div class="datatable-info">Showing {{fromRecord}} to {{toRecord}} of {{recordsNumber}} entries</div>
-            <!-- Pagination -->
-            <nav class="datatable-pagination">
-                <ul class="datatable-pagination-list justify-content-center">
-                    <li class="datatable-pagination-list-item datatable-hidden" *ngIf="previousPage !== -1">
-                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
+    <div class="d-flex flex-row">
+        <div class="datatable-info">Showing {{fromRecord}} to {{toRecord}} of {{recordsNumber}} entries</div>
+        <!-- Pagination -->
+        <nav class="datatable-pagination">
+            <ul class="datatable-pagination-list justify-content-center">
+                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="previousPage !== -1">
+                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="previousPage === -1">
+                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <div *ngFor="let item of createRange(maxPages); let i=index">
+                    <li class="datatable-pagination-list-item datatable-hidden" *ngIf="currentPage !== (i + minPageNumber)">
+                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i + minPageNumber)">{{i + 1 + minPageNumber}}</a>
                     </li>
-                    <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="previousPage === -1">
-                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(previousPage)" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
+                    <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="currentPage === (i + minPageNumber)">
+                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i + minPageNumber)">{{i + 1 + minPageNumber}}</a>
                     </li>
-                    <div *ngFor="let item of createRange(pages); let i=index">
-                        <li class="datatable-pagination-list-item datatable-hidden" *ngIf="currentPage !== i">
-                            <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
-                        </li>
-                        <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="currentPage === i">
-                            <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
-                        </li>
-                    </div>
-                    <li class="datatable-pagination-list-item datatable-hidden" *ngIf="nextPage !== -1">
-                        <a class="page-link" role="button" (click)="onChangePage(nextPage)" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                    <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="nextPage === -1">
-                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(nextPage)" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                </div>
+                <p class="dots" *ngIf="(maxPages + minPageNumber) !== pages">. . .</p>
+                <li class="datatable-pagination-list-item datatable-hidden" *ngIf="nextPage !== -1">
+                    <a class="page-link" role="button" (click)="onChangePage(nextPage)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <li class="datatable-pagination-list-item datatable-hidden datatable-disabled" *ngIf="nextPage === -1">
+                    <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(nextPage)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
     <div class="d-sm-flex"> 
         <div class="me-sm-2"> 
@@ -280,14 +281,15 @@
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <div *ngFor="let item of createRange(pages); let i=index">
-                    <li class="datatable-pagination-list-item datatable-hidden" *ngIf="currentPage !== i">
-                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
+                <div *ngFor="let item of createRange(maxPages); let i=index">
+                    <li class="datatable-pagination-list-item datatable-hidden" *ngIf="currentPage !== (i + minPageNumber)">
+                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i + minPageNumber)">{{i + 1 + minPageNumber}}</a>
                     </li>
-                    <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="currentPage === i">
-                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i)">{{i + 1}}</a>
+                    <li class="datatable-pagination-list-item datatable-hidden datatable-active" *ngIf="currentPage === (i + minPageNumber)">
+                        <a class="datatable-pagination-list-item-link" role="button" (click)="onChangePage(i + minPageNumber)">{{i + 1 + minPageNumber}}</a>
                     </li>
                 </div>
+                <p class="dots" *ngIf="(maxPages + minPageNumber) !== pages">. . .</p>
                 <li class="datatable-pagination-list-item datatable-hidden" *ngIf="nextPage !== -1">
                     <a class="page-link" role="button" (click)="onChangePage(nextPage)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>

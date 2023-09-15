@@ -29,7 +29,7 @@ export class HostService {
   }
 
   public getHostById(id: number): Observable<Host> {
-    return this.http.get<Host>(`${this.hostUrl}/find/${id}`);
+    return this.http.get<Host>(`${this.hostUrl}/find?id=${id}`);
   }
 
   public addHost(host: Host): Observable<Host> {

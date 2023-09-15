@@ -18,7 +18,7 @@ export class ResidenceService {
   }
 
   public getHostResidencesPagination(id: number, page: number): Observable<PageResponse> {
-    return this.http.get<PageResponse>(`${this.residenceUrl}/find/host/${id}/${page}`);
+    return this.http.get<PageResponse>(`${this.residenceUrl}/find/host/page/${page}?id=${id}`);
   }
 
   public addResidence(residence: Residence): Observable<Residence> {

@@ -29,7 +29,7 @@ export class RenterService {
   }
 
   public getRenterById(id: number): Observable<Renter> {
-    return this.http.get<Renter>(`${this.renterUrl}/find/${id}`);
+    return this.http.get<Renter>(`${this.renterUrl}/find?id=${id}`);
   }
 
   public addRenter(renter: Renter): Observable<Renter> {

@@ -26,7 +26,7 @@ export class MessageService {
   }
 
   public getMessagesByRenterIdPegination(renter_id: number, page: number): Observable<PageResponse> {
-    return this.http.get<PageResponse>(`${this.messageUrl}/find/renter/${renter_id}/${page}`);
+    return this.http.get<PageResponse>(`${this.messageUrl}/find/renter/${page}?id=${renter_id}`);
   }
 
   public getMessageById(id: number) : Observable<Message> {

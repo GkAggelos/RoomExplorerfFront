@@ -162,7 +162,7 @@ export class ResidenceComponent implements OnInit{
       this.checkOut = queryParam?.["check_out"];
 
       var token = localStorage.getItem("token");
-      if (token) {
+      if (token !== null) {
         let decodedJwtData = this.jwtHelper.decodeToken(token);
         if (decodedJwtData.role === "renter") {
           this.renter_id = decodedJwtData.jti;
