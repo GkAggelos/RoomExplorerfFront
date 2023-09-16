@@ -301,16 +301,27 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  public downloadResidences(id: number): void {
+  public downloadResidences(id: number, type: string): void {
     this.residenceService.getHostResidences(id).subscribe(
       (response: Residence[]) => {
-        let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
-          type: "application/json"
-        });
-        let a = document.createElement("a");
-        a.download = "residences.json";
-        a.href = window.URL.createObjectURL(blob);
-        a.click();
+        if (type === 'json') {
+          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+            type: "application/json"
+          });
+          let a = document.createElement("a");
+          a.download = "residences.json";
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+        }
+        if (type === 'xml') {
+          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+            type: "application/xml"
+          });
+          let a = document.createElement("a");
+          a.download = "residences.xml";
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+        }
       },
       (error: HttpErrorResponse) => {
         if (error.status == 403) {
@@ -323,16 +334,28 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  public downloadReservationsForRenter(id: number): void {
+  public downloadReservationsForRenter(id: number, type: string): void {
     this.reservationService.getReservationsByRenterId(id).subscribe(
       (response: Reservation[]) => {
-        let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
-          type: "application/json"
-        });
-        let a = document.createElement("a");
-        a.download = "reservationsForRenter.json";
-        a.href = window.URL.createObjectURL(blob);
-        a.click();
+        if (type === 'json') {
+          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+            type: "application/json"
+          });
+          let a = document.createElement("a");
+          a.download = "reservationsForRenter.json";
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+        }
+
+        if (type === 'xml') {
+          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+            type: "application/xml"
+          });
+          let a = document.createElement("a");
+          a.download = "reservationsForRenter.xml";
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+        }
       },
       (error: HttpErrorResponse) => {
         if (error.status == 403) {
@@ -345,16 +368,28 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  public downloadReservationsForHost(id: number): void {
+  public downloadReservationsForHost(id: number, type: string): void {
     this.reservationService.getReservationsByHostId(id).subscribe(
       (response: Reservation[]) => {
-        let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
-          type: "application/json"
-        });
-        let a = document.createElement("a");
-        a.download = "reservationsForHost.json";
-        a.href = window.URL.createObjectURL(blob);
-        a.click();
+        if (type === 'json') {
+          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+            type: "application/json"
+          });
+          let a = document.createElement("a");
+          a.download = "reservationsForHost.json";
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+        }
+
+        if (type === 'xml') {
+          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+            type: "application/json"
+          });
+          let a = document.createElement("a");
+          a.download = "reservationsForHost.json";
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+        }
       },
       (error: HttpErrorResponse) => {
         if (error.status == 403) {

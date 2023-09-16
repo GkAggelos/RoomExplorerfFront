@@ -21,8 +21,11 @@
        </ul>
    </div>
    <button type="button" class="btn btn-success" *ngIf="host.approved === false" (click)="onApproveHost()">Approve this host</button><br><br>
-   <button type="button" (click)="downloadResidences(host.id)" class="btn btn-primary"><i class="fa fa-download"></i> Download residences</button><br><br>
-   <button type="button" (click)="downloadReservationsForHost(host.id)" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations</button>
+   <button type="button" (click)="downloadResidences(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download residences (json)</button><br><br>
+   <button type="button" (click)="downloadReservationsForHost(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations (json)</button>
+
+   <button type="button" (click)="downloadResidences(host.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download residences (xml)</button><br><br>
+   <button type="button" (click)="downloadReservationsForHost(host.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download reservations (xml)</button>
 </div>
 
 <div class="container" id="main-container" *ngIf="isrenter && isForAdmin && !unauthorized">
@@ -43,7 +46,9 @@
            <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : <b>{{renter.phoneNumber}}</b></li>
        </ul>
    </div>
-   <button type="button" (click)="downloadReservationsForRenter(renter.id)" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations</button><br><br>
+   <button type="button" (click)="downloadReservationsForRenter(renter.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations (json)</button><br><br>
+
+   <button type="button" (click)="downloadReservationsForRenter(renter.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download reservations (xml)</button><br><br>
 </div>
 
 <div class="container" id="main-container" *ngIf="!isForAdmin && !unauthorized">
