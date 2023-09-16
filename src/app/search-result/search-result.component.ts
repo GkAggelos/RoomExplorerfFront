@@ -90,12 +90,14 @@ export class SearchResultComponent implements OnInit{
           else {
             this.maxPageNumber = 9;
             this.toRecord = 10;
-            this.maxPages = 10;
           }
       
           var number = Math.floor(response.recordCount / 10);
           if (response.recordCount % 10 !== 0)  this.pages = number + 1;
           else this.pages = number;
+
+          if (this.pages > 10) this.maxPages = 10;
+          else this.maxPages = this.pages;
       
           this.previousPage = -1;
           if (this.recordsNumber !== this.toRecord) this.nextPage = 1;

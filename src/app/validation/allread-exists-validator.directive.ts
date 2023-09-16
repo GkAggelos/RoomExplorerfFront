@@ -1,10 +1,7 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { HostService } from '../service/host.service';
-import { RenterService } from '../service/renter.service';
-import { Host } from '../model/host';
-import { Renter } from '../model/renter';
+
 
 @Directive({
   selector: '[appAllreadExistsValidator]',
@@ -24,7 +21,7 @@ export class AllreadExistsValidatorDirective implements AsyncValidator {
     }
 
     for (let index = 0; index < this.records.length; index++) {
-      if(this.records[index] === control.value) return of({ allreadyExists: true });
+      if(this.records[index].toLowerCase() === control.value.toLowerCase()) return of({ allreadyExists: true });
       
     }
 

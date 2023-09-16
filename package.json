@@ -20,12 +20,14 @@
     "@angular/router": "^16.1.0",
     "@asymmetrik/ngx-leaflet": "^16.0.1",
     "@auth0/angular-jwt": "^5.1.2",
+    "js2xmlparser": "^5.0.0",
     "leaflet": "^1.9.4",
     "leaflet-control-geocoder": "^2.4.0",
     "leaflet-geosearch": "^3.8.0",
     "moment": "^2.29.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xml-js": "^1.6.11",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {

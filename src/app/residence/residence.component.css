@@ -253,3 +253,7 @@ input[type="date"]::before {
 input[type="date"]:focus::before,
 input[type="date"]:valid::before,
 select:valid::before { display: none }
+
+.unauthorized {
+  padding-bottom: 37%;
+}
