@@ -239,3 +239,7 @@ color: white;
     color: #ffa500;
     font-size: .8rem
 }
+
+.unauthorized {
+  padding-bottom: 37%;
+}

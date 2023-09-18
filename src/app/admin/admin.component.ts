@@ -58,13 +58,15 @@ export class AdminComponent implements OnInit {
         else {
           this.hostMaxPageNumber = 9; 
           this.hostToRecord = 10;
-          this.hostMaxPages = 10;
         }
 
         var number = Math.floor(response.recordCount / 10);
         if (response.recordCount % 10 !== 0)  this.hostPages = number + 1;
         else this.hostPages = number;
     
+        if (this.hostPages > 10)  this.hostMaxPages = 10;
+        else  this.hostMaxPages = this.hostPages;
+
         this.hostPreviousPage = -1;
         if (this.hostRecordsNumber !== this.hostToRecord) this.hostNextPage = 1;
         else this.hostNextPage = -1; 
@@ -95,13 +97,15 @@ export class AdminComponent implements OnInit {
         else {
           this.renterMaxPageNumber = 9;
           this.renterToRecord = 10;
-          this.renterMaxPages = 10;
         }
     
         var number = Math.floor(response.recordCount / 10);
         if (response.recordCount % 10 !== 0)  this.renterPages = number + 1;
         else this.renterPages = number;
     
+        if (this.renterPages > 10) this.renterMaxPages = 10;
+        else this.renterMaxPages = this.renterPages;
+
         this.renterPreviousPage = -1;
         if (this.renterRecordsNumber !== this.renterToRecord) this.renterNextPage = 1;
         else this.renterNextPage = -1; 

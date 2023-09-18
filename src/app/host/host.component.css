@@ -287,3 +287,7 @@ button:focus{
     --bs-pagination-font-size: 0.875rem;
     --bs-pagination-border-radius: 0.25rem;
   }
+
+.unauthorized {
+    padding-bottom: 37%;
+}

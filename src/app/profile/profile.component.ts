@@ -21,7 +21,7 @@ import { Message } from '../model/message';
 import { MessageService } from '../service/message.service';
 import * as moment from 'moment';
 import { Photo } from '../model/photo';
-
+import { parse } from 'js2xmlparser';
 
 @Component({
   selector: 'app-profile',
@@ -314,7 +314,7 @@ export class ProfileComponent implements OnInit {
           a.click();
         }
         if (type === 'xml') {
-          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+          let blob: Blob = new Blob([parse("Residences", response)], {
             type: "application/xml"
           });
           let a = document.createElement("a");
@@ -348,7 +348,7 @@ export class ProfileComponent implements OnInit {
         }
 
         if (type === 'xml') {
-          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
+          let blob: Blob = new Blob([parse("Reservations", response)], {
             type: "application/xml"
           });
           let a = document.createElement("a");
@@ -382,11 +382,11 @@ export class ProfileComponent implements OnInit {
         }
 
         if (type === 'xml') {
-          let blob: Blob = new Blob([JSON.stringify(response, null, 2)], {
-            type: "application/json"
+          let blob: Blob = new Blob([parse("Reservations", response)], {
+            type: "application/xml"
           });
           let a = document.createElement("a");
-          a.download = "reservationsForHost.json";
+          a.download = "reservationsForHost.xml";
           a.href = window.URL.createObjectURL(blob);
           a.click();
         }

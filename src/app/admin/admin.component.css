@@ -182,3 +182,7 @@ body{margin-top:20px;
       .dots{
         padding-top: 1rem;
       }
+
+      .unauthorized {
+        padding-bottom: 37%;
+    }

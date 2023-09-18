@@ -21,12 +21,11 @@
        </ul>
    </div>
    <button type="button" class="btn btn-success" *ngIf="host.approved === false" (click)="onApproveHost()">Approve this host</button><br><br>
-
-   <button type="button" (click)="downloadResidences(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download residences (json)</button>
-   <button type="button" (click)="downloadResidences(host.id, 'xml')" class="btn btn-warning"><i class="fa fa-download left-padding"></i> Download residences (xml)</button><br><br>
-
+   <button type="button" (click)="downloadResidences(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download residences (json)</button><br><br>
    <button type="button" (click)="downloadReservationsForHost(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations (json)</button>
-     <button type="button" (click)="downloadReservationsForHost(host.id, 'xml')" class="btn btn-warning left-padding"><i class="fa fa-download"></i> Download reservations (xml)</button>
+
+   <button type="button" (click)="downloadResidences(host.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download residences (xml)</button><br><br>
+   <button type="button" (click)="downloadReservationsForHost(host.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download reservations (xml)</button>
 </div>
 
 <div class="container" id="main-container" *ngIf="isrenter && isForAdmin && !unauthorized">
@@ -564,6 +563,6 @@
   </div>
 </div>
 
-<div *ngIf="unauthorized">
+<div *ngIf="unauthorized" class="unauthorized">
     <h1>Error Unauthorized</h1>
 </div>
