@@ -69,6 +69,14 @@ export class ResidenceComponent implements OnInit{
   public deleteMessage: string = '';
   public deleteMessageId: number = 0;
   public unauthorized: boolean = false;
+  public recordsNumberForReview: number = 0;
+  public fromRecordForReview: number = 0;
+  public toRecordForReview: number = 0;
+  public pagesForReview: number = 1;
+  public previousPageForReview: number = 0;
+  public nextPageForReview: number = 0;
+  public currentPageForReview: number = 0;
+  public reservationsForReview: Reservation[] = [];
   
 
   constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private photoService: PhotoService, private jwtHelper: JwtHelperService,
@@ -182,17 +190,37 @@ export class ResidenceComponent implements OnInit{
         }
       }
 
+      this.reservationService.getReservationsByResidenceIdPaginationForReview(this.id, 0).subscribe(
+        (response: PageResponse) => {
+          this.reservationsForReview = response.response.content;
+          
+          this.recordsNumberForReview = response.recordCount;
+
+          if (response.recordCount > 0) this.fromRecordForReview = 1;
+          if (response.recordCount <= 10) this.toRecordForReview = response.recordCount;
+          else this.toRecordForReview = 10;
+          
+          var number = Math.floor(response.recordCount / 10);
+          if (response.recordCount % 10 !== 0)  this.pagesForReview = number + 1;
+          else this.pagesForReview = number;
+          
+          this.previousPageForReview = -1;
+          if (this.recordsNumberForReview !== this.toRecordForReview) this.nextPageForReview = 1;
+          else this.nextPageForReview = -1;
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status == 403) {
+            this.unauthorized = true;
+          }
+          else {
+            alert(error.message);
+          }
+        }
+      );
+
       this.reservationService.getReservationsByResidenceIdPagination(this.id, 0).subscribe(
         (response: PageResponse) => {
           this.reservations = response.response.content;
-
-          if (this.isrenter) {
-            for (let index = 0; index < this.reservations.length; index++) {
-              if (this.reservations[index].review === null || this.reservations[index].review === '') {
-                response.recordCount  -= 1;
-              }
-            }
-          }
           
           this.recordsNumberForReservation = response.recordCount;
 
@@ -364,6 +392,36 @@ export class ResidenceComponent implements OnInit{
         this.previousPageForReservation = page - 1;
         if (response.recordCount !== this.toRecordForReservation) this.nextPageForReservation = page + 1;
         else this.nextPageForReservation = -1; 
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          this.unauthorized = true;
+        }
+        else {
+          alert(error.message);
+        }
+      }
+    );
+  }
+
+  public onChangePageForReview(page: number) {
+    this.reservationService.getReservationsByResidenceIdPaginationForReview(this.id, page).subscribe(
+      (response: PageResponse) => {
+        this.reservationsForReview = response.response.content;
+        this.currentPageForReview = page;
+
+        this.fromRecordForReview = 1;
+        if (response.recordCount <= 10) this.toRecordForReview = response.recordCount;
+        else this.toRecordForReview = 10;
+        for (let index = 0; index < page; index++) {
+          this.fromRecordForReview += 10;
+          this.toRecordForReview += 10;
+        }
+        if (this.toRecordForReview > response.recordCount) this.toRecordForReview = response.recordCount;
+
+        this.previousPageForReview = page - 1;
+        if (response.recordCount !== this.toRecordForReview) this.nextPageForReview = page + 1;
+        else this.nextPageForReview = -1; 
       },
       (error: HttpErrorResponse) => {
         if (error.status == 403) {

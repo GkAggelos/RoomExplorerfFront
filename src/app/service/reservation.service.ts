@@ -29,6 +29,10 @@ export class ReservationService {
     return this.http.get<PageResponse>(`${this.reservationUrl}/find/residence/${id}/${page}`);
   }
 
+  public getReservationsByResidenceIdPaginationForReview(id: number, page: number): Observable<PageResponse> {
+    return this.http.get<PageResponse>(`${this.reservationUrl}/find/residence/review/${id}/${page}`);
+  }
+
   public getReservationById(id: number): Observable<Reservation> {
     return this.http.get<Reservation>(`${this.reservationUrl}/find/${id}`);
   }

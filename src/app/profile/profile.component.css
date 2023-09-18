@@ -231,10 +231,6 @@ color: white;
     object-fit: contain;
 }
 
-.left_padding{
-  padding-left: 4rem;
-}
-
 .star {
     color: #ffa500;
     font-size: .8rem

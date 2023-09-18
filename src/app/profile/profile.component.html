@@ -20,12 +20,26 @@
            <li class="list-group-item" *ngIf="host.approved">Approved : <b class="green">{{host.approved}}</b></li>
        </ul>
    </div>
-   <button type="button" class="btn btn-success" *ngIf="host.approved === false" (click)="onApproveHost()">Approve this host</button><br><br>
-   <button type="button" (click)="downloadResidences(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download residences (json)</button><br><br>
-   <button type="button" (click)="downloadReservationsForHost(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations (json)</button>
+    <button type="button" class="btn btn-success" *ngIf="host.approved === false" (click)="onApproveHost()">Approve this host</button><br><br>
+   
+    <div class="d-flex flex-row">
+        <div class="p-1">
+            <button type="button" (click)="downloadResidences(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download residences (json)</button>
+        </div>
+        <div class="p-1">
+            <button type="button" (click)="downloadResidences(host.id, 'xml')" class="btn btn-warning"><i class="fa fa-download"></i> Download residences (xml)</button>
+        </div>
+    </div>
 
-   <button type="button" (click)="downloadResidences(host.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download residences (xml)</button><br><br>
-   <button type="button" (click)="downloadReservationsForHost(host.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download reservations (xml)</button>
+    <div class="d-flex flex-row">
+        <div class="p-1">
+            <button type="button" (click)="downloadReservationsForHost(host.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations (json)</button>
+        </div>
+        <div class="p-1">
+            <button type="button" (click)="downloadReservationsForHost(host.id, 'xml')" class="btn btn-warning"><i class="fa fa-download"></i> Download reservations (xml)</button>
+        </div>
+    </div>
+
 </div>
 
 <div class="container" id="main-container" *ngIf="isrenter && isForAdmin && !unauthorized">

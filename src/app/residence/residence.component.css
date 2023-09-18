@@ -27,6 +27,10 @@ files:before{
     background-size: 55px 55px
 }
 
+.max-width{
+  width: 100%;
+}
+
 .stars
 {
     margin: 20px 0;
