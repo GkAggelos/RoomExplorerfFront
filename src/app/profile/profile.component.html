@@ -327,7 +327,7 @@
                                     <div class="d-flex flex-column" *ngIf="renter">
                                         <div class="d-flex p-2 col-lg-12" *ngFor="let residence of results">
                                             <div class="flex-shrink-0">
-                                                <a href="residence/?id={{residence.id}}&host=false&renter=true&check_in=&check_out=">
+                                                <a type="button" (click)="updateSearchHistory(residence)">
                                                     <img class="img-fluid rounded mb-3 mb-md-0" src={{residence.photo}} alt="" class="hotel-img">
                                                 </a>
                                                 <hr>
@@ -362,7 +362,7 @@
                                                             </div> 
                                                         </div>  
                                                     </div> 
-                                                    <a class="btn btn-primary" href="residence/?id={{residence.id}}&host=false&renter=true&check_in=&check_out=">View Residence</a>
+                                                    <a class="btn btn-primary" type="button" (click)="updateSearchHistory(residence)">View Residence</a>
                                                 </div>
                                             </div>
                                         </div>                                   

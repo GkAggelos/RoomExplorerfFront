@@ -4,6 +4,7 @@ import { Reservation } from '../model/reservation';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { SearchService } from '../service/search.service';
 
 @Component({
   selector: 'app-reservation',
@@ -22,7 +23,7 @@ export class ReservationComponent implements OnInit {
   public id: number = 0;
   public unauthorized: boolean = false;
 
-  constructor(private reservationService: ReservationService, private route: ActivatedRoute) {}
+  constructor(private reservationService: ReservationService, private searchService: SearchService, private route: ActivatedRoute) {}
 
   public onAddReview(reviewForm: NgForm): void {
     this.reservation.review = reviewForm.value.review;
@@ -30,6 +31,14 @@ export class ReservationComponent implements OnInit {
     this.reservationService.updateReservation(this.reservation).subscribe(
       (response: Reservation) => {
         this.reservation = response;
+        this.searchService.deleteSearches(this.reservation.renter.id).subscribe(
+          (response: any) => {
+
+          },
+          (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+        )
       },
       (error: HttpErrorResponse) => {
         if (error.status == 403) {

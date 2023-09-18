@@ -5,6 +5,11 @@ import { ResidenceService } from '../service/residence.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Photo } from '../model/photo';
 import { PageResponse } from '../model/pageResponse';
+import { SearchService } from '../service/search.service';
+import { Search } from '../model/search';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { RenterService } from '../service/renter.service';
+import { Renter } from '../model/renter';
 
 @Component({
   selector: 'app-search-result',
@@ -43,10 +48,36 @@ export class SearchResultComponent implements OnInit{
   public price: string = "";
   public roomType: string = "";
 
-  constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private rooter: Router) {}
+  constructor(private route: ActivatedRoute, private residenceService: ResidenceService, private searchService: SearchService, private renterService: RenterService, private rooter: Router, private jwtHelper: JwtHelperService) {}
 
   ngOnInit(): void {
     this.getResults();
+  }
+
+  public updateSearchHistory(residence: Residence): void {
+    var token = localStorage.getItem("token");
+    console.log(token);
+    if (token !== null) {
+      let decodedJwtData = this.jwtHelper.decodeToken(token);
+      let userId = decodedJwtData.jti;
+      this.renterService.getRenterById(userId).subscribe(
+        (response: Renter) => { 
+          var search: Search = {id: 0, renter: response, residence: residence};
+          this.searchService.addSearch(search).subscribe(
+            (respone: Search) => {
+              console.log(respone);
+              this.rooter.navigateByUrl(`/residence?id=${residence.id}&host=false&renter=true&check_in=${this.checkIn}&check_out=${this.checkOut}`);
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          )
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
   }
 
   createRange(number: number){

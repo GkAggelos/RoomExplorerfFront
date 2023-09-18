@@ -22,6 +22,9 @@ import { MessageService } from '../service/message.service';
 import * as moment from 'moment';
 import { Photo } from '../model/photo';
 import { parse } from 'js2xmlparser';
+import { Search } from '../model/search';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { SearchService } from '../service/search.service';
 
 @Component({
   selector: 'app-profile',
@@ -70,7 +73,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private hostService: HostService, private renterService: RenterService, 
     private userService: UserService, private router: Router, private adminService: AdminService, private reservationService: ReservationService,
-    private residenceService: ResidenceService, private messageService: MessageService) {
+    private residenceService: ResidenceService, private messageService: MessageService, private rooter: Router,
+    private jwtHelper: JwtHelperService, private searchService: SearchService) {
     this.host = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', approved:false, password:'', photo:''};
     this.renter = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
     this.admin = {id:0, username:'', firstName:'', lastName:'', email:'', phoneNumber:'', password:'', photo: ''};
@@ -134,6 +138,32 @@ export class ProfileComponent implements OnInit {
         alert(error.message);
       }
     );
+  }
+
+  public updateSearchHistory(residence: Residence): void {
+    var token = localStorage.getItem("token");
+    console.log(token);
+    if (token !== null) {
+      let decodedJwtData = this.jwtHelper.decodeToken(token);
+      let userId = decodedJwtData.jti;
+      this.renterService.getRenterById(userId).subscribe(
+        (response: Renter) => { 
+          var search: Search = {id: 0, renter: response, residence: residence};
+          this.searchService.addSearch(search).subscribe(
+            (respone: Search) => {
+              console.log(respone);
+              this.rooter.navigateByUrl(`/residence?id=${residence.id}&host=false&renter=true&check_in=&check_out=`);
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          )
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
   }
 
   public ngOnInit(): void {
