@@ -22,6 +22,10 @@
         </ul>
     </div>
 
+    <div class="marginPending" *ngIf=" reservation.state.toString() === 'PENDING'"></div>
+
+    <div class="marginPending" *ngIf=" reservation.state.toString() === 'REJECTED'"></div>
+
     <div class="row" *ngIf=" reservation.state.toString() === 'ACCEPTED'">
         <div class="col-md-12">
             <form #reviewForm="ngForm" (ngSubmit)="onAddReview(reviewForm)">
@@ -47,6 +51,9 @@
                 </div>
             </form>
         </div>
+
+        <div class="marginWithoutReview" *ngIf="reservation.review === null || reservation.review === ''"></div>
+        <div class="marginWithReview" *ngIf="reservation.review !== null && reservation.review !== ''"></div>
     </div>
 </div>
 

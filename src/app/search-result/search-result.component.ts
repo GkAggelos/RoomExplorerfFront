@@ -78,6 +78,9 @@ export class SearchResultComponent implements OnInit{
         }
       )
     }
+    else{
+      this.rooter.navigateByUrl(`/residence?id=${residence.id}&host=false&renter=true&check_in=${this.checkIn}&check_out=${this.checkOut}`);
+    } 
   }
 
   createRange(number: number){

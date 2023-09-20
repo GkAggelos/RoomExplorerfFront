@@ -92,3 +92,15 @@ color: white;
 .unauthorized {
   padding-bottom: 37%;
 }
+
+.marginPending{
+  margin-bottom: 38%;
+}
+
+.marginWithoutReview{
+  margin-bottom: 14%;
+}
+
+.marginWithReview{
+  margin-bottom: 4%;
+}

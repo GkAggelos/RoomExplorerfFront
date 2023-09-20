@@ -236,6 +236,18 @@ color: white;
     font-size: .8rem
 }
 
+.marginProfile {
+  margin-bottom: 35%;
+}
+
+.marginHostAsAdmin {
+  margin-bottom: 25%;
+}
+
+.marginRenterAsAdmin{
+  margin-bottom: 25%;
+}
+
 .unauthorized {
   padding-bottom: 37%;
 }

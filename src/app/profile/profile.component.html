@@ -40,6 +40,7 @@
         </div>
     </div>
 
+    <div class="marginHostAsAdmin"></div>
 </div>
 
 <div class="container" id="main-container" *ngIf="isrenter && isForAdmin && !unauthorized">
@@ -63,6 +64,8 @@
    <button type="button" (click)="downloadReservationsForRenter(renter.id, 'json')" class="btn btn-primary"><i class="fa fa-download"></i> Download reservations (json)</button><br><br>
 
    <button type="button" (click)="downloadReservationsForRenter(renter.id, 'xml')" class="btn btn-success"><i class="fa fa-download"></i> Download reservations (xml)</button><br><br>
+
+   <div class="marginRenterAsAdmin"></div>
 </div>
 
 <div class="container" id="main-container" *ngIf="!isForAdmin && !unauthorized">
@@ -109,6 +112,7 @@
             </div>
         </div>
     </div>
+    <div *ngIf="isadmin || ishost" class="marginProfile"></div>
     <div class="container" *ngIf="isrenter && !unauthorized">
       <div class="row">
           <div class="col-12 mb-3 mb-lg-5">
