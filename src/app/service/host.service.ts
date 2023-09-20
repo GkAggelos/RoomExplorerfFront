@@ -12,10 +12,6 @@ export class HostService {
 
   constructor(private http: HttpClient) { }
 
-  public getHosts(): Observable<Host[]> {
-    return this.http.get<Host[]>(`${this.hostUrl}/all`);
-  }
-
   public getHostsPagination(page: number): Observable<PageResponse> {
     return this.http.get<PageResponse>(`${this.hostUrl}/all/${page}`);
   }
@@ -30,10 +26,6 @@ export class HostService {
 
   public getHostById(id: number): Observable<Host> {
     return this.http.get<Host>(`${this.hostUrl}/find?id=${id}`);
-  }
-
-  public addHost(host: Host): Observable<Host> {
-    return this.http.post<Host>(`${this.hostUrl}/add`, host);
   }
 
   public updateHost(host: Host): Observable<Host> {

@@ -145,6 +145,7 @@ export class AdminComponent implements OnInit {
         this.hostFromRecord = 1;
         if (response.recordCount <= 10) this.hostToRecord = response.recordCount;
         else this.hostToRecord = 10;
+        
         for (let index = 0; index < page; index++) {
           this.hostFromRecord += 10;
           this.hostToRecord += 10;
@@ -186,6 +187,7 @@ export class AdminComponent implements OnInit {
         this.renterFromRecord = 1;
         if (response.recordCount <= 10) this.renterToRecord = response.recordCount;
         else this.renterToRecord = 10;
+
         for (let index = 0; index < page; index++) {
           this.renterFromRecord += 10;
           this.renterToRecord += 10;

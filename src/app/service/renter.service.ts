@@ -12,10 +12,6 @@ export class RenterService {
 
   constructor(private http: HttpClient) { }
 
-  public getRenters(): Observable<Renter[]> {
-    return this.http.get<Renter[]>(`${this.renterUrl}/all`);
-  }
-
   public getRentersPagination(page: number): Observable<PageResponse> {
     return this.http.get<PageResponse>(`${this.renterUrl}/all/${page}`);
   }
@@ -30,13 +26,5 @@ export class RenterService {
 
   public getRenterById(id: number): Observable<Renter> {
     return this.http.get<Renter>(`${this.renterUrl}/find?id=${id}`);
-  }
-
-  public addRenter(renter: Renter): Observable<Renter> {
-    return this.http.post<Renter>(`${this.renterUrl}/add`, renter);
-  }
-
-  public updateRenter(renter: Renter): Observable<Renter> {
-    return this.http.put<Renter>(`${this.renterUrl}/update`, renter);
   }
 }

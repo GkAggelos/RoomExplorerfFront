@@ -283,9 +283,4 @@ export class SearchResultComponent implements OnInit{
       }
     );
   }
-
-  public refresh(): void {
-    window.location.reload();
-  }
-
 }
