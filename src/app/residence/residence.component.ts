@@ -217,36 +217,35 @@ export class ResidenceComponent implements OnInit{
           }
         }
       );
-
-      this.reservationService.getReservationsByResidenceIdPagination(this.id, 0).subscribe(
-        (response: PageResponse) => {
-          this.reservations = response.response.content;
-          
-          this.recordsNumberForReservation = response.recordCount;
-
-          if (response.recordCount > 0) this.fromRecordForReservation = 1;
-          if (response.recordCount <= 10) this.toRecordForReservation = response.recordCount;
-          else this.toRecordForReservation = 10;
-          
-          var number = Math.floor(response.recordCount / 10);
-          if (response.recordCount % 10 !== 0)  this.pagesForReservation = number + 1;
-          else this.pagesForReservation = number;
-          
-          this.previousPageForReservation = -1;
-          if (this.recordsNumberForReservation !== this.toRecordForReservation) this.nextPageForReservation = 1;
-          else this.nextPageForReservation = -1;
-        },
-        (error: HttpErrorResponse) => {
-          if (error.status == 403) {
-            this.unauthorized = true;
-          }
-          else {
-            alert(error.message);
-          }
-        }
-      );
-
       if (this.ishost) {
+        this.reservationService.getReservationsByResidenceIdPagination(this.id, 0).subscribe(
+          (response: PageResponse) => {
+            this.reservations = response.response.content;
+            
+            this.recordsNumberForReservation = response.recordCount;
+
+            if (response.recordCount > 0) this.fromRecordForReservation = 1;
+            if (response.recordCount <= 10) this.toRecordForReservation = response.recordCount;
+            else this.toRecordForReservation = 10;
+            
+            var number = Math.floor(response.recordCount / 10);
+            if (response.recordCount % 10 !== 0)  this.pagesForReservation = number + 1;
+            else this.pagesForReservation = number;
+            
+            this.previousPageForReservation = -1;
+            if (this.recordsNumberForReservation !== this.toRecordForReservation) this.nextPageForReservation = 1;
+            else this.nextPageForReservation = -1;
+          },
+          (error: HttpErrorResponse) => {
+            if (error.status == 403) {
+              this.unauthorized = true;
+            }
+            else {
+              alert(error.message);
+            }
+          }
+        );
+
         this.messageService.getMessagesByResidenceIdPegination(this.id, 0).subscribe(
           (response: PageResponse) => {
             this.messages = response.response.content;
