@@ -62,11 +62,11 @@ export class SearchResultComponent implements OnInit{
       let userId = decodedJwtData.jti;
       this.renterService.getRenterById(userId).subscribe(
         (response: Renter) => { 
+          this.rooter.navigateByUrl(`/residence?id=${residence.id}&host=false&renter=true&check_in=${this.checkIn}&check_out=${this.checkOut}`);
           var search: Search = {id: 0, renter: response, residence: residence};
           this.searchService.addSearch(search).subscribe(
             (respone: Search) => {
               console.log(respone);
-              this.rooter.navigateByUrl(`/residence?id=${residence.id}&host=false&renter=true&check_in=${this.checkIn}&check_out=${this.checkOut}`);
             },
             (error: HttpErrorResponse) => {
               alert(error.message);

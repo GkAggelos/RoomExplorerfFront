@@ -148,11 +148,11 @@ export class ProfileComponent implements OnInit {
       let userId = decodedJwtData.jti;
       this.renterService.getRenterById(userId).subscribe(
         (response: Renter) => { 
+          this.rooter.navigateByUrl(`/residence?id=${residence.id}&host=false&renter=true&check_in=&check_out=`);
           var search: Search = {id: 0, renter: response, residence: residence};
           this.searchService.addSearch(search).subscribe(
             (respone: Search) => {
               console.log(respone);
-              this.rooter.navigateByUrl(`/residence?id=${residence.id}&host=false&renter=true&check_in=&check_out=`);
             },
             (error: HttpErrorResponse) => {
               alert(error.message);
